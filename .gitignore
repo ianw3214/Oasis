@@ -1,0 +1,12 @@
+# VISUAL STUDIO GENERATED THINGS
+*.user
+*.filters
+.vs/
+.vscode/
+# GENERATED BINARIES
+Debug/
+Release/
+# OTHER THINGS
+assets/
+libs/
+engine/
