@@ -1,0 +1,1 @@
+- Give the STATE class a method wrapper to the StateManager keyUp and keyDown methods.

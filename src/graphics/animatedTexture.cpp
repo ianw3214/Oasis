@@ -4,11 +4,11 @@
 #include "../util/util.hpp"
 #include "../core/engine.hpp"
 
-AnimatedTexture::AnimatedTexture(SDL_Texture * const texture) : Texture(texture) {
+AnimatedTexture::AnimatedTexture(SDL_Texture * const texture) : Texture(texture), ms_per_frame(-1) {
 	
 }
 
-AnimatedTexture::AnimatedTexture(const std::string & path) : Texture(path) {
+AnimatedTexture::AnimatedTexture(const std::string & path) : Texture(path), ms_per_frame(-1) {
 	
 }
 
@@ -16,12 +16,14 @@ AnimatedTexture::~AnimatedTexture() {
 
 }
 
-void AnimatedTexture::addAnimationState(int start, int end) {
+void AnimatedTexture::addAnimationState(int start, int end, int next) {
 	frames.push_back(std::make_pair(start, end));
+	next_anim.push_back(next);
 }
 
-void AnimatedTexture::addAnimationState(std::pair<int, int> frame) {
+void AnimatedTexture::addAnimationState(std::pair<int, int> frame, int next) {
 	frames.push_back(frame);
+	next_anim.push_back(next);
 }
 
 void AnimatedTexture::addToAtlas(int x, int y, int w, int h) {
@@ -48,13 +50,20 @@ void AnimatedTexture::generateAtlas(int frameWidth, int frameHeight, int num) {
 	}
 }
 
+void AnimatedTexture::changeFPS(int new_fps) {
+	ms_per_frame = static_cast<int>(1000 / new_fps);
+	timer.start();
+}
+
 void AnimatedTexture::changeAnimation(unsigned int anim) {
 	if (anim >= frames.size()) {
 		ERR("Tried to play an animation that is not set...");
 		return;
 	}
-	currentAnimation = anim;
-	resetAnimation();
+	if (currentAnimation != anim) {
+		currentAnimation = anim;
+		resetAnimation();
+	}
 }
 
 void AnimatedTexture::resetAnimation() {
@@ -64,6 +73,7 @@ void AnimatedTexture::resetAnimation() {
 	}
 	ASSERT(static_cast<unsigned int>(currentAnimation) < frames.size());
 	currentFrame = frames.at(currentAnimation).first;
+	if (ms_per_frame > 0) timer.reset(true);
 }
 
 void AnimatedTexture::render() const {
@@ -103,9 +113,20 @@ void AnimatedTexture::renderFrame(int x, int y) const {
 		SDL_Rect target = { x, y, rect.w, rect.h };
 		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, &source, &target, angle, &centre, SDL_FLIP_NONE);
 	}
+	// if we have custom fps, then break if times not up yet
+	if (ms_per_frame > 0) {
+		if (timer.getTicks() < static_cast<unsigned int>(ms_per_frame)) {
+			return;
+		}
+		timer.reset(true);
+	}
 	// after rendering, increment the frame count
 	currentFrame++;
 	if (currentFrame > frames.at(currentAnimation).second) {
+		// check if we have to change animations
+		ASSERT(next_anim.size() == frames.size());
+		if (next_anim.at(currentAnimation) >= 0)
+			currentAnimation = next_anim.at(currentAnimation);
 		currentFrame = frames.at(currentAnimation).first;
 	}
 }
