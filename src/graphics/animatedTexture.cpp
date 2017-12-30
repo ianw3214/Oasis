@@ -102,6 +102,7 @@ void AnimatedTexture::renderFrame(int x, int y) const {
 		return;
 	}
 	// Make sure the frame we are trying to render is defined by the atlas
+	ASSERT(atlas.size() > 0);	// TODO: maybe add silent fail instead of straight up debug break
 	ASSERT(static_cast<unsigned int>(currentFrame) < atlas.size());
 	ASSERT(QcEngine::getRenderer());
 	const Math::Rectangle& rect = atlas.at(currentFrame);
