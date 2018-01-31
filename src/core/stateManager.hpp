@@ -34,11 +34,15 @@ public:
 
 	// input handling variables
 	int mouseX, mouseY;
-	bool keyPressed(SDL_Scancode key);
+	// returns true if the key is held
+	bool keyPressed(SDL_Scancode key) const;
+	// returns true if the key is pressed at the very frame
 	bool keyDown(SDL_Scancode key) const;
+	// returns true if the key is released at the very frame
 	bool keyUp(SDL_Scancode key) const;
 	bool getMousePressed() const;
 	bool getMouseRelease() const;
+	bool mouse_down;
 	// TODO: change format of mouse events
 	SDL_MouseButtonEvent mousePressedEvent;
 	SDL_MouseButtonEvent mouseReleaseEvent;

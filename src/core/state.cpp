@@ -39,12 +39,32 @@ bool State::keyPressed(SDL_Scancode key) const {
 	return managerRef->keyPressed(key);
 }
 
+bool State::keyDown(SDL_Scancode key) const {
+	return managerRef->keyDown(key);
+}
+
+bool State::keyUp(SDL_Scancode key) const {
+	return managerRef->keyUp(key);
+}
+
 int State::getMouseX() const {
 	return managerRef->mouseX;
 }
 
 int State::getMouseY() const {
 	return managerRef->mouseY;
+}
+
+bool State::getMousePressed() const {
+	return managerRef->getMousePressed();
+}
+
+bool State::getMouseRelease() const {
+	return managerRef->getMouseRelease();
+}
+
+bool State::getMouseDown() const {
+	return managerRef->mouse_down;
 }
 
 void State::exit() {

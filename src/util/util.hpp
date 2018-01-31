@@ -1,7 +1,7 @@
 #pragma once
 
 // turn this off when building for release
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #include <iostream>

@@ -36,8 +36,14 @@ protected:
 	// some basic methods to interface SDL
 	void showCursor(bool show) const;
 	bool keyPressed(SDL_Scancode key) const;
+	// these two functions return true if the events happened on that exact frame
+	bool keyDown(SDL_Scancode key) const;
+	bool keyUp(SDL_Scancode key) const;
 	int getMouseX() const;
 	int getMouseY() const;
+	bool getMousePressed() const;
+	bool getMouseRelease() const;
+	bool getMouseDown() const;
 
 	// some basic methods to interface state manager
 	int delta;

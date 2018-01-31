@@ -83,6 +83,8 @@ void StateManager::update() {
 			mouseReleaseEvent = e.button;
 		}
 	}
+	if (getMousePressed()) mouse_down = true;
+	if (getMouseRelease()) mouse_down = false;
 	// only update if we have passed enough time
 	if (delta > static_cast<unsigned int>(1.f / updateRate * 1000.f)) {
 		// update all the states
@@ -124,7 +126,7 @@ void StateManager::quit() {
 	running = false;
 }
 
-bool StateManager::keyPressed(SDL_Scancode key) {
+bool StateManager::keyPressed(SDL_Scancode key) const {
 	return keyStates[key];
 }
 
