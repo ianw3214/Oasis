@@ -133,6 +133,7 @@
     <ClCompile Include="src\core\stateManager.cpp" />
     <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\graphics\animatedTexture.cpp" />
+    <ClCompile Include="src\graphics\tilemap.cpp" />
     <ClCompile Include="src\graphics\textEngine.cpp" />
     <ClCompile Include="src\math\collision.cpp" />
     <ClCompile Include="src\math\vec2.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="src\core\stateManager.hpp" />
     <ClInclude Include="src\graphics\animatedTexture.hpp" />
     <ClInclude Include="src\graphics\textEngine.hpp" />
+    <ClInclude Include="src\graphics\tilemap.hpp" />
     <ClInclude Include="src\network\network.hpp" />
     <ClInclude Include="src\util\timer.hpp" />
     <ClInclude Include="src\util\util.hpp" />
