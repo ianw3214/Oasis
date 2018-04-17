@@ -8,6 +8,7 @@
 
 Texture::Texture(SDL_Texture * const texture) : texture(texture) {
 	if (texture != nullptr) SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+	flip = SDL_FLIP_NONE;
 }
 
 Texture::Texture(const std::string& path) {
@@ -16,6 +17,7 @@ Texture::Texture(const std::string& path) {
 		return;
 	}
 	SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+	flip = SDL_FLIP_NONE;
 }
 
 Texture::~Texture() {
@@ -55,6 +57,24 @@ void Texture::setAlpha(Uint8 alpha) {
 		ERR("Unable to set alpha of texture: " << SDL_GetError());
 }
 
+void Texture::setHorizontalFlip(bool flip) {
+	if (flip) {
+		this->flip = static_cast<SDL_RendererFlip>((int)(this->flip) | SDL_FLIP_HORIZONTAL);
+	}
+	else {
+		this->flip = static_cast<SDL_RendererFlip>((int)(this->flip) & ~SDL_FLIP_HORIZONTAL);
+	}
+}
+
+void Texture::setVerticalFlip(bool flip) {
+	if (flip) {
+		this->flip = static_cast<SDL_RendererFlip>((int)(this->flip) | SDL_FLIP_VERTICAL);
+	}
+	else {
+		this->flip = static_cast<SDL_RendererFlip>((int)(this->flip) & ~SDL_FLIP_VERTICAL);
+	}
+}
+
 void Texture::render() const {
 	ASSERT(QcEngine::getRenderer());
 	render(0, 0);
@@ -67,11 +87,11 @@ void Texture::render(int x, int y) const {
 		return;
 	}
 	if (fullscreen) {
-		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, nullptr, angle, &centre, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, nullptr, angle, &centre, flip);
 	}
 	else {
 		SDL_Rect target = { x, y, width, height };
-		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, &target, angle, &centre, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, &target, angle, &centre, flip);
 	}
 }
 

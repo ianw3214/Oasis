@@ -64,6 +64,12 @@ namespace Math{
 		if (collisionLineLine(line, right)) return true;
 		Line bottom(rect.pos.x, rect.pos.y + rect.h, rect.pos.x + rect.w, rect.pos.y + rect.h);
 		if (collisionLineLine(line, bottom)) return true;
+		// then we check if the line is completely contained in the rect
+		if (line.pos.x >= rect.pos.x && line.pos.x <= rect.pos.x + rect.w &&
+			line.pos.y >= rect.pos.y && line.pos.y <= rect.pos.y + rect.h) 
+		{
+			return true;
+		}
 		return false;
 	}
 

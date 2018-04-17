@@ -9,7 +9,7 @@ StateManager::StateManager() : delta(0),
 							   updateRate(DEFAULT_TICK_RATE), 
 							   renderRate(DEFAULT_RENDER_RATE), 
 							   running(false) {
-	
+	keyStates = SDL_GetKeyboardState(NULL);
 }
 
 StateManager::~StateManager() {
@@ -59,7 +59,6 @@ void StateManager::update() {
 	Uint32 currentUpdate = SDL_GetTicks();
 	delta = currentUpdate - lastUpdate;
 	// get new input states
-	keyStates = SDL_GetKeyboardState(NULL);
 	SDL_GetMouseState(&mouseX, &mouseY);
 	// poll all SDL events
 	SDL_Event e;
@@ -69,10 +68,14 @@ void StateManager::update() {
 			running = false;
 		}
 		if (e.type == SDL_KEYDOWN) {
+			// don't record the key down if it is already held
+			if (heldKeys[e.key.keysym.scancode]) continue;
 			keyPresses.push_back(e.key.keysym.scancode);
+			heldKeys[e.key.keysym.scancode] = true;
 		}
 		if (e.type == SDL_KEYUP) {
 			keyReleases.push_back(e.key.keysym.scancode);
+			heldKeys[e.key.keysym.scancode] = false;
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 			mousePressed = true;

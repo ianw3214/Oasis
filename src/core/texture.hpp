@@ -34,6 +34,8 @@ public:
 	void setBlendMode(SDL_BlendMode blending);
 	void setColourModulation(const Colour& c);
 	void setAlpha(Uint8 alpha);
+	void setHorizontalFlip(bool flip);
+	void setVerticalFlip(bool flip);
 
 	// basic texture attributes
 	bool fullscreen;
@@ -46,6 +48,7 @@ protected:
 	int width, height;
 	SDL_Point centre;
 	double angle;
+	SDL_RendererFlip flip;
 
 	SDL_Texture * texture;
 

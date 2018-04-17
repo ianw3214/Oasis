@@ -25,7 +25,7 @@ public:
 	void changeState(pState state);
 	void pushState(pState state);
 	void popState();
-
+		
 	void update();
 	void render(SDL_Renderer* renderer) const;
 
@@ -62,6 +62,8 @@ private:
 	const Uint8* keyStates;
 	std::vector<SDL_Scancode> keyPresses;
 	std::vector<SDL_Scancode> keyReleases;
+	// TODO: think of a better solution for key down events
+	bool heldKeys[256];
 	bool mousePressed;
 	bool mouseRelease;
 
