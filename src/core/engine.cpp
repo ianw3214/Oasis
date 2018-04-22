@@ -1,7 +1,6 @@
 #include "engine.hpp"
 
 #include "../graphics/textEngine.hpp"
-#include "util/util.hpp"
 
 QcE * QcE::instance;
 
@@ -45,6 +44,14 @@ QcE::~QcE() {
 	
 	// call the quit functions for SDL libraries
 	SDL_Quit();
+
+	// destroy CVARs
+	CVAR * c_node = getCVARhead();
+	while (c_node != nullptr) {
+		CVAR * prev = c_node;
+		c_node = c_node->next;
+		delete prev;
+	}
 }
 
 // basic engine methods

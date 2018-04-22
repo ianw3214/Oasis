@@ -25,7 +25,6 @@ Texture::~Texture() {
 }
 
 // getter methods
-
 int Texture::getWidth() const {
 	return width;
 }
@@ -35,7 +34,6 @@ int Texture::getHeight() const {
 }
 
 // setter methods
-
 void Texture::setCentre(int x, int y) {
 	centre = { x, y };
 }

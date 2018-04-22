@@ -83,6 +83,22 @@ void State::renderGameObject(GameObject & obj, int camX, int camY) const {
 	obj.render(camX, camY);
 }
 
+Texture * State::getTexture(std::string id) {
+	return managerRef->textureHandler.getTexture(id);
+}
+
+Texture * State::loadTexture(std::string id, Texture * tex) {
+	return managerRef->textureHandler.addTexture(id, tex);
+}
+
+Texture * State::loadTexture(std::string id, std::string path) {
+	return managerRef->textureHandler.addTexture(id, path);
+}
+
+Texture * State::loadTexture(std::string id, std::string path, TextureType t) {
+	return managerRef->textureHandler.addTexture(id, path, t);
+}
+
 WAV_track State::loadWAV(const std::string & path, bool loop) const {
 	return QcE::get_instance()->getAudioEngine()->loadWAV(path, loop);
 }

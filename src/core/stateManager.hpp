@@ -6,6 +6,7 @@
 #include <SDL.h>
 
 #include "state.hpp"
+#include "textureHandler.hpp"
 
 #define DEFAULT_TICK_RATE 60
 #define DEFAULT_RENDER_RATE 60
@@ -46,6 +47,9 @@ public:
 	// TODO: change format of mouse events
 	SDL_MouseButtonEvent mousePressedEvent;
 	SDL_MouseButtonEvent mouseReleaseEvent;
+
+	// central handler for textures
+	TextureHandler textureHandler;
 
 private:
 

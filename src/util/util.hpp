@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <map>
+
 // turn this off when building for release
 #define DEBUG
 
@@ -23,3 +26,23 @@ inline int clamp(int val, int min, int max) {
 inline float clamp(float val, float min, float max) {
 	return val > max ? max : val < min ? min : val;
 }
+
+// linked list node to represent configuration variables
+struct CVAR {
+	CVAR() {}
+	~CVAR() {}
+	std::string name;
+	union {
+		int i_val;
+		float f_val;
+		std::string s_val;
+	};
+	CVAR * next;
+};
+
+// profiling tools
+struct PROFILE_DATA {
+	unsigned int start;
+	unsigned int total;
+	unsigned int count;
+};

@@ -6,6 +6,7 @@
 
 #include "gameObject.hpp"
 #include "audio/audioEngine.hpp"
+#include "textureHandler.hpp"
 
 class StateManager;
 
@@ -54,16 +55,22 @@ protected:
 	void renderGameObject(GameObject& obj) const;
 	void renderGameObject(GameObject& obj, int camX, int camY) const;
 
+	// texture utility methods
+	Texture * getTexture(std::string id);
+	Texture * loadTexture(std::string id, Texture* tex);
+	Texture * loadTexture(std::string id, std::string path);
+	Texture * loadTexture(std::string id, std::string path, TextureType t);
+
 	// music/sound utility methods
 	WAV_track loadWAV(const std::string& path, bool loop = false) const;
 	WAV_track loadAndPlayWAV(const std::string& path, bool loop = false) const;
 	void playWAV(WAV_track track) const;
 	void pauseWAV(WAV_track track) const;
 	void stopWAV(WAV_track track) const;
+
 	// font/text utility methods
 	void createFont(const std::string& name, const std::string& path, int size) const;
 	SDL_Texture * getTextTexture(const std::string& text, const std::string font, SDL_Color colour) const;
-
 
 	// keep a reference of the state manager (and some other SDL stuff)
 	StateManager * managerRef;
