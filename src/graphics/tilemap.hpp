@@ -16,6 +16,7 @@ public:
 	TileMap& operator=(TileMap&) = delete;
 
 	void generateTiles(int tile_width, int tile_height);
+	int getNumTiles() const;
 
 	void render(int tile_num = 0) const;
 	void render(int x, int y, int tile_num = 0) const;

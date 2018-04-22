@@ -16,11 +16,20 @@ TileMap::~TileMap() {
 }
 
 void TileMap::generateTiles(int tile_width, int tile_height) {
+	tiles.clear();
 	for (int i = 0; i < (height / tile_height); ++i) {
 		for (int j = 0; j < (width / tile_width); ++j) {
 			tiles.push_back(Math::Rectangle(j * tile_width, i * tile_height, tile_width, tile_height));
 		}
 	}
+	// if there are no tiles generated, just use the texture as a single whole tile
+	if (tiles.size() == 0) {
+		tiles.push_back(Math::Rectangle(0, 0, width, height));
+	}
+}
+
+int TileMap::getNumTiles() const {
+	return tiles.size();
 }
 
 void TileMap::render(int tile_num) const {
