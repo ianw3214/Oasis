@@ -8,8 +8,10 @@
 #include "state.hpp"
 #include "textureHandler.hpp"
 
-#define DEFAULT_TICK_RATE 60
+#define DEFAULT_TICK_RATE	60
 #define DEFAULT_RENDER_RATE 60
+
+#define DEFAULT_DELTA_CAP	100
 
 using pState = std::unique_ptr<State>;
 

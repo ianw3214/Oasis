@@ -58,6 +58,8 @@ void StateManager::update() {
 	// calculate the delta time
 	Uint32 currentUpdate = SDL_GetTicks();
 	delta = currentUpdate - lastUpdate;
+	// artificially restrict delta in case time difference is too large
+	clamp(delta, 1, DEFAULT_DELTA_CAP);
 	// get new input states
 	SDL_GetMouseState(&mouseX, &mouseY);
 	// poll all SDL events
