@@ -51,7 +51,7 @@ namespace Math {
 	// pass shape parameters by reference to avoid slicing	
 
 	// functions to get collisions
-	bool isColliding(Shape&, Shape&);
+	bool isColliding(const Shape&, const Shape&);
 
 	// helper functions for different collisions of different shapes
 	bool collisionRectRect(const Rectangle&, const Rectangle&);

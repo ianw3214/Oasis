@@ -3,25 +3,25 @@
 namespace Math{
 
 	// takes two generic shapes as input and determines which specific collision function to use
-	bool isColliding(Shape& shape1, Shape& shape2) {
+	bool isColliding(const Shape& shape1, const Shape& shape2) {
 		if (shape1.type == RECT && shape2.type == RECT) {
-			Rectangle& shape1rect = static_cast<Rectangle&>(shape1);
-			Rectangle& shape2rect = static_cast<Rectangle&>(shape2);
+			const Rectangle& shape1rect = static_cast<const Rectangle&>(shape1);
+			const Rectangle& shape2rect = static_cast<const Rectangle&>(shape2);
 			return collisionRectRect(shape1rect, shape2rect);
 		}
 		if (shape1.type == LINE && shape2.type == LINE) {
-			Line& shape1line = static_cast<Line&>(shape1);
-			Line& shape2line = static_cast<Line&>(shape2);
+			const Line& shape1line = static_cast<const Line&>(shape1);
+			const Line& shape2line = static_cast<const Line&>(shape2);
 			return collisionLineLine(shape1line, shape2line);
 		}
 		if ((shape1.type == RECT && shape2.type == LINE) || (shape1.type == LINE && shape2.type == RECT)) {
-			Rectangle& shapeRect = shape1.type == RECT ? static_cast<Rectangle&>(shape1) : static_cast<Rectangle&>(shape2);
-			Line& shapeLine = shape1.type == LINE ? static_cast<Line&>(shape1) : static_cast<Line&>(shape2);
+			const Rectangle& shapeRect = shape1.type == RECT ? static_cast<const Rectangle&>(shape1) : static_cast<const Rectangle&>(shape2);
+			const Line& shapeLine = shape1.type == LINE ? static_cast<const Line&>(shape1) : static_cast<const Line&>(shape2);
 			return collisionLineRect(shapeLine, shapeRect);
 		}
 		if ((shape1.type == RECT && shape2.type == CIRCLE) || (shape1.type == CIRCLE && shape2.type == RECT)) {
-			Rectangle& shapeRect = shape1.type == RECT ? static_cast<Rectangle&>(shape1) : static_cast<Rectangle&>(shape2);
-			Circle& shapeCircle = shape1.type == CIRCLE ? static_cast<Circle&>(shape1) : static_cast<Circle&>(shape2);
+			const Rectangle& shapeRect = shape1.type == RECT ? static_cast<const Rectangle&>(shape1) : static_cast<const Rectangle&>(shape2);
+			const Circle& shapeCircle = shape1.type == CIRCLE ? static_cast<const Circle&>(shape1) : static_cast<const Circle&>(shape2);
 			return collisionCircleRect(shapeCircle, shapeRect);
 		}
 		// temporarily return false for any other case.
