@@ -128,7 +128,6 @@
   <ItemGroup>
     <ClCompile Include="src\audio\audioEngine.cpp" />
     <ClCompile Include="src\core\engine.cpp" />
-    <ClCompile Include="src\core\gameObject.cpp" />
     <ClCompile Include="src\core\state.cpp" />
     <ClCompile Include="src\core\stateManager.cpp" />
     <ClCompile Include="src\core\texture.cpp" />
@@ -156,7 +155,6 @@
     <ClInclude Include="headers\util\util.hpp" />
     <ClInclude Include="src\audio\audioEngine.hpp" />
     <ClInclude Include="src\core\engine.hpp" />
-    <ClInclude Include="src\core\gameObject.hpp" />
     <ClInclude Include="src\core\state.hpp" />
     <ClInclude Include="src\core\stateManager.hpp" />
     <ClInclude Include="src\core\textureHandler.hpp" />

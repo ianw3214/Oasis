@@ -71,18 +71,6 @@ void State::exit() {
 	managerRef->quit();
 }
 
-void State::updateGameObject(GameObject & obj) {
-	obj.update(delta);
-}
-
-void State::renderGameObject(GameObject & obj) const {
-	obj.render(0, 0);
-}
-
-void State::renderGameObject(GameObject & obj, int camX, int camY) const {
-	obj.render(camX, camY);
-}
-
 Texture * State::getTexture(std::string id) {
 	return managerRef->textureHandler.getTexture(id);
 }

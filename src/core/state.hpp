@@ -4,7 +4,6 @@
 
 #include <SDL.h>
 
-#include "gameObject.hpp"
 #include "audio/audioEngine.hpp"
 #include "textureHandler.hpp"
 
@@ -49,11 +48,6 @@ protected:
 	// some basic methods to interface state manager
 	int delta;
 	void exit();
-
-	// other basic methods to make entity interactions a bit easier
-	void updateGameObject(GameObject& obj);
-	void renderGameObject(GameObject& obj) const;
-	void renderGameObject(GameObject& obj, int camX, int camY) const;
 
 	// texture utility methods
 	Texture * getTexture(std::string id);
