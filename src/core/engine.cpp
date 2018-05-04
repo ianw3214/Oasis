@@ -11,6 +11,22 @@ QcE * QcE::get_instance() {
 	return instance;
 }
 
+Texture * QcE::getTexture(std::string id) {
+	return textureHandler->getTexture(id);;
+}
+
+Texture * QcE::loadTexture(std::string id, Texture * tex) {
+	return textureHandler->addTexture(id, tex);
+}
+
+Texture * QcE::loadTexture(std::string id, std::string path) {
+	return textureHandler->addTexture(id, path);
+}
+
+Texture * QcE::loadTexture(std::string id, std::string path, TextureType t) {
+	return textureHandler->addTexture(id, path, t);
+}
+
 QcE::QcE() {
 	window = nullptr;
 	renderer = nullptr;
@@ -22,6 +38,8 @@ QcE::QcE() {
 	}
 	// initialize a statemanager
 	stateManager = new StateManager();
+	// intiailize a texture handler
+	textureHandler = new TextureHandler();
 	// initialize networking system
 	Network::init();
 	// initialize subsystems
@@ -39,6 +57,7 @@ QcE::~QcE() {
 
 	// delete the state manager before cleaning up SDL resources
 	delete stateManager;
+	delete textureHandler;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	

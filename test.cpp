@@ -15,7 +15,6 @@ public:
 		testTextureAnimated->addAnimationState(0, 2);
 		testTextureAnimated->addAnimationState(3, 5);
 		testTextureAnimated->changeAnimation(1);
-		testObject.setTexture(testTextureAnimated);
 		test_track = loadWAV("assets/background.wav", false);
 		if (test_track == -1) {
 			ERR("Something went wrong when trying to load WAV file");
@@ -38,7 +37,6 @@ public:
 		if (keyPressed(SDL_SCANCODE_ESCAPE)) {
 			exit();
 		}
-		updateGameObject(testObject);
 	}
 
 	void render() {
@@ -47,14 +45,12 @@ public:
 		Texture testTexture2("assets/player.png");
 		testTexture2.fullscreen = true;
 		testTexture2.render();
-		renderGameObject(testObject);
 		Texture testText(getTextTexture("test", "test", {200, 100, 100, 255}));
 		testText.render(10, 10);
 	}
 		
 private:
 	AnimatedTexture * testTextureAnimated;
-	GameObject testObject;
 
 	WAV_track test_track;
 };

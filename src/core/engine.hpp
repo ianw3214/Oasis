@@ -7,6 +7,7 @@
 #include <SDL.h>
 
 #include "stateManager.hpp"
+#include "textureHandler.hpp"
 #include "../util/util.hpp"
 #include "../audio/audioEngine.hpp"
 #include "../graphics/textEngine.hpp"
@@ -77,12 +78,19 @@ public:
 		}
 	}
 
+	// texture handler functions
+	Texture * getTexture(std::string id);
+	Texture * loadTexture(std::string id, Texture* tex);
+	Texture * loadTexture(std::string id, std::string path);
+	Texture * loadTexture(std::string id, std::string path, TextureType t);
+
 private:
 	QcE();
 	static QcE * instance;
 
 	// using heap allocation because we need to destroy statemanager manually before engine destructor
 	StateManager * stateManager;
+	TextureHandler * textureHandler;
 
 	// base SDL window and renderer objects
 	SDL_Window * window;
@@ -129,6 +137,21 @@ namespace QcEngine {
 	inline SDL_Renderer* getRenderer() {
 		return QcE::get_instance()->getRenderer();
 	}
+
+	// texture handler functions
+	inline Texture * getTexture(std::string id) {
+		return QcE::get_instance()->getTexture(id);
+	}
+	inline Texture * loadTexture(std::string id, Texture* tex) {
+		return QcE::get_instance()->loadTexture(id, tex);
+	}
+	inline Texture * loadTexture(std::string id, std::string path) {
+		return QcE::get_instance()->loadTexture(id, path);
+	}
+	inline Texture * loadTexture(std::string id, std::string path, TextureType t) {
+		return QcE::get_instance()->loadTexture(id, path, t);
+	}
+
 
 	// configuration variable functions
 	inline void setCVAR(std::string var, int val) {

@@ -49,12 +49,6 @@ protected:
 	int delta;
 	void exit();
 
-	// texture utility methods
-	Texture * getTexture(std::string id);
-	Texture * loadTexture(std::string id, Texture* tex);
-	Texture * loadTexture(std::string id, std::string path);
-	Texture * loadTexture(std::string id, std::string path, TextureType t);
-
 	// music/sound utility methods
 	WAV_track loadWAV(const std::string& path, bool loop = false) const;
 	WAV_track loadAndPlayWAV(const std::string& path, bool loop = false) const;
