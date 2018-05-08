@@ -26,9 +26,11 @@ public:
 
 	void changeAnimation(unsigned int anim);
 	void resetAnimation();
+	int getNextFrame(int frame) const;
 
 	void render() const;
 	void render(int x, int y) const;
+	void render(int x, int y, int frame) const;
 
 private:
 
@@ -44,6 +46,6 @@ private:
 	mutable Timer timer;
 
 	// helper methods
-	void renderFrame(int x, int y) const;
+	void renderFrame(int x, int y, int frame = -1) const;
 
 };

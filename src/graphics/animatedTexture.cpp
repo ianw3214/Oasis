@@ -76,6 +76,27 @@ void AnimatedTexture::resetAnimation() {
 	if (ms_per_frame > 0) timer.reset(true);
 }
 
+int AnimatedTexture::getNextFrame(int frame) const {
+	// after rendering, increment the frame count
+	frame++;
+	// find the current animation
+	int anim = -1;
+	for (unsigned int i = 0; i < frames.size(); ++i) {
+		if (frame >= frames[i].first && frame <= frames[i].second) {
+			anim = i;
+			break;
+		}
+	}
+	if (anim < 0) ERR("Couldn't find animation for frame: " << frame);
+	if (frame > frames.at(anim).second) {
+		// check if we have to change animations
+		if (next_anim.at(anim) >= 0)
+			anim = next_anim.at(anim);
+		return frames.at(anim).first;
+	}
+	return frame;
+}
+
 void AnimatedTexture::render() const {
 	// just render the whole texture if there are no atlas rectangles
 	if (atlas.size() == 0) {
@@ -96,7 +117,15 @@ void AnimatedTexture::render(int x, int y) const {
 	}
 }
 
-void AnimatedTexture::renderFrame(int x, int y) const {
+void AnimatedTexture::render(int x, int y, int frame) const {
+	if (atlas.size() == 0) {
+		Texture::render(x, y);
+	} else {
+		renderFrame(x, y, frame);
+	}
+}
+
+void AnimatedTexture::renderFrame(int x, int y, int frame) const {
 	if (!texture) {
 		ERR("Tried to render a NULL texture...");
 		return;
@@ -105,7 +134,9 @@ void AnimatedTexture::renderFrame(int x, int y) const {
 	ASSERT(atlas.size() > 0);	// TODO: maybe add silent fail instead of straight up debug break
 	ASSERT(static_cast<unsigned int>(currentFrame) < atlas.size());
 	ASSERT(QcEngine::getRenderer());
-	const Math::Rectangle& rect = atlas.at(currentFrame);
+	// if the no frame was entered, use the one stored in the class
+	if (frame < 0) frame = currentFrame;
+	const Math::Rectangle& rect = atlas.at(frame);
 	SDL_Rect source = { rect.pos.x, rect.pos.y, rect.w, rect.h };
 	if (fullscreen) {
 		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, &source, nullptr, angle, &centre, SDL_FLIP_NONE);
@@ -121,13 +152,15 @@ void AnimatedTexture::renderFrame(int x, int y) const {
 		}
 		timer.reset(true);
 	}
-	// after rendering, increment the frame count
-	currentFrame++;
-	if (currentFrame > frames.at(currentAnimation).second) {
-		// check if we have to change animations
-		ASSERT(next_anim.size() == frames.size());
-		if (next_anim.at(currentAnimation) >= 0)
-			currentAnimation = next_anim.at(currentAnimation);
-		currentFrame = frames.at(currentAnimation).first;
+	if (!(frame < 0)) {
+		// after rendering, increment the frame count
+		currentFrame++;
+		if (currentFrame > frames.at(currentAnimation).second) {
+			// check if we have to change animations
+			ASSERT(next_anim.size() == frames.size());
+			if (next_anim.at(currentAnimation) >= 0)
+				currentAnimation = next_anim.at(currentAnimation);
+			currentFrame = frames.at(currentAnimation).first;
+		}
 	}
 }
