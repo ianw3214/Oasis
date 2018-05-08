@@ -77,9 +77,7 @@ void AnimatedTexture::resetAnimation() {
 }
 
 int AnimatedTexture::getNextFrame(int frame) const {
-	// after rendering, increment the frame count
-	frame++;
-	// find the current animation
+	// find the current animation first
 	int anim = -1;
 	for (unsigned int i = 0; i < frames.size(); ++i) {
 		if (frame >= frames[i].first && frame <= frames[i].second) {
@@ -88,6 +86,8 @@ int AnimatedTexture::getNextFrame(int frame) const {
 		}
 	}
 	if (anim < 0) ERR("Couldn't find animation for frame: " << frame);
+	// after rendering, increment the frame count
+	frame++;
 	if (frame > frames.at(anim).second) {
 		// check if we have to change animations
 		if (next_anim.at(anim) >= 0)
