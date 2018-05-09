@@ -41,9 +41,12 @@ protected:
 	bool keyUp(SDL_Scancode key) const;
 	int getMouseX() const;
 	int getMouseY() const;
-	bool getMousePressed() const;
-	bool getMouseRelease() const;
-	bool getMouseDown() const;
+	bool leftMousePressed() const;
+	bool leftMouseReleased() const;
+	bool leftMouseHeld() const;
+	bool rightMousePressed() const;
+	bool rightMouseReleased() const;
+	bool rightMouseHeld() const;
 
 	// some basic methods to interface state manager
 	int delta;

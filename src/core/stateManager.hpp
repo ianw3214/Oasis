@@ -12,6 +12,11 @@
 
 #define DEFAULT_DELTA_CAP	100
 
+#define LEFT_MOUSE_PRESSED		(1 << 0)
+#define LEFT_MOUSE_RELEASED		(1 << 1)
+#define RIGHT_MOUSE_PRESSED		(1 << 2)
+#define RIGHT_MOUSE_RELEASED	(1 << 3)
+
 using pState = std::unique_ptr<State>;
 
 class StateManager {
@@ -42,12 +47,13 @@ public:
 	bool keyDown(SDL_Scancode key) const;
 	// returns true if the key is released at the very frame
 	bool keyUp(SDL_Scancode key) const;
-	bool getMousePressed() const;
-	bool getMouseRelease() const;
-	bool mouse_down;
-	// TODO: change format of mouse events
-	SDL_MouseButtonEvent mousePressedEvent;
-	SDL_MouseButtonEvent mouseReleaseEvent;
+	// mouse press functions
+	bool leftMousePressed() const;
+	bool leftMouseReleased() const;
+	bool leftMouseHeld() const;
+	bool rightMousePressed() const;
+	bool rightMouseReleased() const;
+	bool rightMouseHeld() const;
 
 private:
 
@@ -66,8 +72,9 @@ private:
 	std::vector<SDL_Scancode> keyReleases;
 	// TODO: think of a better solution for key down events
 	bool heldKeys[256];
-	bool mousePressed;
-	bool mouseRelease;
+	bool left_mouse_down;
+	bool right_mouse_down;
+	char mousePresses;
 
 	// other SDL things
 	SDL_Renderer * renderer;

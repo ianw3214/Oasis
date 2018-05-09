@@ -80,16 +80,26 @@ void StateManager::update() {
 			heldKeys[e.key.keysym.scancode] = false;
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
-			mousePressed = true;
-			mousePressedEvent = e.button;
+			if (e.button.button == SDL_BUTTON_LEFT) {
+				mousePresses |= LEFT_MOUSE_PRESSED;
+			}
+			if (e.button.button == SDL_BUTTON_RIGHT) {
+				mousePresses |= RIGHT_MOUSE_PRESSED;
+			}
 		}
 		if (e.type == SDL_MOUSEBUTTONUP) {
-			mouseRelease = true;
-			mouseReleaseEvent = e.button;
+			if (e.button.button == SDL_BUTTON_LEFT) {
+				mousePresses |= LEFT_MOUSE_RELEASED;
+			}
+			if (e.button.button == SDL_BUTTON_RIGHT) {
+				mousePresses |= RIGHT_MOUSE_RELEASED;
+			}
 		}
 	}
-	if (getMousePressed()) mouse_down = true;
-	if (getMouseRelease()) mouse_down = false;
+	if (leftMousePressed()) left_mouse_down = true;
+	if (leftMouseReleased()) left_mouse_down = false;
+	if (rightMousePressed()) right_mouse_down = true;
+	if (rightMouseReleased()) right_mouse_down = false;
 	// only update if we have passed enough time
 	if (delta > static_cast<unsigned int>(1.f / updateRate * 1000.f)) {
 		// update all the states
@@ -102,8 +112,7 @@ void StateManager::update() {
 		// clear the key press/release states
 		keyPresses.clear();
 		keyReleases.clear();
-		mousePressed = false;
-		mouseRelease = false;
+		mousePresses = 0;
 	}
 }
 
@@ -143,10 +152,26 @@ bool StateManager::keyUp(SDL_Scancode key) const {
 	return std::find(keyReleases.begin(), keyReleases.end(), key) != keyReleases.end();
 }
 
-bool StateManager::getMousePressed() const {
-	return mousePressed;
+bool StateManager::leftMousePressed() const {
+	return (mousePresses & LEFT_MOUSE_PRESSED) != 0;
 }
 
-bool StateManager::getMouseRelease() const {
-	return mouseRelease;
+bool StateManager::leftMouseReleased() const {
+	return (mousePresses & LEFT_MOUSE_RELEASED) != 0;
+}
+
+bool StateManager::leftMouseHeld() const {
+	return left_mouse_down;
+}
+
+bool StateManager::rightMousePressed() const {
+	return (mousePresses & RIGHT_MOUSE_PRESSED) != 0;
+}
+
+bool StateManager::rightMouseReleased() const {
+	return (mousePresses & RIGHT_MOUSE_RELEASED) != 0;
+}
+
+bool StateManager::rightMouseHeld() const {
+	return right_mouse_down;
 }

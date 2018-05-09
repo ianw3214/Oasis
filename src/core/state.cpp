@@ -55,16 +55,28 @@ int State::getMouseY() const {
 	return managerRef->mouseY;
 }
 
-bool State::getMousePressed() const {
-	return managerRef->getMousePressed();
+bool State::leftMousePressed() const {
+	return managerRef->leftMousePressed();
 }
 
-bool State::getMouseRelease() const {
-	return managerRef->getMouseRelease();
+bool State::leftMouseReleased() const {
+	return managerRef->leftMouseReleased();
 }
 
-bool State::getMouseDown() const {
-	return managerRef->mouse_down;
+bool State::leftMouseHeld() const {
+	return managerRef->leftMouseHeld();
+}
+
+bool State::rightMousePressed() const {
+	return managerRef->rightMousePressed();
+}
+
+bool State::rightMouseReleased() const {
+	return managerRef->rightMouseReleased();
+}
+
+bool State::rightMouseHeld() const {
+	return managerRef->rightMouseHeld();
 }
 
 void State::exit() {
