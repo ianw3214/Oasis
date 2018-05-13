@@ -31,15 +31,15 @@ namespace Math{
 	bool isColliding(const Vec2& vec, const Shape& shape) {
 		if (shape.type == RECT) {
 			const Rectangle& rect = static_cast<const Rectangle&>(shape);
-			return collisonVecRect(vec, rect);
+			return collisionVecRect(vec, rect);
 		}
 		if (shape.type == LINE) {
 			const Line& line = static_cast<const Line&>(shape);
-			return collisionVecLine(vec, line);
+			return Math::collisionVecLine(vec, line);
 		}
 		if (shape.type == CIRCLE) {
 			const Circle& circ = static_cast<const Circle&>(shape);
-			return collisionVecCircle(vec, circ);
+			return Math::collisionVecCircle(vec, circ);
 		}
 		// temporarily return false for any other case
 		return false;

@@ -59,7 +59,7 @@ namespace Math {
 	bool collisionLineLine(const Line&, const Line&);
 	bool collisionLineRect(const Line&, const Rectangle&);
 	bool collisionCircleRect(const Circle&, const Rectangle&);
-	bool collisonVecRect(const Vec2&, const Rectangle&);
+	bool collisionVecRect(const Vec2&, const Rectangle&);
 	bool collisionVecLine(const Vec2&, const Line&);
 	bool collisionVecCircle(const Vec2&, const Circle&);
 
