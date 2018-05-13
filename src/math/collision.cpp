@@ -28,6 +28,23 @@ namespace Math{
 		return false;
 	}
 
+	bool isColliding(const Vec2& vec, const Shape& shape) {
+		if (shape.type == RECT) {
+			const Rectangle& rect = static_cast<const Rectangle&>(shape);
+			return collisonVecRect(vec, rect);
+		}
+		if (shape.type == LINE) {
+			const Line& line = static_cast<const Line&>(shape);
+			return collisionVecLine(vec, line);
+		}
+		if (shape.type == CIRCLE) {
+			const Circle& circ = static_cast<const Circle&>(shape);
+			return collisionVecCircle(vec, circ);
+		}
+		// temporarily return false for any other case
+		return false;
+	}
+
 	// calculates if two rect objects are colliding
 	bool collisionRectRect(const Rectangle& rect1, const Rectangle& rect2) {
 		if (rect1.pos.x < rect2.pos.x + rect2.w && rect1.pos.x + rect1.w > rect2.pos.x &&
@@ -83,6 +100,25 @@ namespace Math{
 		float distanceSquared = static_cast<float>((distanceX * distanceX) + (distanceY * distanceY));
 		// if the distance is longer than the radius, the function will return false
 		return distanceSquared < (circle.r * circle.r);
+	}
+
+	// calculate if a vector and rectangle are colliding
+	bool collisionVecRect(const Vec2& v, const Rectangle& r) {
+		return v.x >= r.pos.x && v.x <= r.pos.x + r.w && v.y >= r.pos.y && v.y <= r.pos.y + r.w;
+	}
+
+	// calculate if a vector and a line is colliding
+	bool collisionVecLine(const Vec2& v, const Line& l) {
+		// first make sure we don't divide by 0 when calculating
+		if (v.y == l.pos.y) return true;
+		if (l.pos2.y == l.pos.y && v.y == l.pos.y) return true;
+		else return false;
+		return (v.x - l.pos.x / v.y - l.pos.y) == (l.pos2.x - l.pos.x / l.pos2.y - l.pos.y);
+	}
+
+	// calculate if a vector and a circle is colliding
+	bool collisionVecCircle(const Vec2& v, const Circle& c) {
+		return ((v.x - c.pos.x) * (v.x - c.pos.x) + (v.y - c.pos.y) * (c.type - c.pos.y)) <= c.r * c.r;
 	}
 
 }

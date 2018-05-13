@@ -52,11 +52,15 @@ namespace Math {
 
 	// functions to get collisions
 	bool isColliding(const Shape&, const Shape&);
+	bool isColliding(const Vec2&, const Shape&);
 
 	// helper functions for different collisions of different shapes
 	bool collisionRectRect(const Rectangle&, const Rectangle&);
 	bool collisionLineLine(const Line&, const Line&);
 	bool collisionLineRect(const Line&, const Rectangle&);
 	bool collisionCircleRect(const Circle&, const Rectangle&);
+	bool collisonVecRect(const Vec2&, const Rectangle&);
+	bool collisionVecLine(const Vec2&, const Line&);
+	bool collisionVecCircle(const Vec2&, const Circle&);
 
 }
