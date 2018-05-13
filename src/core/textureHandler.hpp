@@ -2,13 +2,15 @@
 
 #include "texture.hpp"
 #include "../graphics/animatedTexture.hpp"
+#include "../graphics/tilemap.hpp"
 
 #include <map>
 #include <string>
 
 enum TextureType {
 	T_DEFAULT,
-	T_ANIMATED
+	T_ANIMATED,
+	T_TILEMAP
 };
 
 class TextureHandler {

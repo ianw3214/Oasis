@@ -34,5 +34,8 @@ Texture * TextureHandler::addTexture(std::string id, std::string path, TextureTy
 	if (t == T_ANIMATED) {
 		dict[id] = new AnimatedTexture(path);
 	}
+	if (t == T_TILEMAP) {
+		dict[id] = new TileMap(path);
+	}
 	return dict[id];
 }
