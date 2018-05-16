@@ -76,6 +76,10 @@ void AnimatedTexture::resetAnimation() {
 	if (ms_per_frame > 0) timer.reset(true);
 }
 
+int AnimatedTexture::getCurrentAnimation() const {
+	return currentAnimation;
+}
+
 int AnimatedTexture::getNextFrame(int frame) const {
 	// find the current animation first
 	int anim = -1;

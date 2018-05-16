@@ -26,6 +26,7 @@ public:
 
 	void changeAnimation(unsigned int anim);
 	void resetAnimation();
+	int getCurrentAnimation() const;
 	int getNextFrame(int frame) const;
 
 	void render() const;
