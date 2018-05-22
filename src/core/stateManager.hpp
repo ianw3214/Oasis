@@ -60,6 +60,8 @@ public:
 	void startTextInput();
 	void stopTextInput();
 	const std::string& getTextInput();
+	void resetTextInput();
+	void setTextInput(std::string text);
 
 private:
 

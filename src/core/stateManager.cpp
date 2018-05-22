@@ -102,7 +102,7 @@ void StateManager::update() {
 			}
 		}
 		// handle text inputs
-		if (e.type == SDL_TEXTINPUT) {
+		if (textInputting && e.type == SDL_TEXTINPUT) {
 			inputText += e.text.text;
 		}
 	}
@@ -198,4 +198,12 @@ void StateManager::stopTextInput() {
 
 const std::string & StateManager::getTextInput() {
 	return inputText;
+}
+
+void StateManager::resetTextInput() {
+	inputText.clear();
+}
+
+void StateManager::setTextInput(std::string text) {
+	inputText = text;
 }
