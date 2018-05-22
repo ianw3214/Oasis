@@ -70,6 +70,12 @@ void StateManager::update() {
 			running = false;
 		}
 		if (e.type == SDL_KEYDOWN) {
+			// handle text inputs
+			if (textInputting) {
+				if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0) {
+					inputText.pop_back();
+				}
+			}
 			// don't record the key down if it is already held
 			if (heldKeys[e.key.keysym.scancode]) continue;
 			keyPresses.push_back(e.key.keysym.scancode);
@@ -94,6 +100,10 @@ void StateManager::update() {
 			if (e.button.button == SDL_BUTTON_RIGHT) {
 				mousePresses |= RIGHT_MOUSE_RELEASED;
 			}
+		}
+		// handle text inputs
+		if (e.type == SDL_TEXTINPUT) {
+			inputText += e.text.text;
 		}
 	}
 	if (leftMousePressed()) left_mouse_down = true;
@@ -174,4 +184,18 @@ bool StateManager::rightMouseReleased() const {
 
 bool StateManager::rightMouseHeld() const {
 	return right_mouse_down;
+}
+
+void StateManager::startTextInput() {
+	SDL_StartTextInput();
+	textInputting = true;
+}
+
+void StateManager::stopTextInput() {
+	SDL_StopTextInput();
+	textInputting = false;
+}
+
+const std::string & StateManager::getTextInput() {
+	return inputText;
 }

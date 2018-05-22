@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 #include <SDL.h>
 
@@ -55,6 +56,11 @@ public:
 	bool rightMouseReleased() const;
 	bool rightMouseHeld() const;
 
+	// text input handling variables
+	void startTextInput();
+	void stopTextInput();
+	const std::string& getTextInput();
+
 private:
 
 	// keep a stack of states
@@ -70,11 +76,13 @@ private:
 	const Uint8* keyStates;
 	std::vector<SDL_Scancode> keyPresses;
 	std::vector<SDL_Scancode> keyReleases;
+	std::string inputText;
 	// TODO: think of a better solution for key down events
 	bool heldKeys[256];
 	bool left_mouse_down;
 	bool right_mouse_down;
 	char mousePresses;
+	bool textInputting;
 
 	// other SDL things
 	SDL_Renderer * renderer;
