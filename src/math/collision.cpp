@@ -104,7 +104,7 @@ namespace Math{
 
 	// calculate if a vector and rectangle are colliding
 	bool collisionVecRect(const Vec2& v, const Rectangle& r) {
-		return v.x >= r.pos.x && v.x <= r.pos.x + r.w && v.y >= r.pos.y && v.y <= r.pos.y + r.w;
+		return v.x >= r.pos.x && v.x <= r.pos.x + r.w && v.y >= r.pos.y && v.y <= r.pos.y + r.h;
 	}
 
 	// calculate if a vector and a line is colliding
