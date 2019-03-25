@@ -1,0 +1,7 @@
+target_sources(QcEngine PRIVATE 
+    collision.hpp
+    vec2.hpp)
+
+target_sources(QcEngine PRIVATE 
+    collision.cpp
+    vec2.cpp)

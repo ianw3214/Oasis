@@ -35,7 +35,7 @@ public:
 			playWAV(test_track);
 		}
 		if (keyPressed(SDL_SCANCODE_ESCAPE)) {
-			exit();
+			quitTopState();
 		}
 	}
 

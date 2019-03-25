@@ -1,12 +1,8 @@
-# VISUAL STUDIO GENERATED THINGS
-*.user
-*.filters
-.vs/
+# UTILITY FILES
+*.bat
+
+# BUILD
+build/
+
+# IDE FILES
 .vscode/
-# GENERATED BINARIES
-Debug/
-Release/
-# OTHER THINGS
-assets/
-libs/
-engine/
