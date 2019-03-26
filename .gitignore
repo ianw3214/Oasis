@@ -6,3 +6,6 @@ build/
 
 # IDE FILES
 .vscode/
+
+# RESOURCE FILES
+res/

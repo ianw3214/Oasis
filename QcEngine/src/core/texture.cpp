@@ -6,22 +6,31 @@
 #include "util/util.hpp"
 #include "core/engine.hpp"
 
-Texture::Texture(SDL_Texture * const texture) : texture(texture) {
+Texture::Texture(SDL_Texture * const texture) : 
+	fullscreen(false),
+	width(0),
+	height(0),
+	centre{ 0, 0 },
+	angle(0.0),
+	flip(SDL_FLIP_NONE),
+	texture(texture)
+{
 	if (texture != nullptr) SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 	flip = SDL_FLIP_NONE;
 }
 
-Texture::Texture(const std::string& path) {
+Texture::Texture(const std::string& path) : Texture(nullptr) {
 	ASSERT(QcEngine::getRenderer());
 	if (!loadTexture(path, QcEngine::getRenderer())) {
 		return;
 	}
 	SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-	flip = SDL_FLIP_NONE;
 }
 
 Texture::~Texture() {
-	SDL_DestroyTexture(texture);
+	if (texture) {
+		SDL_DestroyTexture(texture);
+	}
 }
 
 // getter methods
@@ -142,7 +151,7 @@ bool Texture::loadTexture(const std::string& path, SDL_Renderer* renderer) {
 	stbi_image_free(data);
 
 	this->texture = texture;
-
+	
 	return true;
 
 }
