@@ -20,6 +20,7 @@ public:
 
 	void render(int tile_num = 0) const;
 	void render(int x, int y, int tile_num = 0) const;
+	void render(int x, int y, int w, int h, int tile_num = 0) const;
 
 // private:
 	std::vector<Math::Rectangle> tiles;

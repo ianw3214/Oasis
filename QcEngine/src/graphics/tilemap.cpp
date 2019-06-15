@@ -55,3 +55,23 @@ void TileMap::render(int x, int y, int tile_num) const {
 		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, &src, &target, angle, &centre, flip);
 	}
 }
+
+void TileMap::render(int x, int y, int w, int h, int tile_num) const {
+	ASSERT(QcEngine::getRenderer());
+	if (!texture) {
+		ERR("Tried to render a NULL texture...");
+		return;
+	}
+	// print a warning if there's no rect set for the specified tile
+	if (static_cast<unsigned int>(tile_num) >= tiles.size()) {
+		ERR("TILE: " << tile_num << " IS NOT SPECIFIED IN THE TILEMAP");
+		tile_num = 0;
+	}
+	SDL_Rect src = { tiles[tile_num].pos.x, tiles[tile_num].pos.y, tiles[tile_num].w, tiles[tile_num].h };
+	if (fullscreen) {
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, &src, nullptr, angle, &centre, flip);
+	} else {
+		SDL_Rect target = { x, y, w, h };
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, &src, &target, angle, &centre, flip);
+	}
+}
