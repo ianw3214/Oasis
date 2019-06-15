@@ -79,6 +79,13 @@ bool State::rightMouseHeld() const {
 	return managerRef->rightMouseHeld();
 }
 
+int State::getMouseScrollUp() const {
+	return managerRef->getMouseScrollUp();
+}
+int State::getMouseScrollDown() const {
+	return managerRef->getMouseScrollDown();
+}
+
 void State::exit() {
 	managerRef->quit();
 }

@@ -47,6 +47,8 @@ protected:
 	bool rightMousePressed() const;
 	bool rightMouseReleased() const;
 	bool rightMouseHeld() const;
+	int getMouseScrollUp() const;
+	int getMouseScrollDown() const;
 
 	// some basic methods to interface state manager
 	int delta;
