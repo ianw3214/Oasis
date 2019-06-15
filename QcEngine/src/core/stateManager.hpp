@@ -55,6 +55,8 @@ public:
 	bool rightMousePressed() const;
 	bool rightMouseReleased() const;
 	bool rightMouseHeld() const;
+	int getMouseScrollUp() const;
+	int getMouseScrollDown() const;
 
 	// text input handling variables
 	void startTextInput();
@@ -79,12 +81,15 @@ private:
 	std::vector<SDL_Scancode> keyPresses;
 	std::vector<SDL_Scancode> keyReleases;
 	std::string inputText;
+
 	// TODO: think of a better solution for key down events
 	bool heldKeys[256];
 	bool left_mouse_down;
 	bool right_mouse_down;
 	char mousePresses;
 	bool textInputting;
+	int mouseScrollUp;
+	int mouseScrollDown;
 
 	// other SDL things
 	SDL_Renderer * renderer;

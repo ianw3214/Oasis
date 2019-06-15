@@ -103,6 +103,14 @@ void StateManager::update() {
 				mousePresses |= RIGHT_MOUSE_RELEASED;
 			}
 		}
+		if (e.type == SDL_MOUSEWHEEL) {
+			if (e.wheel.y > 0) {
+				mouseScrollUp = e.wheel.y;
+			}
+			if (e.wheel.y < 0) {
+				mouseScrollUp = -e.wheel.y;
+			}
+		}
 		// handle text inputs
 		if (textInputting && e.type == SDL_TEXTINPUT) {
 			inputText += e.text.text;
@@ -125,6 +133,8 @@ void StateManager::update() {
 		keyPresses.clear();
 		keyReleases.clear();
 		mousePresses = 0;
+		mouseScrollUp = 0;
+		mouseScrollDown = 0;
 	}
 }
 
@@ -186,6 +196,13 @@ bool StateManager::rightMouseReleased() const {
 
 bool StateManager::rightMouseHeld() const {
 	return right_mouse_down;
+}
+
+int StateManager::getMouseScrollUp() const {
+	return mouseScrollUp;
+}
+int StateManager::getMouseScrollDown() const {
+	return mouseScrollDown;
 }
 
 void StateManager::startTextInput() {
