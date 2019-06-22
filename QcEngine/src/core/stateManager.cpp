@@ -108,7 +108,7 @@ void StateManager::update() {
 				mouseScrollUp = e.wheel.y;
 			}
 			if (e.wheel.y < 0) {
-				mouseScrollUp = -e.wheel.y;
+				mouseScrollDown = -e.wheel.y;
 			}
 		}
 		// handle text inputs
