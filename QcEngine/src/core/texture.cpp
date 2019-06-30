@@ -102,6 +102,21 @@ void Texture::render(int x, int y) const {
 	}
 }
 
+void Texture::render(int x, int y, int w, int h) const {
+ASSERT(QcEngine::getRenderer());
+	if (!texture) {
+		ERR("Tried to render a NULL texture...");
+		return;
+	}
+	if (fullscreen) {
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, nullptr, angle, &centre, flip);
+	}
+	else {
+		SDL_Rect target = { x, y, w, h };
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, &target, angle, &centre, flip);
+	}
+}
+
 bool Texture::loadTexture(const std::string& path, SDL_Renderer* renderer) {
 
 	/* OLD SDL_IMAGE WAY OF DOING THINGS

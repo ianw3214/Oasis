@@ -42,6 +42,7 @@ public:
 
 	virtual void render() const;
 	virtual void render(int x, int y) const;
+	virtual void render(int x, int y, int w, int h) const;
 
 protected:
 	// variables that hold information about the texture
