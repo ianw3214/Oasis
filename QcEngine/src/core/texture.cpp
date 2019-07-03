@@ -13,6 +13,7 @@ Texture::Texture(SDL_Texture * const texture) :
 	centre{ 0, 0 },
 	angle(0.0),
 	flip(SDL_FLIP_NONE),
+	source(nullptr),
 	texture(texture)
 {
 	if (texture != nullptr) SDL_QueryTexture(texture, NULL, NULL, &width, &height);
@@ -40,6 +41,14 @@ int Texture::getWidth() const {
 
 int Texture::getHeight() const {
 	return height;
+}
+
+void Texture::setSource(int x, int y, int w, int h) {
+	source = new SDL_Rect();
+	source->x = x;
+	source->y = y;
+	source->w = w;
+	source->h = h;
 }
 
 // setter methods
@@ -94,11 +103,11 @@ void Texture::render(int x, int y) const {
 		return;
 	}
 	if (fullscreen) {
-		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, nullptr, angle, &centre, flip);
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, source, nullptr, angle, &centre, flip);
 	}
 	else {
 		SDL_Rect target = { x, y, width, height };
-		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, &target, angle, &centre, flip);
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, source, &target, angle, &centre, flip);
 	}
 }
 
@@ -109,11 +118,11 @@ ASSERT(QcEngine::getRenderer());
 		return;
 	}
 	if (fullscreen) {
-		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, nullptr, angle, &centre, flip);
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, source, nullptr, angle, &centre, flip);
 	}
 	else {
 		SDL_Rect target = { x, y, w, h };
-		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, nullptr, &target, angle, &centre, flip);
+		SDL_RenderCopyEx(QcEngine::getRenderer(), texture, source, &target, angle, &centre, flip);
 	}
 }
 

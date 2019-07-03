@@ -29,6 +29,7 @@ public:
 	int getHeight() const;
 
 	// setter methods
+	void setSource(int x, int y, int w, int h);
 	void setCentre(int x, int y);
 	void setAngle(double angle);
 	void setBlendMode(SDL_BlendMode blending);
@@ -50,6 +51,7 @@ protected:
 	SDL_Point centre;
 	double angle;
 	SDL_RendererFlip flip;
+	SDL_Rect * source;
 
 	SDL_Texture * texture;
 
