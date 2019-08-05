@@ -42,6 +42,8 @@ public:
 
 	// input handling variables
 	int mouseX, mouseY;
+	// Uses original SDL Keystates
+	bool SDL_keyPressed(SDL_Scancode key) const;
 	// returns true if the key is held
 	bool keyPressed(SDL_Scancode key) const;
 	// returns true if the key is pressed at the very frame

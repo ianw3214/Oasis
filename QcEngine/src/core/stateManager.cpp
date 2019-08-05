@@ -169,6 +169,10 @@ void StateManager::quit() {
 	running = false;
 }
 
+bool StateManager::SDL_keyPressed(SDL_Scancode key) const {
+	return keyStates[key];
+}
+
 bool StateManager::keyPressed(SDL_Scancode key) const {
 	return heldKeys[key];
 }
