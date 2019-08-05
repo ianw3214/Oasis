@@ -31,6 +31,22 @@ void State::quitTopState() {
 	managerRef->popState();
 }
 
+void State::startTextInput() {
+	managerRef->startTextInput();
+}
+
+void State::stopTextInput() {
+	managerRef->stopTextInput();
+}
+
+void State::resetTextInput() {
+	managerRef->resetTextInput();
+}
+
+const std::string& State::getTextInput() {
+	return managerRef->getTextInput();
+}
+
 void State::showCursor(bool show) const {
 	SDL_ShowCursor(show ? SDL_ENABLE : SDL_DISABLE);
 }

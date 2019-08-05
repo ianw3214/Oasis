@@ -31,6 +31,12 @@ public:
 	void addState(std::unique_ptr<State> state);
 	void quitTopState();
 
+	// TODO: This should probably be private but I'm lazy
+	void startTextInput();
+	void stopTextInput();
+	void resetTextInput();
+	const std::string& getTextInput();
+
 protected:
 
 	// some basic methods to interface SDL
