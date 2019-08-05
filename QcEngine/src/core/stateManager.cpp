@@ -8,7 +8,9 @@ StateManager::StateManager() : delta(0),
 							   lastRender(0), 
 							   updateRate(DEFAULT_TICK_RATE), 
 							   renderRate(DEFAULT_RENDER_RATE), 
-							   running(false) {
+							   running(false) 
+{
+	textInputting = false;
 	keyStates = SDL_GetKeyboardState(NULL);
 }
 
@@ -85,8 +87,10 @@ void StateManager::update() {
 			}
 		}
 		if (e.type == SDL_KEYUP) {
-			keyReleases.push_back(e.key.keysym.scancode);
-			heldKeys[e.key.keysym.scancode] = false;
+			if (!textInputting) {
+				keyReleases.push_back(e.key.keysym.scancode);
+				heldKeys[e.key.keysym.scancode] = false;
+			}
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 			if (e.button.button == SDL_BUTTON_LEFT) {
@@ -210,6 +214,8 @@ int StateManager::getMouseScrollDown() const {
 void StateManager::startTextInput() {
 	SDL_StartTextInput();
 	textInputting = true;
+	// Don't allow keys to be held while looking for text inputs
+	memset(heldKeys, 0, sizeof(heldKeys));
 }
 
 void StateManager::stopTextInput() {
