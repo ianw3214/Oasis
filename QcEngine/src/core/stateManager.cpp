@@ -12,6 +12,7 @@ StateManager::StateManager() : delta(0),
 {
 	textInputting = false;
 	keyStates = SDL_GetKeyboardState(NULL);
+	memset(heldKeys, 0, sizeof(heldKeys));
 }
 
 StateManager::~StateManager() {
