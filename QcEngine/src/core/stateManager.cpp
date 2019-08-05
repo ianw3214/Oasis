@@ -72,16 +72,17 @@ void StateManager::update() {
 			running = false;
 		}
 		if (e.type == SDL_KEYDOWN) {
-			// handle text inputs
+			// Text input and other key events are mutually exclusive
 			if (textInputting) {
 				if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0) {
 					inputText.pop_back();
 				}
+			} else {
+				// don't record the key down if it is already held
+				if (heldKeys[e.key.keysym.scancode]) continue;
+				keyPresses.push_back(e.key.keysym.scancode);
+				heldKeys[e.key.keysym.scancode] = true;
 			}
-			// don't record the key down if it is already held
-			if (heldKeys[e.key.keysym.scancode]) continue;
-			keyPresses.push_back(e.key.keysym.scancode);
-			heldKeys[e.key.keysym.scancode] = true;
 		}
 		if (e.type == SDL_KEYUP) {
 			keyReleases.push_back(e.key.keysym.scancode);
