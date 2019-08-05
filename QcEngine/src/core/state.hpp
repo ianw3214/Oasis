@@ -61,6 +61,10 @@ protected:
 	void pauseWAV(WAV_track track) const;
 	void stopWAV(WAV_track track) const;
 
+	// Rendering methods
+	bool drawLine(int x1, int x2, int y1, int y2);
+	bool drawLine(int x1, int x2, int y1, int y2, SDL_Color color);
+
 	// font/text utility methods
 	void createFont(const std::string& name, const std::string& path, int size) const;
 	SDL_Texture * getTextTexture(const std::string& text, const std::string font, SDL_Color colour) const;

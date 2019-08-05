@@ -145,6 +145,7 @@ void StateManager::render(SDL_Renderer * renderer) const {
 	Uint32 timeDiff = SDL_GetTicks() - lastRender;
 	// only render if enough time has passed
 	if (timeDiff > static_cast<unsigned int>(1.f / renderRate * 1000.f)) {
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(renderer);
 		for (const pState& state : states) {
 			state->render();

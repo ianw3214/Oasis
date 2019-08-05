@@ -27,6 +27,11 @@ Texture * QcE::loadTexture(std::string id, std::string path, TextureType t) {
 	return textureHandler->addTexture(id, path, t);
 }
 
+bool QcE::drawLine(int x1, int y1, int x2, int y2, SDL_Color color) {
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+	return SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
+
 QcE::QcE() {
 	window = nullptr;
 	renderer = nullptr;

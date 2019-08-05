@@ -83,6 +83,9 @@ public:
 	Texture * loadTexture(std::string id, Texture* tex);
 	Texture * loadTexture(std::string id, std::string path);
 	Texture * loadTexture(std::string id, std::string path, TextureType t);
+	
+	// Some other drawing functions!
+	bool drawLine(int x1, int y1, int x2, int y2, SDL_Color color = {0xFF, 0xFF, 0xFF, 0xFF});
 
 private:
 	QcE();

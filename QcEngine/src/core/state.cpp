@@ -112,6 +112,14 @@ void State::stopWAV(WAV_track track) const {
 	QcE::get_instance()->getAudioEngine()->stop(track);
 }
 
+bool drawLine(int x1, int x2, int y1, int y2) {
+	return QcE::get_instance()->drawLine(x1, x2, y1, y2);
+}
+
+bool drawLine(int x1, int x2, int y1, int y2, SDL_Color color) {
+	return QcE::get_instance()->drawLine(x1, x2, y1, y2, color);
+}
+
 void State::createFont(const std::string & name, const std::string & path, int size) const {
 	QcE::get_instance()->getTextEngine()->createFont(name, path, size);
 }

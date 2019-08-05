@@ -42,6 +42,8 @@ public:
         // Render text
         Texture testText(getTextTexture("test", "test", {200, 100, 100, 255}));
         testText.render(200, 200);
+
+        QcE::get_instance()->drawLine(0, 0, 500, 500);
     }
 
 private:
