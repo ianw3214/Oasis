@@ -215,7 +215,7 @@ void StateManager::startTextInput() {
 	SDL_StartTextInput();
 	textInputting = true;
 	// Don't allow keys to be held while looking for text inputs
-	memset(heldKeys, 0, sizeof(heldKeys));
+	for (int i = 0; i < 256; ++i) heldKeys[i] = false;
 }
 
 void StateManager::stopTextInput() {
