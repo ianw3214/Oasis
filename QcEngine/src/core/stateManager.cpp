@@ -169,7 +169,7 @@ void StateManager::quit() {
 }
 
 bool StateManager::keyPressed(SDL_Scancode key) const {
-	return keyStates[key];
+	return heldKeys[key];
 }
 
 bool StateManager::keyDown(SDL_Scancode key) const {
