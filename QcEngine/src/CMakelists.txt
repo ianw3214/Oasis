@@ -1,6 +1,0 @@
-add_subdirectory(core)
-add_subdirectory(graphics)
-add_subdirectory(math)
-add_subdirectory(util)
-add_subdirectory(audio)
-add_subdirectory(network)

@@ -1,6 +1,0 @@
-target_sources(QcEngine PRIVATE
-    timer.hpp
-    util.hpp)
-
-target_sources(QcEngine PRIVATE
-    timer.cpp)

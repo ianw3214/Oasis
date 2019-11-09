@@ -1,0 +1,5 @@
+add_subdirectory(opengl)
+
+target_sources(Oasis PRIVATE renderer.hpp)
+
+target_sources(Oasis PRIVATE renderer.cpp)

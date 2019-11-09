@@ -1,0 +1,11 @@
+target_sources(Oasis PRIVATE entry.hpp)
+
+target_sources(Oasis PRIVATE state.hpp)
+
+target_sources(Oasis PRIVATE 
+    application.hpp
+    stateManager.hpp)
+
+target_sources(Oasis PRIVATE 
+    application.cpp
+    stateManager.cpp)

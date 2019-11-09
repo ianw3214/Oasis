@@ -1,9 +1,0 @@
-target_sources(QcEngine PRIVATE
-    animatedTexture.hpp
-    textEngine.hpp
-    tilemap.hpp)
-
-target_sources(QcEngine PRIVATE
-    animatedTexture.cpp
-    textEngine.cpp
-    tilemap.cpp)

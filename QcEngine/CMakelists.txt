@@ -1,4 +1,0 @@
-target_include_directories(QcEngine PRIVATE src)
-target_include_directories(QcEngine PRIVATE src/vendor)
-
-add_subdirectory(src)

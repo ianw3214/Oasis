@@ -1,0 +1,4 @@
+target_include_directories(Oasis PRIVATE src)
+target_include_directories(Oasis PRIVATE vendor)
+
+add_subdirectory(src)

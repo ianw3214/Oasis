@@ -1,1 +1,4 @@
-target_sources(Sandbox PRIVATE main.cpp)
+target_sources(Sandbox PRIVATE config.cpp)
+
+target_sources(Sandbox PRIVATE sandbox.hpp)
+target_sources(Sandbox PRIVATE sandbox.cpp)

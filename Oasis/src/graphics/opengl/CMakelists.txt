@@ -1,0 +1,15 @@
+target_sources(Oasis PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/indexBuffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/shader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vertexArray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vertexBuffer.cpp)
+
+target_sources(Oasis PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrappers.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/indexBuffer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/shader.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/texture.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vertexArray.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vertexBuffer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vertexBufferLayout.hpp)

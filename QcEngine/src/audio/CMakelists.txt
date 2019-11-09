@@ -1,5 +1,0 @@
-target_sources(QcEngine PRIVATE
-    audioEngine.hpp)
-
-target_sources(QcEngine PRIVATE
-    audioEngine.cpp)

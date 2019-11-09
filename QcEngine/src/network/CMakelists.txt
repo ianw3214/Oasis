@@ -1,3 +1,0 @@
-target_sources(QcEngine PRIVATE network.hpp)
-
-target_sources(QcEngine PRIVATE network.cpp)
