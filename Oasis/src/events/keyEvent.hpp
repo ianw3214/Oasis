@@ -19,7 +19,7 @@ namespace Oasis
     class KeyReleasedEvent : public Event
     {
     public:
-        EVENT_CLASS_TYPE(KEY_PRESSED);
+        EVENT_CLASS_TYPE(KEY_RELEASED);
 
         KeyReleasedEvent(int keyCode) : m_keyCode(keyCode) {}
         int GetKey() const { return m_keyCode; }

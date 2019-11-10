@@ -1,7 +1,8 @@
 target_sources(Oasis PRIVATE 
     event.hpp
     keyEvent.hpp
-    mouseEvent.hpp)
+    mouseEvent.hpp
+    textEvent.hpp)
 
 target_sources(Oasis PRIVATE inputManager.hpp)
 

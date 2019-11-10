@@ -1,0 +1,3 @@
+target_sources(Oasis PRIVATE imguiWrapper.hpp imguiWrapper.cpp)
+
+target_sources(Oasis PRIVATE imgui_impl_opengl3.h imgui_impl_opengl3.cpp)

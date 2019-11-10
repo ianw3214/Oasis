@@ -9,3 +9,5 @@ build/
 
 # RESOURCE FILES
 res/
+
+imgui.ini

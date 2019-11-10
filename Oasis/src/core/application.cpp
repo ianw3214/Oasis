@@ -13,6 +13,8 @@ using namespace Oasis;
 #include "events/inputManager.hpp"
 #include "events/event.hpp"
 
+#include "imgui/imguiWrapper.hpp"
+
 struct Application::Impl
 {
     SDL_Window * m_window;
@@ -59,6 +61,7 @@ Application::Application(const Configuration& config)
     StateManager::Init(config.m_state);
     Renderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+    ImGuiWrapper::Init();
 
 }
 
@@ -75,6 +78,7 @@ void Application::OnEvent(const Event& event)
         m_running = false;
     }
     StateManager::CurrentState()->OnEvent(event);
+    ImGuiWrapper::OnEvent(event);
 }
 
 void Application::Run()
@@ -85,6 +89,8 @@ void Application::Run()
         Renderer::Clear({1.f, 0.f, 1.f});
         InputManager::Update();
         StateManager::CurrentState()->Update();
+
+        ImGuiWrapper::Update();
 
         SDL_GL_SwapWindow(m_impl->m_window);
     }

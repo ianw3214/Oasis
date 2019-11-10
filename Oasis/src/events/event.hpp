@@ -18,8 +18,13 @@ namespace Oasis
         KEY_RELEASED,
 
         // MOUSE EVENTS
-        MOUSE_PRESSED,
-        MOUSE_MOVED
+        MOUSE_PRESS,
+        MOUSE_RELEASE,
+        MOUSE_MOVE,
+        MOUSE_SCROLL,
+
+        // OTHER EVENTS
+        TEXT_INPUT
     };
 
     ////////////////////////////////////////////

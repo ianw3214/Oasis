@@ -11,3 +11,4 @@
 #include "events/windowEvent.hpp"
 #include "events/keyEvent.hpp"
 #include "events/mouseEvent.hpp"
+#include "events/textEvent.hpp"
