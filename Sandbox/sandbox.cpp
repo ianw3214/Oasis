@@ -3,6 +3,11 @@
 #include "oasis.h"
 #include "graphics/opengl/texture.hpp"
 
+void Sandbox::OnEvent(const Oasis::Event& event)
+{
+    
+}
+
 void Sandbox::Update()
 {
     Texture test("res/animate.png");

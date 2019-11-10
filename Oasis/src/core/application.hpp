@@ -2,6 +2,7 @@
 
 namespace Oasis
 {
+    class Event;
     class IState;
 
     ////////////////////////////////////////////////////////
@@ -25,9 +26,12 @@ namespace Oasis
         inline int Width() const { return m_width; }
         inline int Height() const { return m_height; }
 
+        void OnEvent(const Event& e);
         void Run();
 
     private:
+        bool m_running;
+
         int m_width;
         int m_height;
 

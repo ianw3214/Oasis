@@ -5,3 +5,9 @@
 #include "core/stateManager.hpp"
 
 #include "graphics/renderer.hpp"
+
+#include "events/inputManager.hpp"
+#include "events/event.hpp"
+#include "events/windowEvent.hpp"
+#include "events/keyEvent.hpp"
+#include "events/mouseEvent.hpp"

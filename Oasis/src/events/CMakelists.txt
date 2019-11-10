@@ -1,0 +1,8 @@
+target_sources(Oasis PRIVATE 
+    event.hpp
+    keyEvent.hpp
+    mouseEvent.hpp)
+
+target_sources(Oasis PRIVATE inputManager.hpp)
+
+target_sources(Oasis PRIVATE inputManager.cpp)

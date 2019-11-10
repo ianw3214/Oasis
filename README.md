@@ -10,7 +10,7 @@ Follow the [setup instructions here](setup.md).
 
 ## TODO
 
-- [ ] Input Handling
+- [x] Input Handling
 - [ ] Integrate ImGui
 - [ ] Basic Audio Engine Setup
 - [ ] Text Rendering

@@ -10,6 +10,9 @@ using namespace Oasis;
 
 #include "graphics/renderer.hpp"
 
+#include "events/inputManager.hpp"
+#include "events/event.hpp"
+
 struct Application::Impl
 {
     SDL_Window * m_window;
@@ -55,6 +58,7 @@ Application::Application(const Configuration& config)
     // Initialize subsystems
     StateManager::Init(config.m_state);
     Renderer::Init();
+    InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 
 }
 
@@ -64,23 +68,24 @@ Application::~Application()
     delete m_impl;
 }
 
+void Application::OnEvent(const Event& event)
+{
+    if (event.GetType() == Oasis::EventType::WINDOW_CLOSE)
+    {
+        m_running = false;
+    }
+    StateManager::CurrentState()->OnEvent(event);
+}
+
 void Application::Run()
 {
-    bool running = true;
-    while(running)
+    m_running = true;
+    while(m_running)
     {
         Renderer::Clear({1.f, 0.f, 1.f});
-        // TEMPORARY INPUT CODE
-        // TODO: MOVE ELSEWHERE
-        SDL_Event e;
-        while(SDL_PollEvent(&e))
-        {
-            if (e.type == SDL_QUIT)
-            {
-                running = false;
-            }
-        }
+        InputManager::Update();
         StateManager::CurrentState()->Update();
+
         SDL_GL_SwapWindow(m_impl->m_window);
     }
 }
