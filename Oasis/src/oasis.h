@@ -5,6 +5,7 @@
 #include "core/stateManager.hpp"
 
 #include "graphics/renderer.hpp"
+#include "graphics/textRenderer.hpp"
 
 #include "events/inputManager.hpp"
 #include "events/event.hpp"

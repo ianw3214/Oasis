@@ -9,6 +9,7 @@ using namespace Oasis;
 #include "core/stateManager.hpp"
 
 #include "graphics/renderer.hpp"
+#include "graphics/textrenderer.hpp"
 
 #include "events/inputManager.hpp"
 #include "events/event.hpp"
@@ -62,6 +63,7 @@ Application::Application(const Configuration& config)
     // Initialize subsystems
     StateManager::Init(config.m_state);
     Renderer::Init();
+    TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
     ImGuiWrapper::Init();
     AudioEngine::Init();
