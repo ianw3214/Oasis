@@ -12,3 +12,6 @@
 #include "events/keyEvent.hpp"
 #include "events/mouseEvent.hpp"
 #include "events/textEvent.hpp"
+
+#include "audio/audio.hpp"
+#include "audio/source.hpp"

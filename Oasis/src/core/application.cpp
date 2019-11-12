@@ -15,6 +15,8 @@ using namespace Oasis;
 
 #include "imgui/imguiWrapper.hpp"
 
+#include "audio/audio.hpp"
+
 struct Application::Impl
 {
     SDL_Window * m_window;
@@ -62,6 +64,8 @@ Application::Application(const Configuration& config)
     Renderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
     ImGuiWrapper::Init();
+    AudioEngine::Init();
+    AudioEngine::SetListenerData();
 
 }
 
@@ -83,6 +87,8 @@ void Application::OnEvent(const Event& event)
 
 void Application::Run()
 {
+    // TODO: Move this somewhere else
+    StateManager::CurrentState()->Init();
     m_running = true;
     while(m_running)
     {

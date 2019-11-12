@@ -3,6 +3,18 @@
 #include "oasis.h"
 #include "graphics/opengl/texture.hpp"
 
+void Sandbox::Init() 
+{
+    ALuint buffer = Oasis::AudioEngine::LoadSound("res/test.wav");
+    Oasis::AudioSource * source = new Oasis::AudioSource();
+    // source->Play(buffer);
+}
+
+void Sandbox::Close() 
+{
+
+}
+
 void Sandbox::OnEvent(const Oasis::Event& event)
 {
     
