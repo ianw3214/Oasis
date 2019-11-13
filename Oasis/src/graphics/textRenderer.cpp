@@ -57,18 +57,10 @@ void TextRenderer::LoadFont(const std::string& path, int fontSize)
     FT_Done_Face(face);
 }
 
-// TODO: Don't use glm
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/matrix.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 void TextRenderer::DrawCharacter(GLchar character, float x, float y)
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glm::mat4 projection = glm::ortho(0.f, 1280.f, 0.f, 720.f);
 
     Character ch = s_characters[character];
 
@@ -97,7 +89,8 @@ void TextRenderer::DrawCharacter(GLchar character, float x, float y)
     ch.m_texture->bind();
     s_shader->bind();
     s_shader->setUniform3f("textColour", 1.f, 1.f, 1.f);
-    s_shader->setUniformMat4("projection", glm::value_ptr(projection));
+    s_shader->setUniform1f("u_screenWidth", 1280.f);
+    s_shader->setUniform1f("u_screenHeight", 720.f);
     vao.bind();
 
     glDrawArrays(GL_TRIANGLES, 0, 6);

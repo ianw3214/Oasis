@@ -17,3 +17,4 @@ Follow the [setup instructions here](setup.md).
 - [ ] Renderer Draw Texture From Source
 - [ ] Animated Sprites
 - [ ] Setup application to be accessible from anywhere in code (singleton or manager class)
+- [ ] Make CMake generate more visual studio friendly project
