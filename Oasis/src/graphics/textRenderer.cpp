@@ -20,7 +20,7 @@ void TextRenderer::Shutdown()
     FT_Done_FreeType(s_ft);
 }
 
-void TextRenderer::LoadFont(const std::string& path)
+void TextRenderer::LoadFont(const std::string& path, int fontSize)
 {
     FT_Face face;
     if (FT_New_Face(s_ft, path.c_str(), 0, &face))
@@ -28,7 +28,7 @@ void TextRenderer::LoadFont(const std::string& path)
         // TODO: ERROR HANDLING
     }
 
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, fontSize);
 
     // Disable byte alignment restriction
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -101,4 +101,15 @@ void TextRenderer::DrawCharacter(GLchar character, float x, float y)
     vao.bind();
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void TextRenderer::DrawString(const std::string& str, float x, float y)
+{
+    for (char c : str)
+    {
+        Character ch = s_characters[c];
+        DrawCharacter(c, x, y);
+		// bit shift by 6 to get value in pixels
+        x += ch.m_advance >> 6;
+    }
 }

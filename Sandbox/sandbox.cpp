@@ -37,4 +37,5 @@ void Sandbox::Update()
     Oasis::Renderer::DrawQuad(-1.f, 0.f, 1.f, 1.f, test);
 
     Oasis::TextRenderer::DrawCharacter('c', 50.f, 50.f);
+    Oasis::TextRenderer::DrawString("test string", 50.f, 100.f);
 }

@@ -34,9 +34,10 @@ namespace Oasis
         static void Init();
         static void Shutdown();
 
-        static void LoadFont(const std::string& path);
+        static void LoadFont(const std::string& path, int fontSize = 16);
 
         static void DrawCharacter(GLchar character, float x, float y);
+        static void DrawString(const std::string& str, float x, float y);
     private:
         static FT_Library s_ft;
         static std::unordered_map<GLchar, Character> s_characters;
