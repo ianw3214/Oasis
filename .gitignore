@@ -6,6 +6,7 @@ build/
 
 # IDE FILES
 .vscode/
+.vs/
 
 # TEMP FILES
 imgui.ini
