@@ -9,6 +9,8 @@
 
 #include "opengl/glwrappers.hpp"
 
+#include "util/colour.hpp"
+
 namespace Oasis
 {
     //////////////////////////////////////////////////////////////////////////
@@ -36,8 +38,8 @@ namespace Oasis
 
         static void LoadFont(const std::string& path, int fontSize = 16);
 
-        static void DrawCharacter(GLchar character, float x, float y);
-        static void DrawString(const std::string& str, float x, float y);
+        static void DrawCharacter(GLchar character, float x, float y, const Colour& colour);
+        static void DrawString(const std::string& str, float x, float y, const Colour& colour);
     private:
         static FT_Library s_ft;
         static std::unordered_map<GLchar, Character> s_characters;

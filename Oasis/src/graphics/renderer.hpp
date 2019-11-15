@@ -2,17 +2,10 @@
 
 class Texture;
 
+#include "util/colour.hpp"
+
 namespace Oasis
 {
-    // TEMPORARY DEFINITIONS
-    // TODO: REPLACE
-    struct Colour
-    {
-        float r;
-        float g;
-        float b;
-    };
-
     class Renderer
     {
     public:

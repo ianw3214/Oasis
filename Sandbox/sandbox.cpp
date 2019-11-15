@@ -30,6 +30,6 @@ void Sandbox::Update()
     Oasis::Renderer::DrawQuad(0.f, 0.f, 100.f, 100.f, Oasis::Colour{0.2f, 0.2f, 0.5f});
     Oasis::Renderer::DrawQuad(100.f, 100.f, 100.f, 100.f, test);
 
-    Oasis::TextRenderer::DrawCharacter('c', 50.f, 50.f);
-    Oasis::TextRenderer::DrawString("test string", 50.f, 100.f);
+    Oasis::TextRenderer::DrawCharacter('c', 50.f, 50.f, Oasis::Colours::BLUE);
+    Oasis::TextRenderer::DrawString("test string", 50.f, 100.f, Oasis::Colours::WHITE);
 }

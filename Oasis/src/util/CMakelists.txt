@@ -1,1 +1,1 @@
-target_sources(Oasis PRIVATE trap.hpp)
+target_sources(Oasis PRIVATE trap.hpp colour.hpp)

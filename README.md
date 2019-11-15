@@ -19,6 +19,6 @@ Follow the [setup instructions here](setup.md).
 - [ ] Animated Sprites
 - [x] Setup application to be accessible from anywhere in code (singleton or manager class)
 - [ ] Make CMake generate more visual studio friendly project
-- [ ] Add header for utilities (colour, vector, etc...)
+- [x] Add header for colour
 - [x] Add header for traps
 - [ ] Precompiled headers

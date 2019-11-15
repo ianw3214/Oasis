@@ -38,7 +38,7 @@ void TextRenderer::LoadFont(const std::string& path, int fontSize)
     {
         FT_Error result = FT_Load_Char(face, c, FT_LOAD_RENDER);
         OASIS_TRAP(result == FT_Err_Ok);
-        
+
         int width = face->glyph->bitmap.width;
         int height = face->glyph->bitmap.rows;
         Texture * texture = new Texture(width, height);
@@ -58,7 +58,7 @@ void TextRenderer::LoadFont(const std::string& path, int fontSize)
     FT_Done_Face(face);
 }
 
-void TextRenderer::DrawCharacter(GLchar character, float x, float y)
+void TextRenderer::DrawCharacter(GLchar character, float x, float y, const Colour& colour)
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -89,18 +89,18 @@ void TextRenderer::DrawCharacter(GLchar character, float x, float y)
 
     ch.m_texture->bind();
     s_shader->bind();
-    s_shader->setUniform3f("textColour", 1.f, 1.f, 1.f);
+    s_shader->setUniform3f("textColour", colour.r, colour.g, colour.b);
     vao.bind();
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void TextRenderer::DrawString(const std::string& str, float x, float y)
+void TextRenderer::DrawString(const std::string& str, float x, float y, const Colour& colour)
 {
     for (char c : str)
     {
         Character ch = s_characters[c];
-        DrawCharacter(c, x, y);
+        DrawCharacter(c, x, y, colour);
 		// bit shift by 6 to get value in pixels
         x += ch.m_advance >> 6;
     }
