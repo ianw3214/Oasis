@@ -2,8 +2,9 @@
 using namespace Oasis;
 
 #include <GL/glew.h>
-
 #include "opengl/glwrappers.hpp"
+
+#include "core/windowService.hpp"
 
 // Index orders for different shapes
 const unsigned int LINE_INDICES[2] = { 0, 1 };
@@ -15,7 +16,12 @@ Shader * textureShader;
 void Renderer::Init()
 {
     basicShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_fragment.glsl");
+	basicShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
+    basicShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
+
 	textureShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_texture.glsl");
+	textureShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
+    textureShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
 }
 
 void Renderer::Clear(Colour colour)

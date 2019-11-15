@@ -1,6 +1,8 @@
 #include "textrenderer.hpp"
 using namespace Oasis;
 
+#include "core/windowService.hpp"
+
 FT_Library TextRenderer::s_ft;
 std::unordered_map<GLchar, Character> TextRenderer::s_characters;
 Shader * TextRenderer::s_shader;
@@ -12,6 +14,8 @@ void TextRenderer::Init()
         // TODO: ERROR HANDLING
     }
     s_shader = new Shader(kTextVertexPath, kTextFragmentPath);
+    s_shader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
+    s_shader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
 }
 
 void TextRenderer::Shutdown()
@@ -26,6 +30,7 @@ void TextRenderer::LoadFont(const std::string& path, int fontSize)
     if (FT_New_Face(s_ft, path.c_str(), 0, &face))
     {
         // TODO: ERROR HANDLING
+		return;
     }
 
     FT_Set_Pixel_Sizes(face, 0, fontSize);
@@ -89,8 +94,6 @@ void TextRenderer::DrawCharacter(GLchar character, float x, float y)
     ch.m_texture->bind();
     s_shader->bind();
     s_shader->setUniform3f("textColour", 1.f, 1.f, 1.f);
-    s_shader->setUniform1f("u_screenWidth", 1280.f);
-    s_shader->setUniform1f("u_screenHeight", 720.f);
     vao.bind();
 
     glDrawArrays(GL_TRIANGLES, 0, 6);

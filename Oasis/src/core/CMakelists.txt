@@ -4,8 +4,10 @@ target_sources(Oasis PRIVATE state.hpp)
 
 target_sources(Oasis PRIVATE 
     application.hpp
-    stateManager.hpp)
+    stateManager.hpp
+    windowService.hpp)
 
 target_sources(Oasis PRIVATE 
     application.cpp
-    stateManager.cpp)
+    stateManager.cpp
+    windowService.cpp)

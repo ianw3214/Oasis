@@ -14,7 +14,10 @@ Follow the [setup instructions here](setup.md).
 - [x] Integrate ImGui
 - [x] Basic Audio Engine Setup
 - [ ] Text Rendering
+- [ ] Resource System for textures (Try to make extensible for other things as well)
 - [ ] Renderer Draw Texture From Source
 - [ ] Animated Sprites
-- [ ] Setup application to be accessible from anywhere in code (singleton or manager class)
+- [x] Setup application to be accessible from anywhere in code (singleton or manager class)
 - [ ] Make CMake generate more visual studio friendly project
+- [ ] Add header for utilities (colour, vector, etc...)
+- [ ] Add header for traps

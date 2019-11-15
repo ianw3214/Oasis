@@ -42,6 +42,7 @@ int AudioEngine::LoadSound(const std::string& path)
 	Uint8 * wav_buffer;
 	if (SDL_LoadWAV(path.c_str(), &wav_spec, &wav_buffer, &wav_length) == NULL) {
 		// TODO: ERROR HANDLING
+		return -1;
 	}
 
     // convert SDL WAV format to openAL WAV format

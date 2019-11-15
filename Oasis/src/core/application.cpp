@@ -5,6 +5,7 @@ using namespace Oasis;
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
+#include "core/windowService.hpp"
 #include "core/state.hpp"
 #include "core/stateManager.hpp"
 
@@ -61,6 +62,7 @@ Application::Application(const Configuration& config)
 	}
 
     // Initialize subsystems
+    WindowService::Init(this);
     StateManager::Init(config.m_state);
     Renderer::Init();
     TextRenderer::Init();
