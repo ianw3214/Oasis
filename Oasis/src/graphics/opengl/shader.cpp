@@ -5,6 +5,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "util/trap.hpp"
+
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 	: rendererID(0)
 {

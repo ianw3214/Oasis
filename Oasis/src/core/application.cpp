@@ -5,6 +5,8 @@ using namespace Oasis;
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
+#include "util/trap.hpp"
+
 #include "core/windowService.hpp"
 #include "core/state.hpp"
 #include "core/stateManager.hpp"
@@ -38,15 +40,9 @@ Application::Application(const Configuration& config)
         config.m_height,
         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
-    if (m_impl->m_window == nullptr)
-    {
-        // TODO: ERROR HANDLING
-    }
+    OASIS_TRAP(m_impl->m_window);
     m_impl->m_context = SDL_GL_CreateContext(m_impl->m_window);
-    if (m_impl->m_context == NULL)
-    {
-        // TODO: ERROR HANDLING
-    }
+    OASIS_TRAP(m_impl->m_context);
 
     // Enable vsync
 	SDL_GL_SetSwapInterval(1);
@@ -57,9 +53,7 @@ Application::Application(const Configuration& config)
 
 	// Initialize GLEW
 	GLenum glewError = glewInit();
-	if (glewError != GLEW_OK) {
-		// TODO: ERROR HANDLING
-	}
+	OASIS_TRAP(glewError == GLEW_OK);
 
     // Initialize subsystems
     WindowService::Init(this);

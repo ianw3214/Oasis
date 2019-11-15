@@ -3,6 +3,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#include "util/trap.hpp"
+
 Texture::Texture(int width, int height) : width(width), height(height)
 {
 	glGenTextures(1, &textureID);
@@ -52,7 +54,7 @@ void Texture::unbind() const {
 
 void Texture::SetData(void* data, uint32_t size, GLenum format)
 {
-	// TODO: ASSERT WIDTH * HEIGHT = SIZE
+	OASIS_TRAP(size == width * height);
 	// TODO: THIS FORMAT THING IS WRONG I THINK
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);

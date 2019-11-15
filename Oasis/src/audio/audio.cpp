@@ -3,6 +3,8 @@ using namespace Oasis;
 
 #include <SDL2/SDL.h>
 
+#include "util/trap.hpp"
+
 std::vector<ALuint> AudioEngine::s_buffers;
 ALCdevice * AudioEngine::s_device;
 ALCcontext * AudioEngine::s_context;
@@ -10,14 +12,10 @@ ALCcontext * AudioEngine::s_context;
 void AudioEngine::Init()
 {
     s_device = alcOpenDevice(nullptr);
-    if (s_device == nullptr)
-    {
-        // TODO: ERROR HANDLING
-    }
+    OASIS_TRAP(s_device);
     s_context = alcCreateContext(s_device, nullptr);
-    if (!alcMakeContextCurrent(s_context)) {
-		// TODO: ERROR HANDLING
-	}
+    ALCboolean result = alcMakeContextCurrent(s_context);
+    OASIS_TRAP(result == ALC_TRUE);
 }
 
 void AudioEngine::Shutdown()
@@ -40,10 +38,8 @@ int AudioEngine::LoadSound(const std::string& path)
     SDL_AudioSpec wav_spec;
 	Uint32 wav_length;
 	Uint8 * wav_buffer;
-	if (SDL_LoadWAV(path.c_str(), &wav_spec, &wav_buffer, &wav_length) == NULL) {
-		// TODO: ERROR HANDLING
-		return -1;
-	}
+	SDL_AudioSpec * res = SDL_LoadWAV(path.c_str(), &wav_spec, &wav_buffer, &wav_length);
+	OASIS_TRAP(res);
 
     // convert SDL WAV format to openAL WAV format
 	ALenum format;

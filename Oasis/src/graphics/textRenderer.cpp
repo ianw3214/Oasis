@@ -1,6 +1,8 @@
 #include "textrenderer.hpp"
 using namespace Oasis;
 
+#include "util/trap.hpp"
+
 #include "core/windowService.hpp"
 
 FT_Library TextRenderer::s_ft;
@@ -9,10 +11,8 @@ Shader * TextRenderer::s_shader;
 
 void TextRenderer::Init()
 {
-    if (FT_Init_FreeType(&s_ft))
-    {
-        // TODO: ERROR HANDLING
-    }
+    FT_Error result = FT_Init_FreeType(&s_ft);
+    OASIS_TRAP(result == FT_Err_Ok);
     s_shader = new Shader(kTextVertexPath, kTextFragmentPath);
     s_shader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
     s_shader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
@@ -27,11 +27,8 @@ void TextRenderer::Shutdown()
 void TextRenderer::LoadFont(const std::string& path, int fontSize)
 {
     FT_Face face;
-    if (FT_New_Face(s_ft, path.c_str(), 0, &face))
-    {
-        // TODO: ERROR HANDLING
-		return;
-    }
+    FT_Error result = FT_New_Face(s_ft, path.c_str(), 0, &face);
+    OASIS_TRAP(result == FT_Err_Ok);
 
     FT_Set_Pixel_Sizes(face, 0, fontSize);
 
@@ -39,10 +36,9 @@ void TextRenderer::LoadFont(const std::string& path, int fontSize)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     for (GLubyte c = 0; c < 128; ++c)
     {
-        if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-        {
-            // TODO: ERROR HANDLING
-        }
+        FT_Error result = FT_Load_Char(face, c, FT_LOAD_RENDER);
+        OASIS_TRAP(result == FT_Err_Ok);
+        
         int width = face->glyph->bitmap.width;
         int height = face->glyph->bitmap.rows;
         Texture * texture = new Texture(width, height);
