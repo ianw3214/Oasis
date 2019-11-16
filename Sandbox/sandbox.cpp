@@ -32,4 +32,11 @@ void Sandbox::Update()
 
     Oasis::TextRenderer::DrawCharacter('c', 50.f, 50.f, Oasis::Colours::BLUE);
     Oasis::TextRenderer::DrawString("test string", 50.f, 100.f, Oasis::Colours::WHITE);
+
+    Oasis::Sprite sprite("res/animate.png");
+    sprite.SetPos(200.f, 200.f);
+    sprite.SetDimensions(50.f, 50.f);
+    sprite.SetSourcePos(30.f, 30.f);
+    sprite.SetSourceDimensions(60.f, 60.f);
+    Oasis::Renderer::DrawSprite(sprite);
 }

@@ -6,12 +6,17 @@ using namespace Oasis;
 
 #include "core/windowService.hpp"
 
+#include "graphics/sprite.hpp"
+
+#include "resource/resourceManager.hpp"
+
 // Index orders for different shapes
 const unsigned int LINE_INDICES[2] = { 0, 1 };
 const unsigned int SQUARE_INDICES[6] = { 0, 1, 3, 0, 2, 3 };
 
 Shader * basicShader;
 Shader * textureShader;
+Shader * spriteShader;
 
 void Renderer::Init()
 {
@@ -22,6 +27,10 @@ void Renderer::Init()
 	textureShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_texture.glsl");
 	textureShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
     textureShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
+
+	spriteShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/sprite_fragment.glsl");
+	spriteShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
+    spriteShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
 }
 
 void Renderer::Clear(Colour colour)
@@ -102,6 +111,52 @@ void Renderer::DrawQuad(float x, float y, float w, float h, const Texture& textu
 	// Bind the texture and draw
 	texture.bind();
 	textureShader->bind();
+	va.bind();
+	ib.bind();
+
+	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+}
+
+void Renderer::DrawSprite(const Sprite& sprite)
+{
+	float positions[16] = {
+		// coordinate 1
+		sprite.GetX(),
+		sprite.GetY(),
+		sprite.GetSourceX(),
+		sprite.GetSourceY(),
+		// coordinate 2
+		sprite.GetX(),
+		sprite.GetY() + sprite.GetHeight(),
+		sprite.GetSourceX(),
+		sprite.GetSourceY() + sprite.GetSourceHeight(),
+		// coordinate 3
+		sprite.GetX() + sprite.GetWidth(),
+		sprite.GetY(),
+		sprite.GetSourceX() + sprite.GetSourceWidth(),
+		sprite.GetSourceY(),
+		// coordinate 4
+		sprite.GetX() + sprite.GetWidth(),
+		sprite.GetY() + sprite.GetHeight(),
+		sprite.GetSourceX() + sprite.GetSourceWidth(),
+		sprite.GetSourceY() + sprite.GetSourceHeight()
+		
+	};
+	VertexArray		va;
+	VertexBuffer	vb(positions, sizeof(float) * 16);
+	IndexBuffer		ib(SQUARE_INDICES, 6);
+	// Specify the layout of the buffer data
+	VertexBufferLayout layout;
+	layout.pushFloat(2);
+	layout.pushFloat(2);
+	va.addBuffer(vb, layout);
+
+	// Bind the texture and draw
+	Oasis::Texture * texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite.GetTexturePath());
+	texture->bind();
+	spriteShader->bind();
+	spriteShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));
+	spriteShader->setUniform1f("u_textureHeight", static_cast<float>(texture->getHeight()));
 	va.bind();
 	ib.bind();
 

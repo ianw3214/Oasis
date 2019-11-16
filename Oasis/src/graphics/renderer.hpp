@@ -5,6 +5,7 @@
 namespace Oasis
 {
     class Texture;
+    class Sprite;
     class Renderer
     {
     public:
@@ -15,6 +16,8 @@ namespace Oasis
         static void DrawLine(float x1, float y1, float x2, float y2, const Colour& colour);
         static void DrawQuad(float x, float y, float w, float h, const Colour& colour);
         static void DrawQuad(float x, float y, float w, float h, const Texture& texture);
+
+        static void DrawSprite(const Sprite& sprite);
     private:
     };
 }

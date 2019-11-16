@@ -15,7 +15,7 @@ Follow the [setup instructions here](setup.md).
 - [x] Basic Audio Engine Setup
 - [x] Text Rendering
 - [x] Resource System for textures (Try to make extensible for other things as well)
-- [ ] Renderer Draw Texture From Source
+- [x] Renderer Draw Texture From Source
 - [ ] Animated Sprites
 - [x] Setup application to be accessible from anywhere in code (singleton or manager class)
 - [ ] Make CMake generate more visual studio friendly project

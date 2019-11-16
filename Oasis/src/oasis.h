@@ -12,6 +12,7 @@
 
 #include "graphics/renderer.hpp"
 #include "graphics/textRenderer.hpp"
+#include "graphics/sprite.hpp"
 
 #include "events/inputManager.hpp"
 #include "events/event.hpp"
