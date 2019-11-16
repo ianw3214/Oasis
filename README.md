@@ -22,6 +22,7 @@ Follow the [setup instructions here](setup.md).
 - [x] Add header for colour
 - [x] Add header for traps
 - [ ] Precompiled headers
-- [ ] Smart Pointer/Reference headers
+- [x] Smart Pointer/Reference headers
 - [ ] Convert fonts to use resource system
 - [ ] Convert shaders to use resource system
+- [ ] Gamestate with layer system

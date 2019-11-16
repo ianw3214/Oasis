@@ -3,7 +3,9 @@
 #include <string>
 #include <unordered_map>
 
-#include "resource.hpp"
+#include "util/util.hpp"
+
+#include "resource/resource.hpp"
 
 namespace Oasis
 {
@@ -14,39 +16,34 @@ namespace Oasis
         static void Shutdown();
 
         template<class T>
-        static T * LoadResource(const std::string& path);
+        static Reference<T> LoadResource(const std::string& path);
         
         template<class T>
-        static T * GetResource(const std::string& path);
+        static Reference<T> GetResource(const std::string& path);
 
         static void UnloadResource(const std::string& path);
     private:
         static ResourceManager * GetInstance();
-        std::unordered_map<std::string, Resource*> m_resources;
+        std::unordered_map<std::string, Owned<Resource>> m_resources;
     };
 }
 
 namespace Oasis
 {
     template<class T>
-    T * ResourceManager::LoadResource(const std::string& path)
+    Reference<T> ResourceManager::LoadResource(const std::string& path)
     {
-        if (GetInstance()->m_resources[path])
-        {
-            delete GetInstance()->m_resources[path];
-        }
         GetInstance()->m_resources[path] = T::Load(path);
-        return dynamic_cast<T*>(GetInstance()->m_resources[path]);
+        return Reference(dynamic_cast<T*>(GetInstance()->m_resources[path].GetData()));
     }
 
     template<class T>
-    T * ResourceManager::GetResource(const std::string& path)
+    Reference<T> ResourceManager::GetResource(const std::string& path)
     {
-        if (GetInstance()->m_resources.find(path) != GetInstance()->m_resources.end())
+        if (GetInstance()->m_resources.find(path) == GetInstance()->m_resources.end())
         {
-            return dynamic_cast<T*>(GetInstance()->m_resources[path]);
+            LoadResource<T>(path);
         }
-        LoadResource<T>(path);
-        return dynamic_cast<T*>(GetInstance()->m_resources[path]);
+        return Reference(dynamic_cast<T*>(GetInstance()->m_resources[path].GetData()));
     }
 }

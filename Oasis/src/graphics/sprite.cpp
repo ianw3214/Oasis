@@ -1,7 +1,7 @@
 #include "sprite.hpp"
 using namespace Oasis;
 
-#include "util/trap.hpp"
+#include "util/util.hpp"
 
 #include "resource/resourceManager.hpp"
 #include "graphics/opengl/texture.hpp"
@@ -27,7 +27,7 @@ Sprite::Sprite(const std::string& path)
     , m_srcY(0.f)
     , m_texturePath(path)
 {
-    Oasis::Texture * texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
+    Reference<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
     OASIS_TRAP(texture);
     m_width = m_srcWidth = static_cast<float>(texture->getWidth());
     m_height = m_srcHeight = static_cast<float>(texture->getHeight());

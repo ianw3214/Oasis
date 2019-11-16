@@ -91,7 +91,7 @@ void Renderer::DrawQuad(float x, float y, float w, float h, const Colour& colour
 	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawQuad(float x, float y, float w, float h, const Texture& texture)
+void Renderer::DrawQuad(float x, float y, float w, float h, Reference<Texture> texture)
 {
 	float positions[16] = {
 		x, y, 0.f, 0.f,
@@ -109,7 +109,7 @@ void Renderer::DrawQuad(float x, float y, float w, float h, const Texture& textu
 	va.addBuffer(vb, layout);
 
 	// Bind the texture and draw
-	texture.bind();
+	texture->bind();
 	textureShader->bind();
 	va.bind();
 	ib.bind();
@@ -117,29 +117,29 @@ void Renderer::DrawQuad(float x, float y, float w, float h, const Texture& textu
 	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawSprite(const Sprite& sprite)
+void Renderer::DrawSprite(Reference<Sprite> sprite)
 {
 	float positions[16] = {
 		// coordinate 1
-		sprite.GetX(),
-		sprite.GetY(),
-		sprite.GetSourceX(),
-		sprite.GetSourceY(),
+		sprite->GetX(),
+		sprite->GetY(),
+		sprite->GetSourceX(),
+		sprite->GetSourceY(),
 		// coordinate 2
-		sprite.GetX(),
-		sprite.GetY() + sprite.GetHeight(),
-		sprite.GetSourceX(),
-		sprite.GetSourceY() + sprite.GetSourceHeight(),
+		sprite->GetX(),
+		sprite->GetY() + sprite->GetHeight(),
+		sprite->GetSourceX(),
+		sprite->GetSourceY() + sprite->GetSourceHeight(),
 		// coordinate 3
-		sprite.GetX() + sprite.GetWidth(),
-		sprite.GetY(),
-		sprite.GetSourceX() + sprite.GetSourceWidth(),
-		sprite.GetSourceY(),
+		sprite->GetX() + sprite->GetWidth(),
+		sprite->GetY(),
+		sprite->GetSourceX() + sprite->GetSourceWidth(),
+		sprite->GetSourceY(),
 		// coordinate 4
-		sprite.GetX() + sprite.GetWidth(),
-		sprite.GetY() + sprite.GetHeight(),
-		sprite.GetSourceX() + sprite.GetSourceWidth(),
-		sprite.GetSourceY() + sprite.GetSourceHeight()
+		sprite->GetX() + sprite->GetWidth(),
+		sprite->GetY() + sprite->GetHeight(),
+		sprite->GetSourceX() + sprite->GetSourceWidth(),
+		sprite->GetSourceY() + sprite->GetSourceHeight()
 		
 	};
 	VertexArray		va;
@@ -152,7 +152,7 @@ void Renderer::DrawSprite(const Sprite& sprite)
 	va.addBuffer(vb, layout);
 
 	// Bind the texture and draw
-	Oasis::Texture * texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite.GetTexturePath());
+	Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
 	texture->bind();
 	spriteShader->bind();
 	spriteShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));

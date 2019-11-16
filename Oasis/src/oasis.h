@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/trap.hpp"
+#include "util/pointer.hpp"
 #include "util/colour.hpp"
 
 #include "core/application.hpp"

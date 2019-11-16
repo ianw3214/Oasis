@@ -1,1 +1,1 @@
-target_sources(Oasis PRIVATE trap.hpp colour.hpp)
+target_sources(Oasis PRIVATE trap.hpp pointer.hpp colour.hpp)

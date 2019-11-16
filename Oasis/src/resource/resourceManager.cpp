@@ -19,5 +19,5 @@ ResourceManager * ResourceManager::GetInstance()
 
 void ResourceManager::UnloadResource(const std::string& path)
 {
-    delete GetInstance()->m_resources[path];
+    GetInstance()->m_resources[path] = Owned<Resource>();
 }
