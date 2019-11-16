@@ -4,23 +4,30 @@
 
 #include <string>
 
-class Texture {
+#include "resource/resource.hpp"
 
-public:
-	Texture(int width, int height);
-	Texture(const std::string& path);
-	~Texture();
+namespace Oasis
+{
+	class Texture : public Resource {
 
-	void bind(unsigned int slot = 0) const;
-	void unbind() const;
+	public:
+		static Resource * Load(const std::string& path);
 
-	void SetData(void* data, uint32_t size, GLenum format = GL_RGBA);
+		Texture(int width, int height);
+		Texture(const std::string& path);
+		~Texture();
 
-	inline int getWidth() const { return width; }
-	inline int getHeight() const { return height; }
-private:
-	GLuint textureID;
-	std::string filePath;
-	unsigned char * localBuffer;
-	int width, height, bitsPerPixel;
-};
+		void bind(unsigned int slot = 0) const;
+		void unbind() const;
+
+		void SetData(void* data, uint32_t size, GLenum format = GL_RGBA);
+
+		inline int getWidth() const { return width; }
+		inline int getHeight() const { return height; }
+	private:
+		GLuint textureID;
+		std::string filePath;
+		unsigned char * localBuffer;
+		int width, height, bitsPerPixel;
+	};
+}

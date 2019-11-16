@@ -1,0 +1,3 @@
+target_sources(Oasis PRIVATE resource.hpp)
+
+target_sources(Oasis PRIVATE resourceManager.hpp resourceManager.cpp)

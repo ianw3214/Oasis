@@ -13,8 +13,8 @@ Follow the [setup instructions here](setup.md).
 - [x] Input Handling
 - [x] Integrate ImGui
 - [x] Basic Audio Engine Setup
-- [ ] Text Rendering
-- [ ] Resource System for textures (Try to make extensible for other things as well)
+- [x] Text Rendering
+- [x] Resource System for textures (Try to make extensible for other things as well)
 - [ ] Renderer Draw Texture From Source
 - [ ] Animated Sprites
 - [x] Setup application to be accessible from anywhere in code (singleton or manager class)
@@ -22,3 +22,6 @@ Follow the [setup instructions here](setup.md).
 - [x] Add header for colour
 - [x] Add header for traps
 - [ ] Precompiled headers
+- [ ] Smart Pointer/Reference headers
+- [ ] Convert fonts to use resource system
+- [ ] Convert shaders to use resource system

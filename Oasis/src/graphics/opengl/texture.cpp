@@ -1,9 +1,15 @@
 #include "texture.hpp"
+using namespace Oasis;
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 #include "util/trap.hpp"
+
+Resource * Texture::Load(const std::string& path)
+{
+	return new Texture(path);
+}
 
 Texture::Texture(int width, int height) : width(width), height(height)
 {

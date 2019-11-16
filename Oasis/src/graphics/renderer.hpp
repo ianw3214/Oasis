@@ -1,11 +1,10 @@
 #pragma once
 
-class Texture;
-
 #include "util/colour.hpp"
 
 namespace Oasis
 {
+    class Texture;
     class Renderer
     {
     public:

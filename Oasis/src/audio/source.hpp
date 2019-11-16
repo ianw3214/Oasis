@@ -4,13 +4,14 @@
 
 namespace Oasis
 {
+    class AudioResource;
     class AudioSource
     {
     public:
         AudioSource();
         ~AudioSource();
 
-        void Play(ALuint buffer);
+        void Play(AudioResource * resource);
     private:
         ALuint m_source;
     };

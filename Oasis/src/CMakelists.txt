@@ -3,5 +3,6 @@ add_subdirectory(graphics)
 add_subdirectory(events)
 add_subdirectory(audio)
 add_subdirectory(util)
+add_subdirectory(resource)
 
 add_subdirectory(imgui)

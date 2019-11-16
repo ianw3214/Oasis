@@ -5,34 +5,15 @@ using namespace Oasis;
 
 #include "util/trap.hpp"
 
-std::vector<ALuint> AudioEngine::s_buffers;
 ALCdevice * AudioEngine::s_device;
 ALCcontext * AudioEngine::s_context;
 
-void AudioEngine::Init()
+Resource * AudioResource::Load(const std::string& path)
 {
-    s_device = alcOpenDevice(nullptr);
-    OASIS_TRAP(s_device);
-    s_context = alcCreateContext(s_device, nullptr);
-    ALCboolean result = alcMakeContextCurrent(s_context);
-    OASIS_TRAP(result == ALC_TRUE);
+    return new AudioResource(path);
 }
 
-void AudioEngine::Shutdown()
-{
-    for (ALuint buffer : s_buffers)
-    {
-        alDeleteBuffers(1, &buffer);
-    }
-}
-
-void AudioEngine::SetListenerData()
-{
-    alListener3f(AL_POSITION, 0.f, 0.f, 0.f);
-    alListener3f(AL_VELOCITY, 0.f, 0.f, 0.f);
-}
-
-int AudioEngine::LoadSound(const std::string& path)
+AudioResource::AudioResource(const std::string& path)
 {
     // SDL helper method to load WAV file
     SDL_AudioSpec wav_spec;
@@ -54,16 +35,36 @@ int AudioEngine::LoadSound(const std::string& path)
         format = wav_spec.format == AUDIO_S8 || wav_spec.format == AUDIO_U8 ? AL_FORMAT_MONO8 : AL_FORMAT_MONO16;
 	}
 
-    ALuint buffer;
-    alGenBuffers(1, &buffer);
-    alBufferData(buffer, format, wav_buffer, wav_length, wav_spec.freq);
+    alGenBuffers(1, &m_buffer);
+    alBufferData(m_buffer, format, wav_buffer, wav_length, wav_spec.freq);
 
     SDL_FreeWAV(wav_buffer);
 
     ALenum error = alGetError();
-	if (error != AL_NO_ERROR) {
-		*((unsigned int*)0) = 0xDEAD;
-	}
+    OASIS_TRAP(error == AL_NO_ERROR);
+}
 
-    return buffer;
+AudioResource::~AudioResource()
+{
+    alDeleteBuffers(1, &m_buffer);
+}
+
+void AudioEngine::Init()
+{
+    s_device = alcOpenDevice(nullptr);
+    OASIS_TRAP(s_device);
+    s_context = alcCreateContext(s_device, nullptr);
+    ALCboolean result = alcMakeContextCurrent(s_context);
+    OASIS_TRAP(result == ALC_TRUE);
+}
+
+void AudioEngine::Shutdown()
+{
+    
+}
+
+void AudioEngine::SetListenerData()
+{
+    alListener3f(AL_POSITION, 0.f, 0.f, 0.f);
+    alListener3f(AL_VELOCITY, 0.f, 0.f, 0.f);
 }

@@ -6,8 +6,25 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 
+#include "resource/resource.hpp"
+
 namespace Oasis
 {
+    //////////////////////////////////////////////////////////////////
+    class AudioResource : public Resource
+    {
+    public:
+        static Resource * Load(const std::string& path);
+
+        AudioResource(const std::string& path);
+        ~AudioResource();
+
+        ALuint GetBuffer() const { return m_buffer; }
+    private:
+        ALuint m_buffer;
+    };
+
+    //////////////////////////////////////////////////////////////////
     class AudioEngine
     {
     public:
@@ -15,11 +32,7 @@ namespace Oasis
         static void Shutdown();
 
         static void SetListenerData();
-
-        static int LoadSound(const std::string& path);
-
     private:
-        static std::vector<ALuint> s_buffers;
         static ALCdevice * s_device;
         static ALCcontext * s_context;
     };

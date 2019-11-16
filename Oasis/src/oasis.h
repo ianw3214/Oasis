@@ -1,11 +1,14 @@
 #pragma once
 
 #include "util/trap.hpp"
+#include "util/colour.hpp"
 
 #include "core/application.hpp"
 #include "core/state.hpp"
 #include "core/stateManager.hpp"
 #include "core/windowService.hpp"
+
+#include "resource/resourceManager.hpp"
 
 #include "graphics/renderer.hpp"
 #include "graphics/textRenderer.hpp"

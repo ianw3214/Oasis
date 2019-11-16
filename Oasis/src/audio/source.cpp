@@ -1,6 +1,10 @@
 #include "source.hpp"
 using namespace Oasis;
 
+#include "util/trap.hpp"
+
+#include "audio/audio.hpp"
+
 AudioSource::AudioSource()
 {
     alGenSources(1, &m_source);
@@ -15,13 +19,11 @@ AudioSource::~AudioSource()
     alDeleteSources(1, &m_source);
 }
 
-void AudioSource::Play(ALuint buffer)
+void AudioSource::Play(AudioResource * resource)
 {
-    alSourcei(m_source, AL_BUFFER, buffer);
+    alSourcei(m_source, AL_BUFFER, resource->GetBuffer());
     alSourcePlay(m_source);
 
     ALenum error = alGetError();
-	if (error != AL_NO_ERROR) {
-		*((unsigned int*)0) = 0xDEAD;
-	}
+    OASIS_TRAP(error == AL_NO_ERROR);
 }

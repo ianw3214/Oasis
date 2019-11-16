@@ -11,6 +11,8 @@ using namespace Oasis;
 #include "core/state.hpp"
 #include "core/stateManager.hpp"
 
+#include "resource/resourceManager.hpp"
+
 #include "graphics/renderer.hpp"
 #include "graphics/textrenderer.hpp"
 
@@ -57,6 +59,7 @@ Application::Application(const Configuration& config)
 
     // Initialize subsystems
     WindowService::Init(this);
+    ResourceManager::Init();
     StateManager::Init(config.m_state);
     Renderer::Init();
     TextRenderer::Init();
