@@ -6,6 +6,7 @@ namespace Oasis
 {
     class Texture;
     class Sprite;
+    class AnimatedSprite;
     class Renderer
     {
     public:
@@ -18,6 +19,7 @@ namespace Oasis
         static void DrawQuad(float x, float y, float w, float h, Reference<Texture> texture);
 
         static void DrawSprite(Reference<Sprite> sprite);
+        static void DrawAnimatedSprite(Reference<AnimatedSprite> sprite);
     private:
     };
 }

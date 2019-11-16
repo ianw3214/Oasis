@@ -7,6 +7,7 @@ using namespace Oasis;
 #include "core/windowService.hpp"
 
 #include "graphics/sprite.hpp"
+#include "graphics/animatedSprite.hpp"
 
 #include "resource/resourceManager.hpp"
 
@@ -161,4 +162,52 @@ void Renderer::DrawSprite(Reference<Sprite> sprite)
 	ib.bind();
 
 	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+}
+
+void Renderer::DrawAnimatedSprite(Reference<AnimatedSprite> sprite)
+{
+	float positions[16] = {
+		// coordinate 1
+		sprite->GetX(),
+		sprite->GetY(),
+		sprite->GetSourceX(),
+		sprite->GetSourceY(),
+		// coordinate 2
+		sprite->GetX(),
+		sprite->GetY() + sprite->GetHeight(),
+		sprite->GetSourceX(),
+		sprite->GetSourceY() + sprite->GetSourceHeight(),
+		// coordinate 3
+		sprite->GetX() + sprite->GetWidth(),
+		sprite->GetY(),
+		sprite->GetSourceX() + sprite->GetSourceWidth(),
+		sprite->GetSourceY(),
+		// coordinate 4
+		sprite->GetX() + sprite->GetWidth(),
+		sprite->GetY() + sprite->GetHeight(),
+		sprite->GetSourceX() + sprite->GetSourceWidth(),
+		sprite->GetSourceY() + sprite->GetSourceHeight()
+		
+	};
+	VertexArray		va;
+	VertexBuffer	vb(positions, sizeof(float) * 16);
+	IndexBuffer		ib(SQUARE_INDICES, 6);
+	// Specify the layout of the buffer data
+	VertexBufferLayout layout;
+	layout.pushFloat(2);
+	layout.pushFloat(2);
+	va.addBuffer(vb, layout);
+
+	// Bind the texture and draw
+	Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
+	texture->bind();
+	spriteShader->bind();
+	spriteShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));
+	spriteShader->setUniform1f("u_textureHeight", static_cast<float>(texture->getHeight()));
+	va.bind();
+	ib.bind();
+
+	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+
+	sprite->UpdateFrame();
 }

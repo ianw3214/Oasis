@@ -3,9 +3,11 @@ add_subdirectory(opengl)
 target_sources(Oasis PRIVATE 
     renderer.hpp
     textRenderer.hpp
-    sprite.hpp)
+    sprite.hpp
+    animatedSprite.hpp)
 
 target_sources(Oasis PRIVATE 
     renderer.cpp
     textRenderer.cpp
-    sprite.cpp)
+    sprite.cpp
+    animatedSprite.cpp)

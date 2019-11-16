@@ -26,3 +26,5 @@ Follow the [setup instructions here](setup.md).
 - [ ] Convert fonts to use resource system
 - [ ] Convert shaders to use resource system
 - [ ] Gamestate with layer system
+- [ ] Implement custom dynamic cast for pointer classes
+- [ ] Make sprite animation be based on timers

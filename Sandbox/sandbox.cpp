@@ -39,4 +39,17 @@ void Sandbox::Update()
     sprite.SetSourcePos(30.f, 30.f);
     sprite.SetSourceDimensions(60.f, 60.f);
     Oasis::Renderer::DrawSprite(sprite);
+
+    static bool initialized = false;
+    static Oasis::AnimatedSprite sprite2("res/animate.png", 64.f, 80.f);
+    if (!initialized)
+    {
+        initialized = true;
+        sprite2.SetPos(300.f, 300.f);
+        sprite2.SetDimensions(200.f, 200.f);
+        sprite2.AddAnimation("default", 0, 1);
+        sprite2.PlayAnimation("default");
+    }
+    Oasis::Renderer::DrawAnimatedSprite(sprite2);
+
 }
