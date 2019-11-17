@@ -1,12 +1,20 @@
 #include "oasis.h"
 
-class Sandbox : public Oasis::IState
+class SandboxLayer : public Oasis::GameStateLayer
 {
 public:
     virtual void Init() override;
     virtual void Close() override;
 
-    virtual void OnEvent(const Oasis::Event& event) override;
+    virtual bool HandleEvent(const Oasis::Event& event) override;
     virtual void Update()  override;
-private:
+};
+
+class Sandbox : public Oasis::GameState
+{
+public:
+    virtual void InitLayers() override
+    {
+        AddLayer(new SandboxLayer());
+    }
 };

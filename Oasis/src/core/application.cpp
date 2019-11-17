@@ -60,7 +60,7 @@ Application::Application(const Configuration& config)
     // Initialize subsystems
     WindowService::Init(this);
     ResourceManager::Init();
-    StateManager::Init(config.m_state);
+    StateManager::Init(config.m_initState());
     Renderer::Init();
     TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));

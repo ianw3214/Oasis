@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 namespace Oasis
 {
     class Event;
@@ -12,7 +14,7 @@ namespace Oasis
         int m_height;
         const char * m_name;
 
-        IState * m_state;
+        std::function<IState*()> m_initState;
     };
     Configuration GetConfiguration();
 

@@ -3,7 +3,7 @@
 #include "oasis.h"
 #include "graphics/opengl/texture.hpp"
 
-void Sandbox::Init() 
+void SandboxLayer::Init() 
 {
     Oasis::Reference<Oasis::AudioResource> audio = Oasis::ResourceManager::LoadResource<Oasis::AudioResource>("res/test.wav");
     Oasis::AudioSource * source = new Oasis::AudioSource();
@@ -12,17 +12,17 @@ void Sandbox::Init()
     Oasis::TextRenderer::LoadFont("res/Munro.ttf");
 }
 
-void Sandbox::Close() 
+void SandboxLayer::Close() 
 {
 
 }
 
-void Sandbox::OnEvent(const Oasis::Event& event)
+bool SandboxLayer::HandleEvent(const Oasis::Event& event)
 {
-    
+    return false;
 }
 
-void Sandbox::Update()
+void SandboxLayer::Update()
 {
     Oasis::Reference<Oasis::Texture> test = Oasis::ResourceManager::GetResource<Oasis::Texture>("res/animate.png");
 

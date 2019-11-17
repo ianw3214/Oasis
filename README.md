@@ -16,7 +16,7 @@ Follow the [setup instructions here](setup.md).
 - [x] Text Rendering
 - [x] Resource System for textures (Try to make extensible for other things as well)
 - [x] Renderer Draw Texture From Source
-- [ ] Animated Sprites
+- [x] Animated Sprites
 - [x] Setup application to be accessible from anywhere in code (singleton or manager class)
 - [ ] Make CMake generate more visual studio friendly project
 - [x] Add header for colour
@@ -25,6 +25,6 @@ Follow the [setup instructions here](setup.md).
 - [x] Smart Pointer/Reference headers
 - [ ] Convert fonts to use resource system
 - [ ] Convert shaders to use resource system
-- [ ] Gamestate with layer system
+- [x] Gamestate with layer system
 - [ ] Implement custom dynamic cast for pointer classes
 - [ ] Make sprite animation be based on timers
