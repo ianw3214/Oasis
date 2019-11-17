@@ -7,7 +7,8 @@ using namespace Oasis;
 
 AnimatedSprite::AnimatedSprite()
     : Sprite()
-    , m_counter(0)
+    , m_millisecondsPerFrame(kDefaultMsPerFrame)
+    , m_lastUpdate(std::chrono::system_clock::now())
     , m_frameIndex(0)
     , m_currAnimation("")
 {
@@ -16,7 +17,8 @@ AnimatedSprite::AnimatedSprite()
 
 AnimatedSprite::AnimatedSprite(const std::string& path, float frame_w, float frame_h)
     : Sprite(path)
-    , m_counter(0)
+    , m_millisecondsPerFrame(kDefaultMsPerFrame)
+    , m_lastUpdate(std::chrono::system_clock::now())
     , m_frameIndex(0)
     , m_currAnimation("")
 {
@@ -34,6 +36,10 @@ AnimatedSprite::~AnimatedSprite()
 
 }
 
+void AnimatedSprite::SetFPS(int fps)
+{
+    m_millisecondsPerFrame = 1000 / fps;
+}
 
 void AnimatedSprite::AddAnimation(const std::string& name, unsigned int start, unsigned int end)
 {
@@ -44,13 +50,10 @@ void AnimatedSprite::UpdateFrame()
 {
     // Only update the frame if the timer is up
     // TODO: Use a timer instead of counting ticks
-    if (m_counter < 2)
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - m_lastUpdate);
+    if (duration.count() >= m_millisecondsPerFrame)
     {
-        m_counter++;
-    }
-    else
-    {
-        m_counter = 0;
+        m_lastUpdate = std::chrono::system_clock::now();
         m_frameIndex++;
         if (m_frameIndex > m_frames[m_currAnimation].second)
         {
@@ -84,6 +87,8 @@ void AnimatedSprite::PlayAnimation(const std::string& name, unsigned int loops)
     m_currAnimation = name;
     m_frameIndex = m_frames[m_currAnimation].first;
     UpdateSourcePosFromFrame();
+
+    m_lastUpdate = std::chrono::system_clock::now();
 }
 
 void AnimatedSprite::QueueAnimation(const std::string& name, unsigned int loops)
