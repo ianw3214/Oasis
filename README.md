@@ -27,5 +27,9 @@ Follow the [setup instructions here](setup.md).
 - [ ] Convert shaders to use resource system
 - [x] Gamestate with layer system
 - [ ] Implement custom dynamic cast for pointer classes
-- [ ] Make sprite animation be based on timers
-- [ ] Write better ImGui logic
+- [x] Make sprite animation be based on timers
+- [x] Write better ImGui logic
+- [x] Use git submodules
+- [ ] Integrate FrameBuffer code
+- [ ] Logger
+- [ ] Profiler

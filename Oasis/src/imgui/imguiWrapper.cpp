@@ -13,6 +13,8 @@ using namespace Oasis;
 #include "events/mouseEvent.hpp"
 #include "events/textEvent.hpp"
 
+std::vector<std::function<void()>> ImGuiWrapper::s_windowFunctions;
+
 // Data
 static SDL_Cursor * g_mouseCursors[ImGuiMouseCursor_COUNT] = {};
 
@@ -67,6 +69,10 @@ void ImGuiWrapper::Shutdown()
     
 }
 
+void ImGuiWrapper::AddWindowFunction(std::function<void()> func)
+{
+    s_windowFunctions.push_back(func);
+}
 
 void ImGuiWrapper::OnEvent(const Event & event)
 {
@@ -141,13 +147,13 @@ void ImGuiWrapper::Update(float deltaTime)
     ImGuiIO& io = ImGui::GetIO();
     io.DeltaTime = deltaTime;
 
-    /*
     ImGui_ImplOpenGL3_NewFrame();
     ImGui::NewFrame();
 
-    static bool show = true;
-    ImGui::ShowDemoWindow(&show);
-    */
+    for (auto func : s_windowFunctions)
+    {
+        func();
+    }
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

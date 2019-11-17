@@ -89,15 +89,10 @@ void Application::OnEvent(const Event& event)
     ImGuiWrapper::OnEvent(event);
 }
 
-// TODO: Make this a callback to push onto the ImGui wrapper
-static void DisplayApplicationInfo(double microseconds)
+void DisplayApplicationInfo(double * microseconds)
 {
-    double ms = static_cast<double>(microseconds) / 1000.0;
-    int fps = static_cast<int>(1000000.0 / microseconds);
-
-    // TODO: Move this back to ImGui wrapper
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui::NewFrame();
+    double ms = static_cast<double>(*microseconds) / 1000.0;
+    int fps = static_cast<int>(1000000.0 / *microseconds);
 
     static bool show = true;
     ImGui::Begin("APPLICATION INFO", &show, ImGuiWindowFlags_MenuBar);
@@ -109,6 +104,7 @@ void Application::Run()
 {
     // Initialize the duration to 24 fps
     double duration = 1000000.0 / 24.0;
+    ImGuiWrapper::AddWindowFunction(std::bind(DisplayApplicationInfo, &duration));
 
     // TODO: Move this somewhere else
     StateManager::CurrentState()->Init();
@@ -122,7 +118,6 @@ void Application::Run()
         InputManager::Update();
         StateManager::CurrentState()->Update();
 
-        DisplayApplicationInfo(duration);
         ImGuiWrapper::Update(static_cast<float>(duration / 1000.0));
 
         SDL_GL_SwapWindow(m_impl->m_window);
