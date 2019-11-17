@@ -26,7 +26,7 @@ Follow the [setup instructions here](setup.md).
 - [ ] Convert fonts to use resource system
 - [ ] Convert shaders to use resource system
 - [x] Gamestate with layer system
-- [ ] Implement custom dynamic cast for pointer classes
+- [x] Implement custom dynamic cast for pointer classes
 - [x] Make sprite animation be based on timers
 - [x] Write better ImGui logic
 - [x] Use git submodules

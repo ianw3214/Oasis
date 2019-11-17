@@ -34,7 +34,7 @@ namespace Oasis
     Reference<T> ResourceManager::LoadResource(const std::string& path)
     {
         GetInstance()->m_resources[path] = T::Load(path);
-        return Reference(dynamic_cast<T*>(GetInstance()->m_resources[path].GetData()));
+        return DynamicCast<T>(GetInstance()->m_resources[path]);
     }
 
     template<class T>
@@ -44,6 +44,6 @@ namespace Oasis
         {
             LoadResource<T>(path);
         }
-        return Reference(dynamic_cast<T*>(GetInstance()->m_resources[path].GetData()));
+        return DynamicCast<T>(GetInstance()->m_resources[path]);
     }
 }

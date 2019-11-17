@@ -93,4 +93,16 @@ namespace Oasis
     private:
         T * m_data;
     };
+
+    template <typename TARGET, typename BASE>
+    inline Reference<TARGET> DynamicCast(Owned<BASE>& base)
+    {
+        return Reference(dynamic_cast<TARGET*>(base.GetData()));
+    }
+
+    template <typename TARGET, typename BASE>
+    inline Reference<TARGET> DynamicCast(Reference<BASE> base)
+    {
+        return Reference(dynamic_cast<TARGET*>(base.GetData()));
+    }
 }
