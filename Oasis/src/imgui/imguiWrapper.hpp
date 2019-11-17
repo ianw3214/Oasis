@@ -10,6 +10,6 @@ namespace Oasis
         static void Shutdown();
 
         static void OnEvent(const Event& event);
-        static void Update();
+        static void Update(float deltaTime);
     };
 }

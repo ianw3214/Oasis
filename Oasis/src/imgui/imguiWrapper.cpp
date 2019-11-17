@@ -5,6 +5,8 @@ using namespace Oasis;
 #include "imgui_impl_opengl3.h"
 #include <SDL2/SDL.h>
 
+#include "core/windowService.hpp"
+
 #include "events/inputManager.hpp"
 #include "events/event.hpp"
 #include "events/keyEvent.hpp"
@@ -20,6 +22,7 @@ void ImGuiWrapper::Init()
     ImGui::StyleColorsDark();
 
     ImGuiIO& io = ImGui::GetIO();
+    io.DisplaySize = ImVec2(static_cast<float>(WindowService::WindowWidth()), static_cast<float>(WindowService::WindowHeight()));
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
     io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 
@@ -131,19 +134,20 @@ static void UpdateInputStates()
     }
 }
 
-void ImGuiWrapper::Update()
+void ImGuiWrapper::Update(float deltaTime)
 {
     UpdateInputStates();
 
     ImGuiIO& io = ImGui::GetIO();
-    io.DeltaTime = (1.0f / 60.0f);
-    io.DisplaySize = ImVec2(1280.f, 720.f);
+    io.DeltaTime = deltaTime;
 
+    /*
     ImGui_ImplOpenGL3_NewFrame();
     ImGui::NewFrame();
 
     static bool show = true;
     ImGui::ShowDemoWindow(&show);
+    */
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -28,3 +28,4 @@ Follow the [setup instructions here](setup.md).
 - [x] Gamestate with layer system
 - [ ] Implement custom dynamic cast for pointer classes
 - [ ] Make sprite animation be based on timers
+- [ ] Write better ImGui logic
