@@ -1,0 +1,3 @@
+[submodule "Oasis/vendor/stb"]
+	path = Oasis/vendor/stb
+	url = https://github.com/nothings/stb.git

@@ -1,1 +1,0 @@
-target_sources(Oasis PRIVATE stb_image.h)
