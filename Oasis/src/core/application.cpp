@@ -3,10 +3,7 @@ using namespace Oasis;
 
 #include <chrono>
 
-#include <SDL2/SDL.h>
-#include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
-#include <imgui.h>
+#include <imgui/imgui.h>
 
 #include "util/trap.hpp"
 
@@ -27,18 +24,11 @@ using namespace Oasis;
 
 #include "audio/audio.hpp"
 
-struct Application::Impl
-{
-    SDL_Window * m_window;
-    SDL_GLContext m_context;
-};
-
 Application::Application(const Configuration& config)
     : m_width(config.m_width)
     , m_height(config.m_height)
-    , m_impl(new Impl())
 {
-    m_impl->m_window = SDL_CreateWindow(
+    m_window = SDL_CreateWindow(
         config.m_name,
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
@@ -46,9 +36,9 @@ Application::Application(const Configuration& config)
         config.m_height,
         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
-    OASIS_TRAP(m_impl->m_window);
-    m_impl->m_context = SDL_GL_CreateContext(m_impl->m_window);
-    OASIS_TRAP(m_impl->m_context);
+    OASIS_TRAP(m_window);
+    m_context = SDL_GL_CreateContext(m_window);
+    OASIS_TRAP(m_context);
 
     // Enable vsync
 	SDL_GL_SetSwapInterval(1);
@@ -75,8 +65,7 @@ Application::Application(const Configuration& config)
 
 Application::~Application()
 {
-    SDL_DestroyWindow(m_impl->m_window);
-    delete m_impl;
+    SDL_DestroyWindow(m_window);
 }
 
 void Application::OnEvent(const Event& event)
@@ -86,7 +75,6 @@ void Application::OnEvent(const Event& event)
         m_running = false;
     }
     StateManager::CurrentState()->OnEvent(event);
-    ImGuiWrapper::OnEvent(event);
 }
 
 void DisplayApplicationInfo(double * microseconds)
@@ -120,7 +108,7 @@ void Application::Run()
 
         ImGuiWrapper::Update(static_cast<float>(duration / 1000.0));
 
-        SDL_GL_SwapWindow(m_impl->m_window);
+        SDL_GL_SwapWindow(m_window);
         ////////////////////////////////////////////////////////////////
 
         duration = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - updateStart).count());

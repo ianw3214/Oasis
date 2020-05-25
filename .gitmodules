@@ -1,3 +1,7 @@
 [submodule "Oasis/vendor/stb"]
 	path = Oasis/vendor/stb
 	url = https://github.com/nothings/stb.git
+[submodule "Oasis/vendor/imgui"]
+	path = Oasis/vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking

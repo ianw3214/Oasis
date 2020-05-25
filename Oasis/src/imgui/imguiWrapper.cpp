@@ -1,8 +1,9 @@
 #include "imguiWrapper.hpp"
 using namespace Oasis;
 
-#include <imgui.h>
+#include <imgui/imgui.h>
 #include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
 #include <SDL2/SDL.h>
 
 #include "core/windowService.hpp"
@@ -20,53 +21,35 @@ static SDL_Cursor * g_mouseCursors[ImGuiMouseCursor_COUNT] = {};
 
 void ImGuiWrapper::Init()
 {
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+
+    // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
-    ImGuiIO& io = ImGui::GetIO();
-    io.DisplaySize = ImVec2(static_cast<float>(WindowService::WindowWidth()), static_cast<float>(WindowService::WindowHeight()));
-    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-    io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
 
-    // TODO: Use own key codes
-    io.KeyMap[ImGuiKey_Tab] = SDL_SCANCODE_TAB;
-    io.KeyMap[ImGuiKey_LeftArrow] = SDL_SCANCODE_LEFT;
-    io.KeyMap[ImGuiKey_RightArrow] = SDL_SCANCODE_RIGHT;
-    io.KeyMap[ImGuiKey_UpArrow] = SDL_SCANCODE_UP;
-    io.KeyMap[ImGuiKey_DownArrow] = SDL_SCANCODE_DOWN;
-    io.KeyMap[ImGuiKey_PageUp] = SDL_SCANCODE_PAGEUP;
-    io.KeyMap[ImGuiKey_PageDown] = SDL_SCANCODE_PAGEDOWN;
-    io.KeyMap[ImGuiKey_Home] = SDL_SCANCODE_HOME;
-    io.KeyMap[ImGuiKey_End] = SDL_SCANCODE_END;
-    io.KeyMap[ImGuiKey_Insert] = SDL_SCANCODE_INSERT;
-    io.KeyMap[ImGuiKey_Delete] = SDL_SCANCODE_DELETE;
-    io.KeyMap[ImGuiKey_Backspace] = SDL_SCANCODE_BACKSPACE;
-    io.KeyMap[ImGuiKey_Space] = SDL_SCANCODE_SPACE;
-    io.KeyMap[ImGuiKey_Enter] = SDL_SCANCODE_RETURN;
-    io.KeyMap[ImGuiKey_Escape] = SDL_SCANCODE_ESCAPE;
-    io.KeyMap[ImGuiKey_KeyPadEnter] = SDL_SCANCODE_RETURN2;
-    io.KeyMap[ImGuiKey_A] = SDL_SCANCODE_A;
-    io.KeyMap[ImGuiKey_C] = SDL_SCANCODE_C;
-    io.KeyMap[ImGuiKey_V] = SDL_SCANCODE_V;
-    io.KeyMap[ImGuiKey_X] = SDL_SCANCODE_X;
-    io.KeyMap[ImGuiKey_Y] = SDL_SCANCODE_Y;
-    io.KeyMap[ImGuiKey_Z] = SDL_SCANCODE_Z;
-
-    g_mouseCursors[ImGuiMouseCursor_Arrow] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
-    g_mouseCursors[ImGuiMouseCursor_TextInput] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_IBEAM);
-    g_mouseCursors[ImGuiMouseCursor_ResizeAll] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
-    g_mouseCursors[ImGuiMouseCursor_ResizeNS] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENS);
-    g_mouseCursors[ImGuiMouseCursor_ResizeEW] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE);
-    g_mouseCursors[ImGuiMouseCursor_ResizeNESW] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENESW);
-    g_mouseCursors[ImGuiMouseCursor_ResizeNWSE] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENWSE);
-    g_mouseCursors[ImGuiMouseCursor_Hand] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
-
+    // Setup Platform/Renderer bindings
+    ImGui_ImplSDL2_InitForOpenGL(WindowService::GetWindow(), WindowService::GetContext());
     ImGui_ImplOpenGL3_Init("#version 330");
 }
 
 void ImGuiWrapper::Shutdown()
 {
-    
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void ImGuiWrapper::AddWindowFunction(std::function<void()> func)
@@ -74,81 +57,57 @@ void ImGuiWrapper::AddWindowFunction(std::function<void()> func)
     s_windowFunctions.push_back(func);
 }
 
-void ImGuiWrapper::OnEvent(const Event & event)
+void ImGuiWrapper::OnEvent(const SDL_Event& event)
 {
-    ImGuiIO& io = ImGui::GetIO();
-    if (event.GetType() == EventType::MOUSE_MOVE)
-    {
-        const MouseMovedEvent& mouseEvent = dynamic_cast<const MouseMovedEvent&>(event);
-        io.MousePos = ImVec2(static_cast<float>(mouseEvent.GetX()), static_cast<float>(mouseEvent.GetY()));
-    }
-    if (event.GetType() == EventType::MOUSE_SCROLL)
-    {
-        const MouseScrolledEvent& mouseEvent = dynamic_cast<const MouseScrolledEvent&>(event);
-        if (mouseEvent.GetHorizontalScroll() > 0) io.MouseWheelH += 1;
-        if (mouseEvent.GetHorizontalScroll() < 0) io.MouseWheelH -= 1;
-        if (mouseEvent.GetVerticalScroll() > 0) io.MouseWheel += 1;
-        if (mouseEvent.GetVerticalScroll() < 0) io.MouseWheel -= 1;
-    }
-    if (event.GetType() == EventType::TEXT_INPUT)
-    {
-        const TextInputEvent& textEvent = dynamic_cast<const TextInputEvent&>(event);
-        io.AddInputCharactersUTF8(textEvent.GetText());
-    }
-    if (event.GetType() == EventType::KEY_PRESSED)
-    {
-        const KeyPressedEvent& keyEvent = dynamic_cast<const KeyPressedEvent&>(event);
-        io.KeysDown[keyEvent.GetKey()] = true;
-        // TODO: Find a better way to handle this
-        io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
-        io.KeyCtrl = ((SDL_GetModState() & KMOD_CTRL) != 0);
-        io.KeyAlt = ((SDL_GetModState() & KMOD_ALT) != 0);
-        io.KeySuper = ((SDL_GetModState() & KMOD_GUI) != 0);
-    }
-    if (event.GetType() == EventType::KEY_RELEASED)
-    {
-        const KeyReleasedEvent& keyEvent = dynamic_cast<const KeyReleasedEvent&>(event);
-        io.KeysDown[keyEvent.GetKey()] = false;
-        // TODO: Find a better way to handle this
-        io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
-        io.KeyCtrl = ((SDL_GetModState() & KMOD_CTRL) != 0);
-        io.KeyAlt = ((SDL_GetModState() & KMOD_ALT) != 0);
-        io.KeySuper = ((SDL_GetModState() & KMOD_GUI) != 0);
-    }
-}
-
-static void UpdateInputStates()
-{
-    ImGuiIO& io = ImGui::GetIO();
-
-    io.MouseDown[0] = InputManager::MouseHeld();
-
-    if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) == 0)
-    {
-        ImGuiMouseCursor imgui_cursor = ImGui::GetMouseCursor();
-        if (io.MouseDrawCursor || imgui_cursor == ImGuiMouseCursor_None)
-        {
-            // Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
-            SDL_ShowCursor(SDL_FALSE);
-        }
-        else
-        {
-            // Show OS mouse cursor
-            SDL_SetCursor(g_mouseCursors[imgui_cursor] ? g_mouseCursors[imgui_cursor] : g_mouseCursors[ImGuiMouseCursor_Arrow]);
-            SDL_ShowCursor(SDL_TRUE);
-        }
-    }
+    ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
 void ImGuiWrapper::Update(float deltaTime)
 {
-    UpdateInputStates();
-
     ImGuiIO& io = ImGui::GetIO();
     io.DeltaTime = deltaTime;
 
+    // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame(WindowService::GetWindow());
     ImGui::NewFrame();
+
+    {   // Docking windows
+        ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+        dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode;
+        dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode;
+        dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar;
+        dockspace_flags ^= ImGuiDockNodeFlags_NoResize;
+
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+        ImGuiViewport* viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(viewport->GetWorkPos());
+        ImGui::SetNextWindowSize(viewport->GetWorkSize());
+        ImGui::SetNextWindowViewport(viewport->ID);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+        if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+            window_flags |= ImGuiWindowFlags_NoBackground;
+
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::Begin("DockSpace Demo", nullptr, window_flags);
+        ImGui::PopStyleVar();
+
+        ImGui::PopStyleVar(2);
+
+        // DockSpace
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        {
+            ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+            ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+        }
+        
+        ImGui::End();
+    }
 
     for (auto func : s_windowFunctions)
     {
@@ -156,5 +115,18 @@ void ImGuiWrapper::Update(float deltaTime)
     }
 
     ImGui::Render();
+    glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    // Update and Render additional Platform Windows
+    // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
+    //  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+        SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+    }
 }

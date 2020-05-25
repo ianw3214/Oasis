@@ -3,6 +3,8 @@
 #include <vector>
 #include <functional>
 
+#include <SDL2/SDL.h>
+
 namespace Oasis
 {
     class Event;
@@ -14,7 +16,7 @@ namespace Oasis
 
         static void AddWindowFunction(std::function<void()> func);
 
-        static void OnEvent(const Event& event);
+        static void OnEvent(const SDL_Event& event);
         static void Update(float deltaTime);
     private:
         static std::vector<std::function<void()>> s_windowFunctions;

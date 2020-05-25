@@ -2,6 +2,10 @@
 
 #include <functional>
 
+#include <SDL2/SDL.h>
+#include <GL/glew.h>
+#include <SDL2/SDL_opengl.h>
+
 namespace Oasis
 {
     class Event;
@@ -25,9 +29,6 @@ namespace Oasis
         Application(const Configuration& config);
         ~Application();
 
-        inline int Width() const { return m_width; }
-        inline int Height() const { return m_height; }
-
         void OnEvent(const Event& e);
         void Run();
 
@@ -37,7 +38,9 @@ namespace Oasis
         int m_width;
         int m_height;
 
-        struct Impl;
-        Impl * m_impl;
+        SDL_Window * m_window;
+        SDL_GLContext m_context;
+    private:
+        friend class WindowService;
     };
 }

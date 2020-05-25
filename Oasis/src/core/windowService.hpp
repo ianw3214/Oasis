@@ -1,5 +1,9 @@
 #pragma once
 
+#include <SDL2/SDL.h>
+#include <GL/glew.h>
+#include <SDL2/SDL_opengl.h>
+
 namespace Oasis
 {
     class Application;
@@ -10,6 +14,9 @@ namespace Oasis
         
         static int WindowWidth();
         static int WindowHeight();
+
+        static SDL_Window* GetWindow();
+        static SDL_GLContext GetContext();
     private:
         static Application * s_application;
     };

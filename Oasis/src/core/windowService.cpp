@@ -12,10 +12,20 @@ void WindowService::Init(Application * application)
 
 int WindowService::WindowWidth()
 {
-    return s_application->Width();
+    return s_application->m_width;
 }
 
 int WindowService::WindowHeight()
 {
-    return s_application->Height();
+    return s_application->m_height;
+}
+
+SDL_Window* WindowService::GetWindow()
+{
+    return s_application->m_window;
+}
+
+SDL_GLContext WindowService::GetContext()
+{
+    return s_application->m_context;
 }
