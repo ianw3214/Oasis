@@ -7,9 +7,13 @@ using namespace Oasis;
 
 #include "util/trap.hpp"
 
+#include "imgui/imguiWrapper.hpp"
+#include "imgui/imgui_impl_opengl3.h"
+
 #include "core/windowService.hpp"
 #include "core/state.hpp"
 #include "core/stateManager.hpp"
+#include "core/console.hpp"
 
 #include "resource/resourceManager.hpp"
 
@@ -18,9 +22,6 @@ using namespace Oasis;
 
 #include "events/inputManager.hpp"
 #include "events/event.hpp"
-
-#include "imgui/imguiWrapper.hpp"
-#include "imgui/imgui_impl_opengl3.h"
 
 #include "audio/audio.hpp"
 
@@ -53,14 +54,18 @@ Application::Application(const Configuration& config)
 
     // Initialize subsystems
     WindowService::Init(this);
+    ImGuiWrapper::Init();
+
     ResourceManager::Init();
     StateManager::Init(config.m_initState());
     Renderer::Init();
     TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
-    ImGuiWrapper::Init();
+
     AudioEngine::Init();
     AudioEngine::SetListenerData();
+
+    Console::Init();
 }
 
 Application::~Application()
