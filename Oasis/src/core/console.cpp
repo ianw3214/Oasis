@@ -6,8 +6,9 @@
 #include <ctype.h>
 
 bool Oasis::Console::s_show = false;
-char Oasis::Console::m_inputBuf[256];
-std::vector<char *> Oasis::Console::m_items;
+char Oasis::Console::s_inputBuf[256];
+std::vector<char *> Oasis::Console::s_items;
+std::unordered_map<std::string, std::function<void()>> Oasis::Console::s_commands;
 
 static char* Strdup(const char* s)
 { 
@@ -17,22 +18,24 @@ static char* Strdup(const char* s)
     return (char*)memcpy(buf, (const void*)s, len); 
 }
 
-// In C++11 you'd be better off using lambdas for this sort of forwarding callbacks
-static int TextEditCallbackStub(ImGuiInputTextCallbackData* data)
-{
-    // TODO: This really doesn't need to go through this function stub
-    return Oasis::Console::TextEditCallback(data);
-}
-
 void Oasis::Console::Init()
 {
     Oasis::ImGuiWrapper::AddWindowFunction(&Draw);
+
+    // Default console commands
+    Oasis::Console::SetCommand("clear", [](){
+        ClearLog();
+    });
 }
 
 void Oasis::Console::ToggleShow()
 {
     s_show = !s_show;
-    AddLog("TEST");
+}
+
+void Oasis::Console::SetCommand(const std::string& command, std::function<void()> func)
+{
+    s_commands[command] = func;
 }
 
 void Oasis::Console::AddLog(const char* fmt, ...)
@@ -44,7 +47,7 @@ void Oasis::Console::AddLog(const char* fmt, ...)
     vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
     buf[IM_ARRAYSIZE(buf)-1] = 0;
     va_end(args);
-    m_items.push_back(Strdup(buf));
+    s_items.push_back(Strdup(buf));
 }
 
 void Oasis::Console::Draw()
@@ -62,9 +65,9 @@ void Oasis::Console::Draw()
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4,1)); // Tighten spacing
-    for (unsigned int i = 0; i < m_items.size(); i++)
+    for (unsigned int i = 0; i < s_items.size(); i++)
     {
-        const char* item = m_items[i];
+        const char* item = s_items[i];
         
         // Normally you would store more information in your item than just a string.
         // (e.g. make Items[] an array of structure, store color/type etc.)
@@ -89,9 +92,9 @@ void Oasis::Console::Draw()
 
     bool reclaim_focus = false;
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-    if (ImGui::InputText("Input", m_inputBuf, IM_ARRAYSIZE(m_inputBuf), input_text_flags, &TextEditCallbackStub))
+    if (ImGui::InputText("Input", s_inputBuf, IM_ARRAYSIZE(s_inputBuf), input_text_flags, &TextEditCallback))
     {
-        char* s = m_inputBuf;
+        char* s = s_inputBuf;
         // Strtrim(s);
         if (s[0])
             ExecCommand(s);
@@ -109,20 +112,19 @@ void Oasis::Console::Draw()
 
 void Oasis::Console::ClearLog()
 {
-    for (unsigned int i = 0; i < m_items.size(); i++)
-        free(m_items[i]);
-    m_items.clear();
+    for (unsigned int i = 0; i < s_items.size(); i++)
+        free(s_items[i]);
+    s_items.clear();
 }
 
 void Oasis::Console::ExecCommand(const char* command)
 {
     AddLog("# %s\n", command);
 
-    // TODO: Implement better
-    // Process command
-    if (strcmpi(command, "CLEAR") == 0)
+    auto it = s_commands.find(command);
+    if (it != s_commands.end())
     {
-        ClearLog();
+        (it->second)();
     }
     else
     {

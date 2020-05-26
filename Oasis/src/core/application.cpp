@@ -66,6 +66,11 @@ Application::Application(const Configuration& config)
     AudioEngine::SetListenerData();
 
     Console::Init();
+
+    // Console commands
+    Console::SetCommand("exit", [&](){
+        m_running = false;
+    });
 }
 
 Application::~Application()

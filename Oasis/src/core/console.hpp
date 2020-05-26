@@ -1,6 +1,9 @@
 #pragma once
 
+#include <string>
 #include <vector>
+#include <unordered_map>
+#include <functional>
 
 struct ImGuiInputTextCallbackData;
 namespace Oasis
@@ -10,6 +13,7 @@ namespace Oasis
     public:
         static void Init();
         static void ToggleShow();
+        static void SetCommand(const std::string& command, std::function<void()> func);
 
         static void AddLog(const char* fmt, ...);
     private:
@@ -18,8 +22,9 @@ namespace Oasis
         static void ExecCommand(const char* command);
 
         static bool s_show;
-        static char m_inputBuf[256];
-        static std::vector<char *> m_items;
+        static char s_inputBuf[256];
+        static std::vector<char *> s_items;
+        static std::unordered_map<std::string, std::function<void()>> s_commands;
     public:
         static int TextEditCallback(ImGuiInputTextCallbackData* data);
     };
