@@ -5,6 +5,7 @@
 
 #include <ctype.h>
 
+bool Oasis::Console::s_show = false;
 char Oasis::Console::m_inputBuf[256];
 std::vector<char *> Oasis::Console::m_items;
 
@@ -28,6 +29,12 @@ void Oasis::Console::Init()
     Oasis::ImGuiWrapper::AddWindowFunction(&Draw);
 }
 
+void Oasis::Console::ToggleShow()
+{
+    s_show = !s_show;
+    AddLog("TEST");
+}
+
 void Oasis::Console::AddLog(const char* fmt, ...)
 {
     // FIXME-OPT
@@ -42,7 +49,8 @@ void Oasis::Console::AddLog(const char* fmt, ...)
 
 void Oasis::Console::Draw()
 {
-    ImGui::Begin("console", nullptr);
+    if (!s_show) return;
+    ImGui::Begin("console");
 
     // Reserve enough left-over height for 1 separator + 1 input text
     const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();

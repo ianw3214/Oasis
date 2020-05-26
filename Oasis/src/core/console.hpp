@@ -9,6 +9,7 @@ namespace Oasis
     {
     public:
         static void Init();
+        static void ToggleShow();
 
         static void AddLog(const char* fmt, ...);
     private:
@@ -16,6 +17,7 @@ namespace Oasis
         static void ClearLog();
         static void ExecCommand(const char* command);
 
+        static bool s_show;
         static char m_inputBuf[256];
         static std::vector<char *> m_items;
     public:

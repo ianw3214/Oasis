@@ -4,6 +4,7 @@ using namespace Oasis;
 #include <SDL2/SDL.h>
 
 #include "core/application.hpp"
+#include "core/console.hpp"
 
 #include <imgui/imgui.h>
 #include "imgui/imguiWrapper.hpp"
@@ -40,6 +41,12 @@ void InputManager::Update()
         {
             KeyPressedEvent keyEvent(e.key.keysym.scancode);
             s_eventCallback(keyEvent);
+
+            // Extra buttons to handle engine stuff
+            if (e.key.keysym.scancode == SDL_SCANCODE_GRAVE)
+            {
+                Oasis::Console::ToggleShow();
+            }
         }
 
         if (e.type == SDL_KEYUP && !io.WantCaptureKeyboard)
