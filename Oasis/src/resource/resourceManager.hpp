@@ -16,34 +16,34 @@ namespace Oasis
         static void Shutdown();
 
         template<class T>
-        static Reference<T> LoadResource(const std::string& path);
+        static Ref<T> LoadResource(const std::string& path);
         
         template<class T>
-        static Reference<T> GetResource(const std::string& path);
+        static Ref<T> GetResource(const std::string& path);
 
         static void UnloadResource(const std::string& path);
     private:
         static ResourceManager * GetInstance();
-        std::unordered_map<std::string, Owned<Resource>> m_resources;
+        std::unordered_map<std::string, Resource*> m_resources;
     };
 }
 
 namespace Oasis
 {
     template<class T>
-    Reference<T> ResourceManager::LoadResource(const std::string& path)
+    Ref<T> ResourceManager::LoadResource(const std::string& path)
     {
         GetInstance()->m_resources[path] = T::Load(path);
-        return DynamicCast<T>(GetInstance()->m_resources[path]);
+        return dynamic_cast<T*>(GetInstance()->m_resources[path]);
     }
 
     template<class T>
-    Reference<T> ResourceManager::GetResource(const std::string& path)
+    Ref<T> ResourceManager::GetResource(const std::string& path)
     {
         if (GetInstance()->m_resources.find(path) == GetInstance()->m_resources.end())
         {
             LoadResource<T>(path);
         }
-        return DynamicCast<T>(GetInstance()->m_resources[path]);
+        return dynamic_cast<T*>(GetInstance()->m_resources[path]);
     }
 }

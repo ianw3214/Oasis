@@ -27,7 +27,7 @@ Sprite::Sprite(const std::string& path)
     , m_srcY(0.f)
     , m_texturePath(path)
 {
-    Reference<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
+    Ref<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
     OASIS_TRAP(texture);
     m_width = m_srcWidth = static_cast<float>(texture->getWidth());
     m_height = m_srcHeight = static_cast<float>(texture->getHeight());

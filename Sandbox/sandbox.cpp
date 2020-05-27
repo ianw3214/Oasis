@@ -5,7 +5,7 @@
 
 void SandboxLayer::Init() 
 {
-    Oasis::Reference<Oasis::AudioResource> audio = Oasis::ResourceManager::LoadResource<Oasis::AudioResource>("res/test.wav");
+    Ref<Oasis::AudioResource> audio = Oasis::ResourceManager::LoadResource<Oasis::AudioResource>("res/test.wav");
     Oasis::AudioSource * source = new Oasis::AudioSource();
     // source->Play(audio);
 
@@ -24,7 +24,7 @@ bool SandboxLayer::HandleEvent(const Oasis::Event& event)
 
 void SandboxLayer::Update()
 {
-    Oasis::Reference<Oasis::Texture> test = Oasis::ResourceManager::GetResource<Oasis::Texture>("res/animate.png");
+    Ref<Oasis::Texture> test = Oasis::ResourceManager::GetResource<Oasis::Texture>("res/animate.png");
 
     Oasis::Renderer::DrawLine(0.f, 0.f, 1280.f, 720.f, Oasis::Colour{0.f, 1.f, 1.f});
     Oasis::Renderer::DrawQuad(0.f, 0.f, 100.f, 100.f, Oasis::Colour{0.2f, 0.2f, 0.5f});
@@ -38,7 +38,7 @@ void SandboxLayer::Update()
     sprite.SetDimensions(50.f, 50.f);
     sprite.SetSourcePos(30.f, 30.f);
     sprite.SetSourceDimensions(60.f, 60.f);
-    Oasis::Renderer::DrawSprite(sprite);
+    Oasis::Renderer::DrawSprite(&sprite);
 
     static bool initialized = false;
     static Oasis::AnimatedSprite sprite2("res/animate.png", 64.f, 80.f);
@@ -50,6 +50,6 @@ void SandboxLayer::Update()
         sprite2.AddAnimation("default", 0, 1);
         sprite2.PlayAnimation("default");
     }
-    Oasis::Renderer::DrawAnimatedSprite(sprite2);
+    Oasis::Renderer::DrawAnimatedSprite(&sprite2);
 
 }

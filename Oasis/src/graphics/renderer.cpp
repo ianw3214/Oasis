@@ -92,7 +92,7 @@ void Renderer::DrawQuad(float x, float y, float w, float h, const Colour& colour
 	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawQuad(float x, float y, float w, float h, Reference<Texture> texture)
+void Renderer::DrawQuad(float x, float y, float w, float h, Ref<Texture> texture)
 {
 	float positions[16] = {
 		x, y, 0.f, 0.f,
@@ -118,7 +118,7 @@ void Renderer::DrawQuad(float x, float y, float w, float h, Reference<Texture> t
 	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawSprite(Reference<Sprite> sprite)
+void Renderer::DrawSprite(Ref<Sprite> sprite)
 {
 	float positions[16] = {
 		// coordinate 1
@@ -153,7 +153,7 @@ void Renderer::DrawSprite(Reference<Sprite> sprite)
 	va.addBuffer(vb, layout);
 
 	// Bind the texture and draw
-	Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
+	Ref<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
 	texture->bind();
 	spriteShader->bind();
 	spriteShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));
@@ -164,7 +164,7 @@ void Renderer::DrawSprite(Reference<Sprite> sprite)
 	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawAnimatedSprite(Reference<AnimatedSprite> sprite)
+void Renderer::DrawAnimatedSprite(Ref<AnimatedSprite> sprite)
 {
 	float positions[16] = {
 		// coordinate 1
@@ -199,7 +199,7 @@ void Renderer::DrawAnimatedSprite(Reference<AnimatedSprite> sprite)
 	va.addBuffer(vb, layout);
 
 	// Bind the texture and draw
-	Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
+	Ref<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
 	texture->bind();
 	spriteShader->bind();
 	spriteShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));

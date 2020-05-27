@@ -32,6 +32,6 @@ namespace Oasis
 
         void AddLayer(GameStateLayer * layer);
     private:
-        std::vector<Owned<GameStateLayer>> m_layers;
+        std::vector<GameStateLayer*> m_layers;
     };  
 }

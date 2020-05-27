@@ -23,7 +23,7 @@ Follow the [setup instructions here](setup.md).
 - [x] Add header for traps
 - [ ] Precompiled headers
 - [x] Smart Pointer/Reference headers
-  - [ ] Get rid of smart pointers (I've decided I don't like them)
+  - [x] Get rid of smart pointers (I've decided I don't like them)
 - [ ] Convert fonts to use resource system
 - [ ] Convert shaders to use resource system
 - [x] Gamestate with layer system
@@ -34,4 +34,4 @@ Follow the [setup instructions here](setup.md).
 - [ ] Integrate FrameBuffer code
 - [ ] Logger
 - [ ] Profiler
-- [ ] Console
+- [x] Console

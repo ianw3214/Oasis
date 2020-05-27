@@ -16,10 +16,10 @@ namespace Oasis
         // TODO: Make a vec class for positions
         static void DrawLine(float x1, float y1, float x2, float y2, const Colour& colour);
         static void DrawQuad(float x, float y, float w, float h, const Colour& colour);
-        static void DrawQuad(float x, float y, float w, float h, Reference<Texture> texture);
+        static void DrawQuad(float x, float y, float w, float h, Ref<Texture> texture);
 
-        static void DrawSprite(Reference<Sprite> sprite);
-        static void DrawAnimatedSprite(Reference<AnimatedSprite> sprite);
+        static void DrawSprite(Ref<Sprite> sprite);
+        static void DrawAnimatedSprite(Ref<AnimatedSprite> sprite);
     private:
     };
 }

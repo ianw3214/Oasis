@@ -11,6 +11,7 @@ void GameState::Close()
     for (auto& layer : m_layers)
     {
         layer->Close();
+        delete layer;
     }
 }
 
