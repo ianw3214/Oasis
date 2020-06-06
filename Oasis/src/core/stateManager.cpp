@@ -15,6 +15,8 @@ void StateManager::Init(IState * state)
 void StateManager::ChangeState(IState * newState)
 {
     OASIS_TRAP(newState);
+    if (m_currentState) m_currentState->Close();
     delete m_currentState;
     m_currentState = newState;
+    m_currentState->Init();
 }
