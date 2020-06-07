@@ -14,6 +14,8 @@ using namespace Oasis;
 #include "events/mouseEvent.hpp"
 #include "events/textEvent.hpp"
 
+#include "core/windowService.hpp"
+
 std::function<void(Event&)> InputManager::s_eventCallback;
 bool InputManager::s_mouseDown;
 
@@ -58,14 +60,14 @@ void InputManager::Update()
         // TODO: SPECIFY BETWEEN DIFFERENT MOUSE BUTTONS
         if (e.type == SDL_MOUSEBUTTONDOWN && !io.WantCaptureMouse)
         {
-            MousePressedEvent mouseEvent(e.button.x, e.button.y);
+            MousePressedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y);
             s_eventCallback(mouseEvent);
             s_mouseDown = true;
         }
 
         if (e.type == SDL_MOUSEBUTTONUP && !io.WantCaptureMouse)
         {
-            MouseReleasedEvent mouseEvent(e.button.x, e.button.y);
+            MouseReleasedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y);
             s_eventCallback(mouseEvent);
             s_mouseDown = false;
         }
