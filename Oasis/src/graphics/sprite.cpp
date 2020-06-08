@@ -15,6 +15,8 @@ Sprite::Sprite()
     , m_srcY(0.f)
     , m_srcWidth(0.f)
     , m_srcHeight(0.f)
+    , m_tint(Oasis::Colours::WHITE)
+    , m_tintAlpha(0.f)
     , m_texturePath("")
 {
 
@@ -25,6 +27,8 @@ Sprite::Sprite(const std::string& path)
     , m_y(0.f)
     , m_srcX(0.f)
     , m_srcY(0.f)
+    , m_tint(Oasis::Colours::WHITE)
+    , m_tintAlpha(0.f)
     , m_texturePath(path)
 {
     Ref<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
@@ -66,4 +70,10 @@ void Sprite::SetSourceDimensions(float w, float h)
 void Sprite::SetTexturePath(const std::string& path)
 {
     m_texturePath = path;
+}
+
+void Sprite::SetTint(const Oasis::Colour& colour, float alpha)
+{
+    m_tint = colour;
+    m_tintAlpha = alpha;
 }

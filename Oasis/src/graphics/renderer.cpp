@@ -158,6 +158,7 @@ void Renderer::DrawSprite(Ref<Sprite> sprite)
 	spriteShader->bind();
 	spriteShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));
 	spriteShader->setUniform1f("u_textureHeight", static_cast<float>(texture->getHeight()));
+	spriteShader->setUniform4f("u_tint", sprite->GetTint().r, sprite->GetTint().g, sprite->GetTint().b, sprite->GetTintAlpha());
 	va.bind();
 	ib.bind();
 
@@ -204,6 +205,7 @@ void Renderer::DrawAnimatedSprite(Ref<AnimatedSprite> sprite)
 	spriteShader->bind();
 	spriteShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));
 	spriteShader->setUniform1f("u_textureHeight", static_cast<float>(texture->getHeight()));
+	spriteShader->setUniform4f("u_tint", sprite->GetTint().r, sprite->GetTint().g, sprite->GetTint().b, sprite->GetTintAlpha());
 	va.bind();
 	ib.bind();
 

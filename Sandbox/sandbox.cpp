@@ -47,6 +47,7 @@ void SandboxLayer::Update()
         initialized = true;
         sprite2.SetPos(300.f, 300.f);
         sprite2.SetDimensions(200.f, 200.f);
+        sprite2.SetTint(Oasis::Colours::RED, 1.f);
         sprite2.AddAnimation("default", 0, 1);
         sprite2.PlayAnimation("default");
     }
