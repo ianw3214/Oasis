@@ -35,3 +35,5 @@ Follow the [setup instructions here](setup.md).
 - [ ] Logger
 - [ ] Profiler
 - [x] Console
+- [x] Sprite colour tinting
+- [ ] Make origin consistent (decide on where it is and make sure code matches it)
