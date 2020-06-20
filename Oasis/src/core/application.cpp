@@ -121,6 +121,6 @@ void Application::Run()
         SDL_GL_SwapWindow(m_window);
         ////////////////////////////////////////////////////////////////
 
-        duration = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - updateStart).count());
+        duration = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - updateStart).count());
     }
 }
