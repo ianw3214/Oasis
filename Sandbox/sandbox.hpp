@@ -13,7 +13,7 @@ public:
 class Sandbox : public Oasis::GameState
 {
 public:
-    virtual void InitLayers() override
+    virtual void CreateLayers() override
     {
         AddLayer(new SandboxLayer());
     }

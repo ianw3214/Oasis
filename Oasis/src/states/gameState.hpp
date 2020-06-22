@@ -25,7 +25,7 @@ namespace Oasis
         virtual void Init() override;
         virtual void Close() override;
 
-        virtual void InitLayers() = 0;
+        virtual void CreateLayers() = 0;
 
         virtual void OnEvent(const Event& event) override;
         virtual void Update() override;

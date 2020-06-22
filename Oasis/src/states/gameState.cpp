@@ -3,7 +3,11 @@ using namespace Oasis;
 
 void GameState::Init() 
 {
-    InitLayers();
+    CreateLayers();
+    for (GameStateLayer * layer : m_layers)
+    {
+        layer->Init();
+    }
 }
 
 void GameState::Close()
@@ -35,6 +39,5 @@ void GameState::Update()
 
 void GameState::AddLayer(GameStateLayer * layer)
 {
-    layer->Init();
     m_layers.push_back(layer);
 }
