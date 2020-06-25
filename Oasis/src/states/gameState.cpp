@@ -21,9 +21,10 @@ void GameState::Close()
 
 void GameState::OnEvent(const Event& event)
 {
-    for(auto& layer : m_layers)
+    // Use a reverse iterator so we can handle top layer to bottom order
+    for(auto it = m_layers.rbegin(); it != m_layers.rend(); ++it)
     {
-        bool handled = layer->HandleEvent(event);
+        bool handled = (*it)->HandleEvent(event);
         if (handled) break;
     }
 }

@@ -32,6 +32,7 @@ namespace Oasis
 
         void AddLayer(GameStateLayer * layer);
     private:
+        // The layers are sorted bottom to top
         std::vector<GameStateLayer*> m_layers;
     };  
 }
