@@ -26,7 +26,10 @@ void SandboxLayer::Update()
 {
     Ref<Oasis::Texture> test = Oasis::ResourceManager::GetResource<Oasis::Texture>("res/animate.png");
 
+    float linestrip[6] = {300.f, 0.f, 100.f, 100.f, 100.f, 200.f};
+
     Oasis::Renderer::DrawLine(0.f, 0.f, 1280.f, 720.f, Oasis::Colour{0.f, 1.f, 1.f});
+    Oasis::Renderer::DrawLineStrip(linestrip, 3, Oasis::Colours::GREEN);
     Oasis::Renderer::DrawQuad(0.f, 0.f, 100.f, 100.f, Oasis::Colour{0.2f, 0.2f, 0.5f});
     Oasis::Renderer::DrawQuad(100.f, 100.f, 100.f, 100.f, test);
 

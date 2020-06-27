@@ -66,6 +66,29 @@ void Renderer::DrawLine(float x1, float y1, float x2, float y2, const Colour& co
 	glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
+void Renderer::DrawLineStrip(float * data, int num_vertices, const Colour& colour)
+{
+	unsigned int * indices = new unsigned int[num_vertices];
+	for (unsigned int i = 0; i < num_vertices; ++i) indices[i] = i;
+
+	float * positions = data;
+	VertexArray va;
+	VertexBuffer vb(positions, sizeof(float) * num_vertices * 2);
+	IndexBuffer		ib(indices, num_vertices);
+	// Specify the layout of the buffer data
+	VertexBufferLayout layout;
+	layout.pushFloat(2);
+	va.addBuffer(vb, layout);
+
+	// Set the uniform to draw the right colour
+	basicShader->setUniform4f("u_Colour", colour.r, colour.g, colour.b, 1.f);
+	basicShader->bind();
+	va.bind();
+	ib.bind();
+
+	glDrawElements(GL_LINE_STRIP, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+}
+
 void Renderer::DrawQuad(float x, float y, float w, float h, const Colour& colour)
 {
     // TODO: Store buffers somewhere and adjust unfiforms to draw
