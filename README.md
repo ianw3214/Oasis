@@ -14,6 +14,7 @@ Follow the [setup instructions here](setup.md).
 - [x] Integrate ImGui
 - [x] Basic Audio Engine Setup
 - [x] Text Rendering
+  - [x] Load different fonts
 - [x] Resource System for textures (Try to make extensible for other things as well)
 - [x] Renderer Draw Texture From Source
 - [x] Animated Sprites

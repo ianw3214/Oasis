@@ -9,7 +9,8 @@ void SandboxLayer::Init()
     Oasis::AudioSource * source = new Oasis::AudioSource();
     // source->Play(audio);
 
-    Oasis::TextRenderer::LoadFont("res/Munro.ttf");
+    Oasis::TextRenderer::LoadFont("testfont", "res/Munro.ttf");
+    Oasis::TextRenderer::LoadFont("testfont2", "res/Munro.ttf", 64);
 }
 
 void SandboxLayer::Close() 
@@ -33,8 +34,9 @@ void SandboxLayer::Update()
     Oasis::Renderer::DrawQuad(0.f, 0.f, 100.f, 100.f, Oasis::Colour{0.2f, 0.2f, 0.5f});
     Oasis::Renderer::DrawQuad(100.f, 100.f, 100.f, 100.f, test);
 
-    Oasis::TextRenderer::DrawCharacter('c', 50.f, 50.f, Oasis::Colours::BLUE);
-    Oasis::TextRenderer::DrawString("test string", 50.f, 100.f, Oasis::Colours::WHITE);
+    Oasis::TextRenderer::DrawCharacter("testfont", 'c', 50.f, 50.f, Oasis::Colours::BLUE);
+    Oasis::TextRenderer::DrawString("testfont", "test string", 50.f, 100.f, Oasis::Colours::WHITE);
+    Oasis::TextRenderer::DrawString("testfont2", "test string 2", 350.f, 200.f, Oasis::Colours::WHITE);
 
     Oasis::Sprite sprite("res/animate.png");
     sprite.SetPos(200.f, 200.f);

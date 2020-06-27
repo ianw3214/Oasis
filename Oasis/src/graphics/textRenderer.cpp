@@ -6,7 +6,7 @@ using namespace Oasis;
 #include "core/windowService.hpp"
 
 FT_Library TextRenderer::s_ft;
-std::unordered_map<GLchar, Character> TextRenderer::s_characters;
+std::unordered_map<std::string, TextRenderer::CharMap> TextRenderer::s_fonts;
 Shader * TextRenderer::s_shader;
 
 void TextRenderer::Init()
@@ -24,13 +24,21 @@ void TextRenderer::Shutdown()
     FT_Done_FreeType(s_ft);
 }
 
-void TextRenderer::LoadFont(const std::string& path, int fontSize)
+void TextRenderer::LoadFont(const std::string& name, const std::string& path, int fontSize)
 {
     FT_Face face;
     FT_Error result = FT_New_Face(s_ft, path.c_str(), 0, &face);
     OASIS_TRAP(result == FT_Err_Ok);
 
     FT_Set_Pixel_Sizes(face, 0, fontSize);
+    if (s_fonts.find(name) == s_fonts.end())
+    {
+        s_fonts[name] = CharMap();
+    }
+    else
+    {
+        // TODO: Probably need to free existing font
+    }
 
     // Disable byte alignment restriction
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -52,18 +60,19 @@ void TextRenderer::LoadFont(const std::string& path, int fontSize)
             face->glyph->bitmap_top,
             static_cast<GLuint>(face->glyph->advance.x)
         };
-        s_characters.insert(std::pair<GLchar, Character>(c, character));
+        s_fonts[name].insert(std::pair<GLchar, Character>(c, character));
     }
 
     FT_Done_Face(face);
 }
 
-void TextRenderer::DrawCharacter(GLchar character, float x, float y, const Colour& colour)
+void TextRenderer::DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour)
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Character ch = s_characters[character];
+    OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
+    Character ch = s_fonts[font][character];
 
     GLfloat xpos = x + ch.m_bearingX;
     GLfloat ypos = y - (ch.m_height - ch.m_bearingY);
@@ -95,13 +104,15 @@ void TextRenderer::DrawCharacter(GLchar character, float x, float y, const Colou
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void TextRenderer::DrawString(const std::string& str, float x, float y, const Colour& colour)
+void TextRenderer::DrawString(const std::string& font, const std::string& str, float x, float y, const Colour& colour)
 {
     for (char c : str)
     {
-        Character ch = s_characters[c];
-        DrawCharacter(c, x, y, colour);
+        OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
+        // TODO: Optimization - can just pass in the found character instead of having to search again in DrawCharacter
+        DrawCharacter(font, c, x, y, colour);
 		// bit shift by 6 to get value in pixels
+        Character ch = s_fonts[font][c];
         x += ch.m_advance >> 6;
     }
 }
