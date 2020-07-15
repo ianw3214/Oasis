@@ -17,6 +17,8 @@ namespace Oasis
 
         static SDL_Window* GetWindow();
         static SDL_GLContext GetContext();
+
+        static float GetDeltaF();
     private:
         static Application * s_application;
     };

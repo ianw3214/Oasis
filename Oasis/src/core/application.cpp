@@ -89,7 +89,7 @@ void Application::OnEvent(const Event& event)
 
 void DisplayApplicationInfo(double * microseconds)
 {
-    double ms = static_cast<double>(*microseconds) / 1000.0;
+    double ms = static_cast<double>(*microseconds) * 1000.0;
     int fps = static_cast<int>(1000000.0 / *microseconds);
 
     static bool show = true;
@@ -101,8 +101,8 @@ void DisplayApplicationInfo(double * microseconds)
 void Application::Run()
 {
     // Initialize the duration to 24 fps
-    double duration = 1000000.0 / 24.0;
-    ImGuiWrapper::AddWindowFunction(std::bind(DisplayApplicationInfo, &duration));
+    m_delta = 1000000.0 / 24.0;
+    ImGuiWrapper::AddWindowFunction(std::bind(DisplayApplicationInfo, &m_delta));
 
     // TODO: Move this somewhere else
     StateManager::CurrentState()->Init();
@@ -116,11 +116,11 @@ void Application::Run()
         InputManager::Update();
         StateManager::CurrentState()->Update();
 
-        ImGuiWrapper::Update(static_cast<float>(duration / 1000.0));
+        ImGuiWrapper::Update(static_cast<float>(m_delta / 1000.0));
 
         SDL_GL_SwapWindow(m_window);
         ////////////////////////////////////////////////////////////////
 
-        duration = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - updateStart).count());
+        m_delta = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - updateStart).count());
     }
 }

@@ -8,6 +8,7 @@
 #include "core/state.hpp"
 #include "core/stateManager.hpp"
 #include "core/windowService.hpp"
+#include "core/console.hpp"
 
 #include "resource/resourceManager.hpp"
 
@@ -27,3 +28,5 @@
 #include "audio/source.hpp"
 
 #include "states/gameState.hpp"
+
+#include "imgui/imguiWrapper.hpp"

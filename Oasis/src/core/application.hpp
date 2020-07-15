@@ -34,6 +34,7 @@ namespace Oasis
 
     private:
         bool m_running;
+        double m_delta;
 
         int m_width;
         int m_height;
