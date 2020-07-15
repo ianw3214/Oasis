@@ -34,6 +34,7 @@ void SandboxLayer::Update()
     Oasis::Renderer::DrawQuad(0.f, 0.f, 100.f, 100.f, Oasis::Colour{0.2f, 0.2f, 0.5f});
     Oasis::Renderer::DrawQuad(100.f, 100.f, 100.f, 100.f, test);
 
+    Oasis::TextRenderer::DrawString("testfont2", "TEST ORIGIN testgg", 0.f, 0.f, Oasis::Colours::WHITE);
     Oasis::TextRenderer::DrawCharacter("testfont", 'c', 50.f, 50.f, Oasis::Colours::BLUE);
     Oasis::TextRenderer::DrawString("testfont", "test string", 50.f, 100.f, Oasis::Colours::WHITE);
     Oasis::TextRenderer::DrawString("testfont2", "test string 2", 350.f, 200.f, Oasis::Colours::WHITE);
