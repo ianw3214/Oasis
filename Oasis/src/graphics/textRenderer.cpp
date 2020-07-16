@@ -6,7 +6,7 @@ using namespace Oasis;
 #include "core/windowService.hpp"
 
 FT_Library TextRenderer::s_ft;
-std::unordered_map<std::string, TextRenderer::CharMap> TextRenderer::s_fonts;
+std::unordered_map<std::string, Font> TextRenderer::s_fonts;
 Shader * TextRenderer::s_shader;
 
 void TextRenderer::Init()
@@ -33,7 +33,8 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
     FT_Set_Pixel_Sizes(face, 0, fontSize);
     if (s_fonts.find(name) == s_fonts.end())
     {
-        s_fonts[name] = CharMap();
+        s_fonts[name] = Font();
+        s_fonts[name].m_bitmapTop = face->glyph->bitmap_top;
     }
     else
     {
@@ -60,7 +61,7 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
             face->glyph->bitmap_top,
             static_cast<GLuint>(face->glyph->advance.x)
         };
-        s_fonts[name].insert(std::pair<GLchar, Character>(c, character));
+        s_fonts[name].m_map.insert(std::pair<GLchar, Character>(c, character));
     }
 
     FT_Done_Face(face);
@@ -72,11 +73,11 @@ void TextRenderer::DrawCharacter(const std::string& font, GLchar character, floa
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
-    Character ch = s_fonts[font][character];
+    Character ch = s_fonts[font].m_map[character];
 
     GLfloat xpos = x + ch.m_bearingX;
     // TODO: Want to be able to specify text alignment
-    GLfloat ypos = y - ch.m_bearingY /*- (ch.m_height - ch.m_bearingY) */;
+    GLfloat ypos = y - ch.m_bearingY + s_fonts[font].m_bitmapTop /*- (ch.m_height - ch.m_bearingY) */;
 
     GLfloat w = static_cast<float>(ch.m_width);
     GLfloat h = static_cast<float>(ch.m_height);
@@ -113,7 +114,7 @@ void TextRenderer::DrawString(const std::string& font, const std::string& str, f
         // TODO: Optimization - can just pass in the found character instead of having to search again in DrawCharacter
         DrawCharacter(font, c, x, y, colour);
 		// bit shift by 6 to get value in pixels
-        Character ch = s_fonts[font][c];
+        Character ch = s_fonts[font].m_map[c];
         x += ch.m_advance >> 6;
     }
 }

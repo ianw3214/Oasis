@@ -26,6 +26,16 @@ namespace Oasis
         GLuint m_advance;
     };
 
+    //////////////////////////////////////////////////////////////////////////
+    struct Font
+    {
+        typedef std::unordered_map<GLchar, Character> CharMap;
+        CharMap m_map;
+
+        int m_bitmapTop;
+    };
+
+
     const std::string kTextVertexPath = "res/shaders/text_vertex.glsl";
     const std::string kTextFragmentPath = "res/shaders/text_fragment.glsl";
 
@@ -41,10 +51,9 @@ namespace Oasis
         static void DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour);
         static void DrawString(const std::string& font, const std::string& str, float x, float y, const Colour& colour);
     private:
-        typedef std::unordered_map<GLchar, Character> CharMap;
 
         static FT_Library s_ft;
-        static std::unordered_map<std::string, CharMap> s_fonts;
+        static std::unordered_map<std::string, Font> s_fonts;
         static Shader * s_shader;
     };
 }
