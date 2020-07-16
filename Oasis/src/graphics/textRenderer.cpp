@@ -67,6 +67,13 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
     FT_Done_Face(face);
 }
 
+const Font& TextRenderer::GetFont(const std::string& name)
+{
+    auto font = s_fonts.find(name);
+    OASIS_TRAP(s_fonts.find(name) != s_fonts.end())
+    return font->second;
+}
+
 void TextRenderer::DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour)
 {
     glEnable(GL_BLEND);
