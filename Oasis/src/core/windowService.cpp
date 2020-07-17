@@ -32,5 +32,5 @@ SDL_GLContext WindowService::GetContext()
 
 float WindowService::GetDeltaF()
 {
-    return static_cast<float>(s_application->m_delta) * 1000.0;
+    return static_cast<float>(s_application->m_delta) / 1000.0;
 }
