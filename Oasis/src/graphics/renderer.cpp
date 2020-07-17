@@ -141,7 +141,7 @@ void Renderer::DrawQuad(float x, float y, float w, float h, Ref<Texture> texture
 	glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawSprite(Ref<Sprite> sprite)
+void Renderer::DrawSprite(const Ref<Sprite> sprite)
 {
 	float positions[16] = {
 		// coordinate 1
