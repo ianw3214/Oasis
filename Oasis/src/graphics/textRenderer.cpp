@@ -112,8 +112,9 @@ void TextRenderer::DrawCharacter(const std::string& font, GLchar character, floa
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void TextRenderer::DrawString(const std::string& font, const std::string& str, float x, float y, const Colour& colour)
+int TextRenderer::DrawString(const std::string& font, const std::string& str, float x, float y, const Colour& colour)
 {
+    int length = 0;
     for (char c : str)
     {
         OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
@@ -122,5 +123,7 @@ void TextRenderer::DrawString(const std::string& font, const std::string& str, f
 		// bit shift by 6 to get value in pixels
         Character ch = s_fonts[font].m_map[c];
         x += ch.m_advance >> 6;
+        length += ch.m_advance >> 6;
     }
+    return length;
 }

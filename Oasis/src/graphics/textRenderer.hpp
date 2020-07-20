@@ -49,7 +49,7 @@ namespace Oasis
         static const Font& GetFont(const std::string& name);
 
         static void DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour);
-        static void DrawString(const std::string& font, const std::string& str, float x, float y, const Colour& colour);
+        static int DrawString(const std::string& font, const std::string& str, float x, float y, const Colour& colour);
     private:
 
         static FT_Library s_ft;
