@@ -34,7 +34,6 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
     if (s_fonts.find(name) == s_fonts.end())
     {
         s_fonts[name] = Font();
-        s_fonts[name].m_bitmapTop = face->glyph->bitmap_top;
     }
     else
     {
@@ -84,7 +83,7 @@ void TextRenderer::DrawCharacter(const std::string& font, GLchar character, floa
 
     GLfloat xpos = x + ch.m_bearingX;
     // TODO: Want to be able to specify text alignment
-    GLfloat ypos = y - ch.m_bearingY + s_fonts[font].m_bitmapTop /*- (ch.m_height - ch.m_bearingY) */;
+    GLfloat ypos = y - ch.m_bearingY /*- (ch.m_height - ch.m_bearingY) */;
 
     GLfloat w = static_cast<float>(ch.m_width);
     GLfloat h = static_cast<float>(ch.m_height);

@@ -38,6 +38,8 @@ void SandboxLayer::Update()
     Oasis::TextRenderer::DrawCharacter("testfont", 'c', 50.f, 50.f, Oasis::Colours::BLUE);
     Oasis::TextRenderer::DrawString("testfont", "test string", 50.f, 100.f, Oasis::Colours::WHITE);
     Oasis::TextRenderer::DrawString("testfont2", "test string 2", 350.f, 200.f, Oasis::Colours::WHITE);
+    Oasis::Renderer::DrawLine(350.f, Oasis::WindowService::WindowHeight() - 200.f, 700.f, Oasis::WindowService::WindowHeight() - 200.f, Oasis::Colours::RED);
+    Oasis::Renderer::DrawQuad(350.f - 64.f, Oasis::WindowService::WindowHeight() - 200.f, 64.f, 64.f, Oasis::Colours::RED);
 
     Oasis::Sprite sprite("res/animate.png");
     sprite.SetPos(200.f, 200.f);

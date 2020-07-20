@@ -22,6 +22,7 @@ namespace Oasis
         // Offset from baseline to top left of glyph
         int m_bearingX;
         int m_bearingY;
+        // Offset from baseline to 
         // Offset to advance to the next glyph
         GLuint m_advance;
     };
@@ -31,8 +32,6 @@ namespace Oasis
     {
         typedef std::unordered_map<GLchar, Character> CharMap;
         CharMap m_map;
-
-        int m_bitmapTop;
     };
 
 
