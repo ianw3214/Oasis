@@ -69,7 +69,7 @@ void Renderer::DrawLine(float x1, float y1, float x2, float y2, const Colour& co
 void Renderer::DrawLineStrip(float * data, int num_vertices, const Colour& colour)
 {
 	unsigned int * indices = new unsigned int[num_vertices];
-	for (unsigned int i = 0; i < num_vertices; ++i) indices[i] = i;
+	for (unsigned int i = 0; i < (unsigned int) num_vertices; ++i) indices[i] = i;
 
 	float * positions = data;
 	VertexArray va;

@@ -19,7 +19,7 @@ namespace Oasis
         static void DrawQuad(float x, float y, float w, float h, const Colour& colour);
         static void DrawQuad(float x, float y, float w, float h, Ref<Texture> texture);
 
-        static void DrawSprite(const ConstRef<Sprite> const sprite);
+        static void DrawSprite(const ConstRef<Sprite> sprite);
         static void DrawAnimatedSprite(Ref<AnimatedSprite> sprite);
     private:
     };
