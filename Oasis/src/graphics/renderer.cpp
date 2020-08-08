@@ -89,7 +89,7 @@ void Renderer::DrawLineStrip(float * data, int num_vertices, const Colour& colou
 	glDrawElements(GL_LINE_STRIP, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawQuad(float x, float y, float w, float h, const Colour& colour)
+void Renderer::DrawQuad(float x, float y, float w, float h, const Colour& colour, float alpha)
 {
     // TODO: Store buffers somewhere and adjust unfiforms to draw
     float positions[8] = {
@@ -107,7 +107,7 @@ void Renderer::DrawQuad(float x, float y, float w, float h, const Colour& colour
 	va.addBuffer(vb, layout);
 
 	// Issue the actual draw call
-    basicShader->setUniform4f("u_Colour", colour.r, colour.g, colour.b, 1.f);
+    basicShader->setUniform4f("u_Colour", colour.r, colour.g, colour.b, alpha);
 	basicShader->bind();
 	va.bind();
 	ib.bind();

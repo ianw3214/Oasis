@@ -48,6 +48,8 @@ void SandboxLayer::Update()
     sprite.SetSourceDimensions(60.f, 60.f);
     Oasis::Renderer::DrawSprite(&sprite);
 
+    Oasis::Renderer::DrawQuad(0.f, 0.f, 500.f, 500.f, Oasis::Colours::WHITE, 0.2f);
+
     static bool initialized = false;
     static Oasis::AnimatedSprite sprite2("res/animate.png", 64.f, 80.f);
     if (!initialized)
