@@ -50,6 +50,19 @@ void Oasis::Console::AddLog(const char* fmt, ...)
     s_items.push_back(Strdup(buf));
 }
 
+void Oasis::Console::Error(const char* fmt, ...)
+{
+    // FIXME-OPT
+    char error[1024] = "[error] ";
+    char buf[1024 - 8];
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
+    buf[IM_ARRAYSIZE(buf)-1] = 0;
+    va_end(args);
+    s_items.push_back(Strdup(strcat(error, buf)));
+}
+
 void Oasis::Console::Draw()
 {
     if (!s_show) return;

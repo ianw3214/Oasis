@@ -11,6 +11,8 @@ void SandboxLayer::Init()
 
     Oasis::TextRenderer::LoadFont("testfont", "res/Munro.ttf");
     Oasis::TextRenderer::LoadFont("testfont2", "res/Munro.ttf", 64);
+
+    Oasis::Console::Error("TEST ERROR");
 }
 
 void SandboxLayer::Close() 

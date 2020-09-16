@@ -16,6 +16,7 @@ namespace Oasis
         static void SetCommand(const std::string& command, std::function<void()> func);
 
         static void AddLog(const char* fmt, ...);
+        static void Error(const char* fmt, ...);
     private:
         static void Draw();
         static void ClearLog();
