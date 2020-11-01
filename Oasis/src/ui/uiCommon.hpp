@@ -1,10 +1,13 @@
 #pragma once
 
+#include "util/colour.hpp"
+
 #include <vector>
 
 enum class UIType
 {
     NONE = 0,
+    BACKGROUND,
     COUNT
 };
 
@@ -28,4 +31,14 @@ struct UIElement
 
     // Handles the actual updating of the UI element
     UIType m_UIType;
+    // Handles the data needed for the UI
+    union
+    {
+        // Background drawing info
+        struct {
+            unsigned int m_borderWidth;
+            Oasis::Colour m_background;
+            Oasis::Colour m_border;
+        };
+    };
 };
