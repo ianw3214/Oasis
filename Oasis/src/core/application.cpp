@@ -25,6 +25,8 @@ using namespace Oasis;
 
 #include "audio/audio.hpp"
 
+#include "ui/uiManager.hpp"
+
 Application::Application(const Configuration& config)
     : m_width(config.m_width)
     , m_height(config.m_height)
@@ -66,6 +68,8 @@ Application::Application(const Configuration& config)
     AudioEngine::SetListenerData();
 
     Console::Init();
+
+    UIManager::Init();
 
     // Console commands
     Console::SetCommand("exit", [&](){
@@ -115,6 +119,7 @@ void Application::Run()
         Renderer::Clear({1.f, 0.f, 1.f});
         InputManager::Update();
         StateManager::CurrentState()->Update();
+        UIManager::Update();
 
         ImGuiWrapper::Update(static_cast<float>(m_delta / 1000.0));
 
