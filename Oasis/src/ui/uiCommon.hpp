@@ -6,11 +6,17 @@
 
 #include "uiFont.hpp"
 
+// Forward declarations
+namespace Oasis {
+    class Sprite;
+}
+
 enum class UIType
 {
     NONE = 0,
     BACKGROUND,
     TEXT,
+    TEXTURE,
     COUNT
 };
 
@@ -48,6 +54,12 @@ struct UIElement
             char * m_text;
             Oasis::Colour m_colour;
             UIFont m_font;
+        };
+        // Texture
+        struct {
+            char * m_path;
+            // Cached texture
+            Oasis::Sprite * m_cachedSprite;
         };
     };
 };

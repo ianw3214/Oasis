@@ -7,6 +7,7 @@
 #include "core/windowService.hpp"
 #include "graphics/renderer.hpp"
 #include "graphics/textRenderer.hpp"
+#include "graphics/sprite.hpp"
 
 // The root is the entire window
 UIElement UIManager::s_root;
@@ -64,6 +65,16 @@ void UIManager::Init()
     text2->m_colour = Oasis::Colours::GREEN;
     text2->m_font = UIFont::SMALL;
     test->m_children.push_back(text2);
+
+    UIElement * img = new UIElement();
+    img->m_width = 30;
+    img->m_height = 30;
+    img->m_anchor = UIAnchor::CENTER;
+    img->m_xOffset = 0;
+    img->m_yOffset = 0;
+    img->m_UIType = UIType::TEXTURE;
+    img->m_path = "res/animate.png";
+    test->m_children.push_back(img);
     ////////////////////////////////////////////////////////////////
 }
 
@@ -133,6 +144,16 @@ void UIManager::Update()
                 // Text drawing as also actually top aligned
                 const float y_adjusted = static_cast<float>(y + GetUIFontSize(curr->m_font));
                 const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), std::string(curr->m_text), (float) x, y_adjusted, curr->m_colour);
+            } break;
+            case UIType::TEXTURE: {
+                // Cache the sprite so we don't have to constantly recreate it
+                if (!curr->m_cachedSprite)
+                {
+                    curr->m_cachedSprite = new Oasis::Sprite(curr->m_path);
+                }
+                curr->m_cachedSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
+                curr->m_cachedSprite->SetPos((float)x, (float)y);
+                Oasis::Renderer::DrawSprite(curr->m_cachedSprite);
             } break;
             default: {
                 OASIS_TRAP(false && "UI Type should be assigned(Can be set to NONE)");
