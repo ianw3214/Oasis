@@ -37,5 +37,9 @@ Follow the [setup instructions here](setup.md).
 - [ ] Profiler
 - [x] Console
 - [x] Sprite colour tinting
-- [ ] Make origin consistent (decide on where it is and make sure code matches it)
+- [x] Make origin consistent (decide on where it is and make sure code matches it)
 - [ ] Handle resize events from SDL
+- [ ] UI System
+  - [ ] Dynamic text
+  - [ ] UI serializer
+  - [ ] UI editor

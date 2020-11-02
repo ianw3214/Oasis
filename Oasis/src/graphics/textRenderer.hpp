@@ -32,6 +32,8 @@ namespace Oasis
     {
         typedef std::unordered_map<GLchar, Character> CharMap;
         CharMap m_map;
+        // Store some additional info about the font
+        unsigned int m_size;
     };
 
 

@@ -63,6 +63,9 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
         s_fonts[name].m_map.insert(std::pair<GLchar, Character>(c, character));
     }
 
+    // Store some additional info as well
+    s_fonts[name].m_size = fontSize;
+
     FT_Done_Face(face);
 }
 
@@ -83,19 +86,19 @@ void TextRenderer::DrawCharacter(const std::string& font, GLchar character, floa
 
     GLfloat xpos = x + ch.m_bearingX;
     // TODO: Want to be able to specify text alignment
-    GLfloat ypos = y - ch.m_bearingY /*- (ch.m_height - ch.m_bearingY) */;
+    GLfloat ypos = y + ch.m_bearingY;
 
     GLfloat w = static_cast<float>(ch.m_width);
     GLfloat h = static_cast<float>(ch.m_height);
     // Update VBO for each character
     GLfloat vertices[6][4] = {
-        { xpos,     ypos + h,   0.0, 1.0 },            
+        { xpos,     ypos - h,   0.0, 1.0 },            
         { xpos,     ypos,       0.0, 0.0 },
         { xpos + w, ypos,       1.0, 0.0 },
 
-        { xpos,     ypos + h,   0.0, 1.0 },
+        { xpos,     ypos - h,   0.0, 1.0 },
         { xpos + w, ypos,       1.0, 0.0 },
-        { xpos + w, ypos + h,   1.0, 1.0 }           
+        { xpos + w, ypos - h,   1.0, 1.0 }           
     };
 
     VertexArray vao;

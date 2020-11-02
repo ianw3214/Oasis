@@ -8,7 +8,7 @@ uniform float u_screenHeight;
 void main()
 {
     float x = mix(-1.0, 1.0, vertex.x / u_screenWidth);
-    float y = mix(1.0, -1.0, vertex.y / u_screenHeight);
+    float y = mix(-1.0, 1.0, vertex.y / u_screenHeight);
     gl_Position = vec4(x, y, 0.0, 1.0);
     texCoords = vertex.zw;
 }

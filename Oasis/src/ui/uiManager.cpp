@@ -20,7 +20,7 @@ void UIManager::Init()
     Oasis::TextRenderer::LoadFont(GetUIFont(UIFont::SMALL), GetUIFontPath(UIFont::SMALL), GetUIFontSize(UIFont::SMALL));
 
     // Only some of these matter for the calculation but we set all of them anyways
-    s_root.m_anchor = UIAnchor::TOP_LEFT;
+    s_root.m_anchor = UIAnchor::BOTTOM_LEFT;
     s_root.m_width = Oasis::WindowService::WindowWidth();
     s_root.m_height = Oasis::WindowService::WindowHeight();
     s_root.m_xOffset = 0;
@@ -91,16 +91,16 @@ void UIManager::Update()
         switch(curr->m_anchor)
         {
             case UIAnchor::TOP_LEFT: {
-                x = parent_x, y = parent_y;
-            } break;
-            case UIAnchor::TOP_RIGHT: {
-                x = parent_x + parent_w, y = parent_y;
-            } break;
-            case UIAnchor::BOTTOM_LEFT: {
                 x = parent_x, y = parent_y + parent_h;
             } break;
-            case UIAnchor::BOTTOM_RIGHT: {
+            case UIAnchor::TOP_RIGHT: {
                 x = parent_x + parent_w, y = parent_y + parent_h;
+            } break;
+            case UIAnchor::BOTTOM_LEFT: {
+                x = parent_x, y = parent_y;
+            } break;
+            case UIAnchor::BOTTOM_RIGHT: {
+                x = parent_x + parent_w, y = parent_y;
             } break;
             case UIAnchor::CENTER: {
                 x = parent_x + parent_w / 2;
@@ -141,9 +141,7 @@ void UIManager::Update()
             } break;
             case UIType::TEXT: {
                 // TODO: Fix these issues in engine (or maybe not)
-                // Text drawing as also actually top aligned
-                const float y_adjusted = static_cast<float>(y + GetUIFontSize(curr->m_font));
-                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), std::string(curr->m_text), (float) x, y_adjusted, curr->m_colour);
+                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), std::string(curr->m_text), (float) x, (float) y, curr->m_colour);
             } break;
             case UIType::TEXTURE: {
                 // Cache the sprite so we don't have to constantly recreate it
