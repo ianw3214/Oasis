@@ -4,10 +4,13 @@
 
 #include <vector>
 
+#include "uiFont.hpp"
+
 enum class UIType
 {
     NONE = 0,
     BACKGROUND,
+    TEXT,
     COUNT
 };
 
@@ -39,6 +42,12 @@ struct UIElement
             unsigned int m_borderWidth;
             Oasis::Colour m_background;
             Oasis::Colour m_border;
+        };
+        // Font drawing info
+        struct {
+            char * m_text;
+            Oasis::Colour m_colour;
+            UIFont m_font;
         };
     };
 };

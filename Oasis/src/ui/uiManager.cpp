@@ -6,6 +6,7 @@
 
 #include "core/windowService.hpp"
 #include "graphics/renderer.hpp"
+#include "graphics/textRenderer.hpp"
 
 // The root is the entire window
 UIElement UIManager::s_root;
@@ -13,16 +14,21 @@ std::unordered_map<std::string, Ref<UIElement>> UIManager::s_UIElements;
 
 void UIManager::Init()
 {
-    // These don't actually matter for the root but we'll leave them in here anyways just in case
+    // Initialize the font resources used for UI
+    Oasis::TextRenderer::LoadFont(GetUIFont(UIFont::DEFAULT), GetUIFontPath(UIFont::DEFAULT), GetUIFontSize(UIFont::DEFAULT));
+    Oasis::TextRenderer::LoadFont(GetUIFont(UIFont::SMALL), GetUIFontPath(UIFont::SMALL), GetUIFontSize(UIFont::SMALL));
+
+    // Only some of these matter for the calculation but we set all of them anyways
     s_root.m_anchor = UIAnchor::TOP_LEFT;
     s_root.m_width = Oasis::WindowService::WindowWidth();
     s_root.m_height = Oasis::WindowService::WindowHeight();
     s_root.m_xOffset = 0;
     s_root.m_yOffset = 0;
-    // This is the only one that matters for root
     s_root.m_UIType = UIType::NONE;
 
+    ////////////////////////////////////////////////////////////////
     // DEBUG CODE
+    ////////////////////////////////////////////////////////////////
     UIElement * test = new UIElement();
     test->m_width = 100;
     test->m_height = 100;
@@ -31,9 +37,34 @@ void UIManager::Init()
     test->m_yOffset = -50;
     test->m_UIType = UIType::BACKGROUND;
     test->m_borderWidth = 3;
-    test->m_background = Oasis::Colours::GREEN;
-    test->m_border = Oasis::Colours::RED;
+    test->m_background = Oasis::Colours::BLACK;
+    test->m_border = Oasis::Colours::WHITE;
     s_root.m_children.push_back(test);
+
+    UIElement * text = new UIElement();
+    // text->m_width = 100;
+    // text->m_height = 100;
+    text->m_anchor = UIAnchor::TOP_LEFT;
+    text->m_xOffset = 0;
+    text->m_yOffset = 0;
+    text->m_UIType = UIType::TEXT;
+    text->m_text = "HELLO WORLD";
+    text->m_colour = Oasis::Colours::GREEN;
+    text->m_font = UIFont::DEFAULT;
+    test->m_children.push_back(text);
+
+    UIElement * text2 = new UIElement();
+    // text->m_width = 100;
+    // text->m_height = 100;
+    text2->m_anchor = UIAnchor::BOTTOM_RIGHT;
+    text2->m_xOffset = 0;
+    text2->m_yOffset = 0;
+    text2->m_UIType = UIType::TEXT;
+    text2->m_text = "HELLO WORLD 2";
+    text2->m_colour = Oasis::Colours::GREEN;
+    text2->m_font = UIFont::SMALL;
+    test->m_children.push_back(text2);
+    ////////////////////////////////////////////////////////////////
 }
 
 void UIManager::Update()
@@ -41,8 +72,6 @@ void UIManager::Update()
     typedef std::function<void(Ref<UIElement>, int, int, int, int)> f;
     f update_ui = [&](Ref<UIElement> curr, int parent_x, int parent_y, int parent_w, int parent_h) {
         OASIS_TRAP(parent_w >= 0 && parent_h >= 0);
-        const int winWidth = Oasis::WindowService::WindowWidth();
-        const int winHeight = Oasis::WindowService::WindowHeight();
         const unsigned int w = curr->m_width;
                 const unsigned int h = curr->m_height;
         // Calculate the x/y of our current UI Element
@@ -51,20 +80,20 @@ void UIManager::Update()
         switch(curr->m_anchor)
         {
             case UIAnchor::TOP_LEFT: {
-                x = 0, y = winHeight;
+                x = parent_x, y = parent_y;
             } break;
             case UIAnchor::TOP_RIGHT: {
-                x = winWidth, y = winHeight;
+                x = parent_x + parent_w, y = parent_y;
             } break;
             case UIAnchor::BOTTOM_LEFT: {
-                x = 0 , y = 0;
+                x = parent_x, y = parent_y + parent_h;
             } break;
             case UIAnchor::BOTTOM_RIGHT: {
-                x = winWidth, y = 0;
+                x = parent_x + parent_w, y = parent_y + parent_h;
             } break;
             case UIAnchor::CENTER: {
-                x = winWidth / 2;
-                y = winHeight / 2;
+                x = parent_x + parent_w / 2;
+                y = parent_y + parent_h / 2;
             } break;
             default: {
                 OASIS_TRAP(false && "UI Anchor should be assigned");
@@ -98,6 +127,12 @@ void UIManager::Update()
                     border[start++] = y + static_cast<float>(i);
                 }
                 Oasis::Renderer::DrawLineStrip(border, curr->m_borderWidth * 5, curr->m_border);
+            } break;
+            case UIType::TEXT: {
+                // TODO: Fix these issues in engine (or maybe not)
+                // Text drawing as also actually top aligned
+                const float y_adjusted = static_cast<float>(y + GetUIFontSize(curr->m_font));
+                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), std::string(curr->m_text), (float) x, y_adjusted, curr->m_colour);
             } break;
             default: {
                 OASIS_TRAP(false && "UI Type should be assigned(Can be set to NONE)");

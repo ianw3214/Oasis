@@ -1,3 +1,4 @@
 target_sources(Oasis PRIVATE uiManager.hpp uiManager.cpp)
 
 target_sources(Oasis PRIVATE uiCommon.hpp)
+target_sources(Oasis PRIVATE uiFont.hpp)
