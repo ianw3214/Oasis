@@ -12,6 +12,7 @@
 // The root is the entire window
 UIElement UIManager::s_root;
 std::unordered_map<std::string, Ref<UIElement>> UIManager::s_UIElements;
+UISerializer* UIManager::s_serializer;
 
 void UIManager::Init()
 {
@@ -27,9 +28,13 @@ void UIManager::Init()
     s_root.m_yOffset = 0;
     s_root.m_UIType = UIType::NONE;
 
+    s_serializer = new UISerializer();
+
     ////////////////////////////////////////////////////////////////
     // DEBUG CODE
     ////////////////////////////////////////////////////////////////
+    s_serializer->Deserialize("res/test.ui", &s_root);
+    /*
     UIElement * test = new UIElement();
     test->m_width = 100;
     test->m_height = 100;
@@ -75,6 +80,7 @@ void UIManager::Init()
     img->m_UIType = UIType::TEXTURE;
     img->m_path = "res/animate.png";
     test->m_children.push_back(img);
+    */
     ////////////////////////////////////////////////////////////////
 }
 

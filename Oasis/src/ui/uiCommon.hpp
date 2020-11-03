@@ -34,7 +34,7 @@ struct UIElement
 {
     unsigned int m_width, m_height;
     UIAnchor m_anchor;
-    unsigned int m_xOffset, m_yOffset;
+    int m_xOffset, m_yOffset;
     // Each UIElement has ownership of it's children
     std::vector<UIElement*> m_children;
 
@@ -51,7 +51,7 @@ struct UIElement
         };
         // Font drawing info
         struct {
-            char * m_text;
+            char * m_text;  // Need to remember to delete m_text, was allocated by serializer
             Oasis::Colour m_colour;
             UIFont m_font;
         };

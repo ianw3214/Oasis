@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "uiCommon.hpp"
+#include "uiSerializer.hpp"
 
 // Engine subsystems should be static classes
 class UIManager
@@ -19,4 +20,7 @@ private:
     static UIElement s_root;
     // Allow the access of UI elements from other parts of the code
     static std::unordered_map<std::string, Ref<UIElement>> s_UIElements;
+
+    // Useful subsystems
+    static UISerializer* s_serializer;
 };

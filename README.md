@@ -43,3 +43,8 @@ Follow the [setup instructions here](setup.md).
   - [ ] Dynamic text
   - [ ] UI serializer
   - [ ] UI editor
+
+## Optimizations
+
+- [ ] Draw entire string as one texture
+- [ ] Cache strings that don't change for text rendering
