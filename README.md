@@ -41,7 +41,8 @@ Follow the [setup instructions here](setup.md).
 - [ ] Handle resize events from SDL
 - [ ] UI System
   - [ ] Dynamic text
-  - [ ] UI serializer
+  - [x] UI serializer
+    - [ ] Automatically deserialize UI files in a certain folder
   - [ ] UI editor
 
 ## Optimizations

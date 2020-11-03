@@ -79,6 +79,8 @@ Application::Application(const Configuration& config)
 
 Application::~Application()
 {
+    UIManager::Shutdown();
+    
     SDL_DestroyWindow(m_window);
 }
 

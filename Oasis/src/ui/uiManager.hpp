@@ -13,6 +13,7 @@ class UIManager
 {
 public:
     static void Init();
+    static void Shutdown();
     static void Update();
 
     static Ref<UIElement> GetUIElement(const std::string& name);
@@ -23,4 +24,7 @@ private:
 
     // Useful subsystems
     static UISerializer* s_serializer;
+private:
+    // Helper functions
+    static void DeserializeUI();
 };

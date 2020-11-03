@@ -30,58 +30,12 @@ void UIManager::Init()
 
     s_serializer = new UISerializer();
 
-    ////////////////////////////////////////////////////////////////
-    // DEBUG CODE
-    ////////////////////////////////////////////////////////////////
-    s_serializer->Deserialize("res/test.ui", &s_root);
-    /*
-    UIElement * test = new UIElement();
-    test->m_width = 100;
-    test->m_height = 100;
-    test->m_anchor = UIAnchor::CENTER;
-    test->m_xOffset = -50;
-    test->m_yOffset = -50;
-    test->m_UIType = UIType::BACKGROUND;
-    test->m_borderWidth = 3;
-    test->m_background = Oasis::Colours::BLACK;
-    test->m_border = Oasis::Colours::WHITE;
-    s_root.m_children.push_back(test);
+    DeserializeUI();
+}
 
-    UIElement * text = new UIElement();
-    // text->m_width = 100;
-    // text->m_height = 100;
-    text->m_anchor = UIAnchor::TOP_LEFT;
-    text->m_xOffset = 0;
-    text->m_yOffset = 0;
-    text->m_UIType = UIType::TEXT;
-    text->m_text = "HELLO WORLD";
-    text->m_colour = Oasis::Colours::GREEN;
-    text->m_font = UIFont::DEFAULT;
-    test->m_children.push_back(text);
-
-    UIElement * text2 = new UIElement();
-    // text->m_width = 100;
-    // text->m_height = 100;
-    text2->m_anchor = UIAnchor::BOTTOM_RIGHT;
-    text2->m_xOffset = 0;
-    text2->m_yOffset = 0;
-    text2->m_UIType = UIType::TEXT;
-    text2->m_text = "HELLO WORLD 2";
-    text2->m_colour = Oasis::Colours::GREEN;
-    text2->m_font = UIFont::SMALL;
-    test->m_children.push_back(text2);
-
-    UIElement * img = new UIElement();
-    img->m_width = 30;
-    img->m_height = 30;
-    img->m_anchor = UIAnchor::CENTER;
-    img->m_xOffset = 0;
-    img->m_yOffset = 0;
-    img->m_UIType = UIType::TEXTURE;
-    img->m_path = "res/animate.png";
-    test->m_children.push_back(img);
-    */
-    ////////////////////////////////////////////////////////////////
+void UIManager::Shutdown()
+{
+    delete s_serializer;
 }
 
 void UIManager::Update()
@@ -181,4 +135,22 @@ Ref<UIElement> UIManager::GetUIElement(const std::string& name)
         return it->second;
     }
     return nullptr;
+}
+
+void UIManager::DeserializeUI()
+{
+    ////////////////////////////////////////////////////////////////
+    // DEBUG CODE
+    ////////////////////////////////////////////////////////////////
+    auto data = s_serializer->Deserialize("res/test.ui", &s_root);
+    for (const auto it : data.m_UIElements)
+    {
+        if (s_UIElements.find(it.first) != s_UIElements.end())
+        {
+            // We have 2 UI elements with the same name somewhere, BAD
+            OASIS_TRAP(false && "Two UI Elements with the same name - ambiguous");
+        }
+        s_UIElements[it.first] = it.second;
+    }
+    ////////////////////////////////////////////////////////////////
 }
