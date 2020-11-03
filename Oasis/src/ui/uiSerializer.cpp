@@ -29,8 +29,12 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
         {
             // Ignore comments
             if (line[0] == '#') continue;
-            // Parse the comma deliminated representation of a UI element
+
+            // The UI Element we are building
             UIElement * curr = new UIElement();
+            curr->m_show = true;
+
+            // Parse the comma deliminated representation of a UI element
             std::stringstream sstream(line);
             unsigned int counter = 0;
             while(sstream.good())

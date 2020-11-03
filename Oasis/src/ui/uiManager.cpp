@@ -21,6 +21,7 @@ void UIManager::Init()
     Oasis::TextRenderer::LoadFont(GetUIFont(UIFont::SMALL), GetUIFontPath(UIFont::SMALL), GetUIFontSize(UIFont::SMALL));
 
     // Only some of these matter for the calculation but we set all of them anyways
+    s_root.m_show = true;
     s_root.m_anchor = UIAnchor::BOTTOM_LEFT;
     s_root.m_width = Oasis::WindowService::WindowWidth();
     s_root.m_height = Oasis::WindowService::WindowHeight();
@@ -43,8 +44,12 @@ void UIManager::Update()
     typedef std::function<void(Ref<UIElement>, int, int, int, int)> f;
     f update_ui = [&](Ref<UIElement> curr, int parent_x, int parent_y, int parent_w, int parent_h) {
         OASIS_TRAP(parent_w >= 0 && parent_h >= 0);
+        if (!curr->m_show)
+        {
+            return;
+        }
         const unsigned int w = curr->m_width;
-                const unsigned int h = curr->m_height;
+        const unsigned int h = curr->m_height;
         // Calculate the x/y of our current UI Element
         int x = 0;
         int y = 0;
@@ -136,6 +141,22 @@ Ref<UIElement> UIManager::GetUIElement(const std::string& name)
     }
     return nullptr;
 }
+
+void UIManager::ShowWindow(const std::string& name)
+{
+    GetUIElement(name)->m_show = true;
+}
+
+void UIManager::HideWindow(const std::string& name)
+{
+    GetUIElement(name)->m_show = false;
+}
+
+void UIManager::ToggleWindow(const std::string& name)
+{
+    GetUIElement(name)->m_show = !GetUIElement(name)->m_show;
+}
+
 
 void UIManager::DeserializeUI()
 {

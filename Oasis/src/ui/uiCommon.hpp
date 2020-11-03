@@ -62,4 +62,7 @@ struct UIElement
             Oasis::Sprite * m_cachedSprite;
         };
     };
+
+    // Internal data for the manager to keep track of whether the UI element should be shown or not
+    bool m_show;
 };

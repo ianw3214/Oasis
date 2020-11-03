@@ -17,6 +17,10 @@ public:
     static void Update();
 
     static Ref<UIElement> GetUIElement(const std::string& name);
+
+    static void ShowWindow(const std::string& name);
+    static void HideWindow(const std::string& name);
+    static void ToggleWindow(const std::string& name);
 private:
     static UIElement s_root;
     // Allow the access of UI elements from other parts of the code

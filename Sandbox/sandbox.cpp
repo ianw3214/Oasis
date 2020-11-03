@@ -22,6 +22,10 @@ void SandboxLayer::Close()
 
 bool SandboxLayer::HandleEvent(const Oasis::Event& event)
 {
+    if (event.GetType() == Oasis::EventType::MOUSE_PRESS)
+    {
+        UIManager::ToggleWindow("TEST UI ELEMENT");
+    }
     return false;
 }
 

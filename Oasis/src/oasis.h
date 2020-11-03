@@ -29,4 +29,8 @@
 
 #include "states/gameState.hpp"
 
+#include "ui/uiFont.hpp"
+#include "ui/uiCommon.hpp"
+#include "ui/uiManager.hpp"
+
 #include "imgui/imguiWrapper.hpp"
