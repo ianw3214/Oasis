@@ -17,6 +17,7 @@ enum class UIType
     BACKGROUND,
     TEXT,
     TEXTURE,
+    TEXT_DYNAMIC,
     COUNT
 };
 
@@ -49,7 +50,7 @@ struct UIElement
             Oasis::Colour m_background;
             Oasis::Colour m_border;
         };
-        // Font drawing info
+        // Text drawing info
         struct {
             char * m_text;  // Need to remember to delete m_text, was allocated by serializer
             Oasis::Colour m_colour;
@@ -60,6 +61,12 @@ struct UIElement
             char * m_path;
             // Cached texture
             Oasis::Sprite * m_cachedSprite;
+        };
+        // Dynamic text drawing info
+        struct {
+            char * m_formatString;
+            Oasis::Colour m_colour;
+            UIFont m_font;
         };
     };
 

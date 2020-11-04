@@ -3,8 +3,17 @@
 #include <string>
 #include <unordered_map>
 
+enum class BoundVariableType
+{
+    INT = 0,
+    UINT,
+    STR,
+    NONE
+};
+
 struct BoundVariable
 {
+    BoundVariableType m_type;
     // Use a union to store all the different types there are
     union {
         int m_int;
@@ -14,6 +23,7 @@ struct BoundVariable
 };
 
 // The UI Manager will own an instance of this class, so NOT a static class
+// TODO: Maybe wanna rename to UIBoundVariableManager?
 class UIBoundVariables
 {
 public:
@@ -26,10 +36,13 @@ public:
 
     int GetVariableInt(const std::string& var_name);
     unsigned int GetVariableUint(const std::string& var_name);
-    const std::string& GetVariableStr(const std::string& var_name);
+    const char * GetVariableStr(const std::string& var_name);
+
+    std::string GetVariableAsString(const std::string& var_name);
 private:
     std::unordered_map<std::string, BoundVariable> m_variables;
 
+    // TODO: Only create by default when setting variable, not when getting
     inline BoundVariable& GetVariable(const std::string& var_name)
     {
         auto it = m_variables.find(var_name);
@@ -37,6 +50,7 @@ private:
         {
             m_variables[var_name] = BoundVariable{};
             // Initialize to 0
+            m_variables[var_name].m_type = BoundVariableType::INT;
             m_variables[var_name].m_int = 0;
         }
         return m_variables[var_name];

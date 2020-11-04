@@ -54,6 +54,10 @@ void SandboxLayer::Update()
     sprite.SetSourceDimensions(60.f, 60.f);
     Oasis::Renderer::DrawSprite(&sprite);
 
+    static int i = 0;
+    i++;
+    UIManager::SetBoundVariableInt("TEST", i);
+
     Oasis::Renderer::DrawQuad(0.f, 0.f, 500.f, 500.f, Oasis::Colours::WHITE, 0.2f);
 
     static bool initialized = false;

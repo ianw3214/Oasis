@@ -13,6 +13,7 @@
 UIElement UIManager::s_root;
 std::unordered_map<std::string, Ref<UIElement>> UIManager::s_UIElements;
 UISerializer* UIManager::s_serializer;
+UIBoundVariables * UIManager::s_boundVariables;
 
 void UIManager::Init()
 {
@@ -30,12 +31,14 @@ void UIManager::Init()
     s_root.m_UIType = UIType::NONE;
 
     s_serializer = new UISerializer();
+    s_boundVariables = new UIBoundVariables();
 
     DeserializeUI();
 }
 
 void UIManager::Shutdown()
 {
+    delete s_boundVariables;
     delete s_serializer;
 }
 
@@ -105,7 +108,6 @@ void UIManager::Update()
                 Oasis::Renderer::DrawLineStrip(border, curr->m_borderWidth * 5, curr->m_border);
             } break;
             case UIType::TEXT: {
-                // TODO: Fix these issues in engine (or maybe not)
                 const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), std::string(curr->m_text), (float) x, (float) y, curr->m_colour);
             } break;
             case UIType::TEXTURE: {
@@ -120,6 +122,39 @@ void UIManager::Update()
             } break;
             default: {
                 OASIS_TRAP(false && "UI Type should be assigned(Can be set to NONE)");
+            } break;
+            case UIType::TEXT_DYNAMIC: {
+                // TODO: Optimizable with caching
+                // Will need to keep track of which variables have become dirty
+                // First resolve the format string to see what bound variables we need to set
+                OASIS_TRAP(curr->m_formatString);
+                std::string originalString(curr->m_formatString);
+                std::string resolvedString(curr->m_formatString);
+                char * token = curr->m_formatString;
+                unsigned int varStartIndex = 0;
+                unsigned int counter = 0;
+                bool varStarted = false;
+                while(*token != '\0')
+                {
+                    // Start the find here
+                    if (*token == '<')
+                    {
+                        varStartIndex = counter + 1;
+                        varStarted = true;
+                    }
+                    if (*token == '>')
+                    {
+                        varStarted = false;
+                        // variable length
+                        const unsigned int len = counter - varStartIndex;
+                        std::string var_name = originalString.substr(varStartIndex, len);
+                        std::string value = s_boundVariables->GetVariableAsString(var_name);
+                        resolvedString.replace(varStartIndex - 1, len + 2, value);
+                    }
+                    token++;
+                    counter++;
+                }
+                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), resolvedString, (float) x, (float) y, curr->m_colour);
             } break;
         }
         // Recurse over children
@@ -157,6 +192,21 @@ void UIManager::ToggleWindow(const std::string& name)
     GetUIElement(name)->m_show = !GetUIElement(name)->m_show;
 }
 
+void UIManager::SetBoundVariableInt(const std::string& name, int val)
+{
+    s_boundVariables->SetVariableInt(name, val);
+}
+
+void UIManager::SetBoundVariableUInt(const std::string& name, unsigned int val)
+{
+    s_boundVariables->SetVariableUint(name, val);
+}
+
+void UIManager::SetBoundVariableStr(const std::string& name, const std::string& val)
+{
+    s_boundVariables->SetVariableStr(name, val);
+}
+
 
 void UIManager::DeserializeUI()
 {
@@ -173,5 +223,18 @@ void UIManager::DeserializeUI()
         }
         s_UIElements[it.first] = it.second;
     }
+
+    UIElement * text2 = new UIElement();	
+    // text->m_width = 100;	
+    // text->m_height = 100;	
+    text2->m_show = true;
+    text2->m_anchor = UIAnchor::BOTTOM_LEFT;	
+    text2->m_xOffset = 200;	
+    text2->m_yOffset = 200;	
+    text2->m_UIType = UIType::TEXT_DYNAMIC;	
+    text2->m_formatString = "HELLO <TEST> WORLD";	
+    text2->m_colour = Oasis::Colours::GREEN;	
+    text2->m_font = UIFont::DEFAULT;	
+    s_root.m_children.push_back(text2);
     ////////////////////////////////////////////////////////////////
 }
