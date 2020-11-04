@@ -122,6 +122,10 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                         {
                             DeserializeUITextureLine(token, type_index, curr);
                         }
+                        if (curr->m_UIType == UIType::TEXT_DYNAMIC)
+                        {
+                            DeserializeUIDynamicTextLine(token, type_index, curr);
+                        }
                     } break;
                 };
                 counter++;
@@ -180,6 +184,27 @@ void UISerializer::DeserializeUITextureLine(const std::string& line, int index, 
             char * text = new char[256];
             strcpy_s(text, 256, line.c_str());
             curr->m_path = text;
+        } break;
+        default: {
+            // TODO: Error logging, should have ended here
+        } break;
+    }
+}
+
+void UISerializer::DeserializeUIDynamicTextLine(const std::string& line, int index, Ref<UIElement> curr)
+{
+    switch(index)
+    {
+        case 0: {
+            char * text = new char[512];
+            strcpy_s(text, 512, line.c_str());
+            curr->m_formatString = text;
+        } break;
+        case 1: {
+            DeserializeColour(line, curr->m_colour);
+        } break;
+        case 2: {
+            curr->m_font = static_cast<UIFont>(std::stoi(line));
         } break;
         default: {
             // TODO: Error logging, should have ended here

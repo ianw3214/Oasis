@@ -223,18 +223,5 @@ void UIManager::DeserializeUI()
         }
         s_UIElements[it.first] = it.second;
     }
-
-    UIElement * text2 = new UIElement();	
-    // text->m_width = 100;	
-    // text->m_height = 100;	
-    text2->m_show = true;
-    text2->m_anchor = UIAnchor::BOTTOM_LEFT;	
-    text2->m_xOffset = 200;	
-    text2->m_yOffset = 200;	
-    text2->m_UIType = UIType::TEXT_DYNAMIC;	
-    text2->m_formatString = "HELLO <TEST> WORLD";	
-    text2->m_colour = Oasis::Colours::GREEN;	
-    text2->m_font = UIFont::DEFAULT;	
-    s_root.m_children.push_back(text2);
     ////////////////////////////////////////////////////////////////
 }

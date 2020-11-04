@@ -25,6 +25,7 @@ private:
     void DeserializeUIBackgroundLine(const std::string& line, int index, Ref<UIElement> curr);
     void DeserializeUITextLine(const std::string& line, int index, Ref<UIElement> curr);
     void DeserializeUITextureLine(const std::string& line, int index, Ref<UIElement> curr);
+    void DeserializeUIDynamicTextLine(const std::string& line, int index, Ref<UIElement> curr);
 
     void DeserializeColour(const std::string& line, Oasis::Colour& colour);
 };

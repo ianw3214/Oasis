@@ -40,7 +40,7 @@ Follow the [setup instructions here](setup.md).
 - [x] Make origin consistent (decide on where it is and make sure code matches it)
 - [ ] Handle resize events from SDL
 - [ ] UI System
-  - [ ] Dynamic text
+  - [x] Dynamic text
   - [x] UI serializer
     - [ ] Automatically deserialize UI files in a certain folder
   - [ ] UI editor
@@ -49,3 +49,4 @@ Follow the [setup instructions here](setup.md).
 
 - [ ] Draw entire string as one texture
 - [ ] Cache strings that don't change for text rendering
+- [ ] Cache strings for UI dynamic text
