@@ -42,7 +42,7 @@ Follow the [setup instructions here](setup.md).
 - [ ] UI System
   - [x] Dynamic text
   - [x] UI serializer
-    - [ ] Automatically deserialize UI files in a certain folder
+    - [x] Automatically deserialize UI files in a certain folder
   - [ ] UI editor
 
 ## Optimizations

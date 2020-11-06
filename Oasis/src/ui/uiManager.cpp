@@ -1,6 +1,7 @@
 #include "uiManager.hpp"
 
 #include <functional>
+#include <filesystem>
 
 #include "util/trap.hpp"
 
@@ -8,6 +9,7 @@
 #include "graphics/renderer.hpp"
 #include "graphics/textRenderer.hpp"
 #include "graphics/sprite.hpp"
+#include "core/console.hpp"
 
 // The root is the entire window
 UIElement UIManager::s_root;
@@ -179,17 +181,38 @@ Ref<UIElement> UIManager::GetUIElement(const std::string& name)
 
 void UIManager::ShowWindow(const std::string& name)
 {
-    GetUIElement(name)->m_show = true;
+    if (auto element = GetUIElement(name))
+    {
+        element->m_show = true;   
+    }
+    else
+    {
+        // TODO: Log error
+    }
 }
 
 void UIManager::HideWindow(const std::string& name)
 {
-    GetUIElement(name)->m_show = false;
+    if (auto element = GetUIElement(name))
+    {
+        element->m_show = false;   
+    }
+    else
+    {
+        // TODO: Log error
+    }
 }
 
 void UIManager::ToggleWindow(const std::string& name)
 {
-    GetUIElement(name)->m_show = !GetUIElement(name)->m_show;
+    if (auto element = GetUIElement(name))
+    {
+        element->m_show = !element->m_show;   
+    }
+    else
+    {
+        // TODO: Log error
+    }
 }
 
 void UIManager::SetBoundVariableInt(const std::string& name, int val)
@@ -210,18 +233,21 @@ void UIManager::SetBoundVariableStr(const std::string& name, const std::string& 
 
 void UIManager::DeserializeUI()
 {
-    ////////////////////////////////////////////////////////////////
-    // DEBUG CODE
-    ////////////////////////////////////////////////////////////////
-    auto data = s_serializer->Deserialize("res/test.ui", &s_root);
-    for (const auto it : data.m_UIElements)
+    for (const auto & entry : std::filesystem::directory_iterator(UIManager::Path()))
     {
-        if (s_UIElements.find(it.first) != s_UIElements.end())
+        if (entry.path().extension() != ".ui")
         {
-            // We have 2 UI elements with the same name somewhere, BAD
-            OASIS_TRAP(false && "Two UI Elements with the same name - ambiguous");
+            continue;
         }
-        s_UIElements[it.first] = it.second;
+        auto data = s_serializer->Deserialize(entry.path().string(), &s_root);
+        for (const auto it : data.m_UIElements)
+        {
+            if (s_UIElements.find(it.first) != s_UIElements.end())
+            {
+                // We have 2 UI elements with the same name somewhere, BAD
+                OASIS_TRAP(false && "Two UI Elements with the same name - ambiguous");
+            }
+            s_UIElements[it.first] = it.second;
+        }
     }
-    ////////////////////////////////////////////////////////////////
 }

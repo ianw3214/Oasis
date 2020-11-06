@@ -13,6 +13,8 @@
 class UIManager
 {
 public:
+    static inline std::string Path() { return "res/ui"; }
+public:
     static void Init();
     static void Shutdown();
     static void Update();
