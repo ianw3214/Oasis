@@ -2,11 +2,38 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm> 
+#include <cctype>
+#include <locale>
 
 #include "core/console.hpp"
 
+/////////////////////////////////////////////////////////////////////////////////////
+// String trimming
+// TODO: Centralize this in some sort of utility file I guess
+/////////////////////////////////////////////////////////////////////////////////////
+// trim from start (in place)
+static inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
+// trim from both ends (in place)
+static inline void trim(std::string &s) {
+    ltrim(s);
+    rtrim(s);
+}
+/////////////////////////////////////////////////////////////////////////////////////
+
 // TODO: Needs more error checking in general
-// TODO: White space trimming
 
 UISerializer::UISerializer()
 {
@@ -46,6 +73,7 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
             {
                 std::string token;
                 std::getline(sstream, token, ',');
+                trim(token);
                 // Parse the current token
                 switch(counter)
                 {
@@ -255,6 +283,7 @@ void UISerializer::DeserializeColour(const std::string& line, Oasis::Colour& col
     // TODO: Want to check sstream.good() ideally
     std::stringstream sstream(line);
     std::string token;
+    trim(token);
     std::getline(sstream, token, '|');
     colour.r = std::stof(token);
     std::getline(sstream, token, '|');

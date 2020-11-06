@@ -242,7 +242,6 @@ void UIManager::DeserializeUI()
         auto data = s_serializer->Deserialize(entry.path().string(), &s_root);
         for (const auto it : data.m_UIElements)
         {
-            Oasis::Console::Log("%s", it.first.c_str());
             if (s_UIElements.find(it.first) == s_UIElements.end())
             {
                 s_UIElements[it.first] = it.second;
