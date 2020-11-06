@@ -89,7 +89,6 @@ void UIManager::Update()
             } break;
             case UIType::BACKGROUND: {
                 // Draw the background
-                // TODO: Customizable colours
                 Oasis::Renderer::DrawQuad((float) x, (float) y, (float) curr->m_width, (float) curr->m_height, curr->m_background);
                 // Draw the border as a line strip
                 float * border = new float[curr->m_borderWidth * 5 * 2];
@@ -187,7 +186,8 @@ void UIManager::ShowWindow(const std::string& name)
     }
     else
     {
-        // TODO: Log error
+        // TODO: Can probably stuff this in the GetUIElement function
+        Oasis::Console::Error("Couldn't find UI element: %s", name.c_str());
     }
 }
 
@@ -199,7 +199,7 @@ void UIManager::HideWindow(const std::string& name)
     }
     else
     {
-        // TODO: Log error
+        Oasis::Console::Error("Couldn't find UI element: %s", name.c_str());
     }
 }
 
@@ -211,7 +211,7 @@ void UIManager::ToggleWindow(const std::string& name)
     }
     else
     {
-        // TODO: Log error
+        Oasis::Console::Error("Couldn't find UI element: %s", name.c_str());
     }
 }
 
@@ -242,12 +242,26 @@ void UIManager::DeserializeUI()
         auto data = s_serializer->Deserialize(entry.path().string(), &s_root);
         for (const auto it : data.m_UIElements)
         {
-            if (s_UIElements.find(it.first) != s_UIElements.end())
+            Oasis::Console::Log("%s", it.first.c_str());
+            if (s_UIElements.find(it.first) == s_UIElements.end())
+            {
+                s_UIElements[it.first] = it.second;
+            }
+            else
             {
                 // We have 2 UI elements with the same name somewhere, BAD
-                OASIS_TRAP(false && "Two UI Elements with the same name - ambiguous");
+                Oasis::Console::Error("UI Element with name %s already defined, deleting duplicate...", it.first.c_str());
+                // Remove from the root and delete it
+                for (auto root_it = s_root.m_children.begin(); root_it != s_root.m_children.end(); root_it++)
+                {
+                    if (*root_it == it.second)
+                    {
+                        s_root.m_children.erase(root_it);
+                        break;
+                    }
+                }
+                delete it.second;
             }
-            s_UIElements[it.first] = it.second;
         }
     }
 }

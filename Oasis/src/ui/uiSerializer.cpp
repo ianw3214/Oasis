@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "core/console.hpp"
+
 // TODO: Needs more error checking in general
 // TODO: White space trimming
 
@@ -33,11 +35,14 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
             // The UI Element we are building
             UIElement * curr = new UIElement();
             curr->m_show = true;
+            // If something went wrong and we didn't add it, remove at the end
+            bool delete_at_end = false;
 
             // Parse the comma deliminated representation of a UI element
             std::stringstream sstream(line);
             unsigned int counter = 0;
-            while(sstream.good())
+            // If we want to delete the element at the end, there's no use to continue parsing
+            while(sstream.good() && !delete_at_end)
             {
                 std::string token;
                 std::getline(sstream, token, ',');
@@ -46,7 +51,16 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                 {
                     // name of UI Element
                     case 0: {
-                        addedElements[token] = curr;
+                        // Check that we don't already have the name in our added elements
+                        if (addedElements.find(token) == addedElements.end())
+                        {
+                            addedElements[token] = curr;
+                        }
+                        else
+                        {
+                            Oasis::Console::Error("UI Element with name %s already defined, skipping current element...", token.c_str());
+                            delete_at_end = true;
+                        }
                     } break;
                     // width
                     case 1: {
@@ -58,7 +72,16 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                     } break;
                     // anchor (JUST USE NUMBERS TO REPRESENT)
                     case 3: {
-                        curr->m_anchor = static_cast<UIAnchor>(std::stoi(token));
+                        int i = std::stoi(token);
+                        if (i < static_cast<int>(UIAnchor::COUNT))
+                        {
+                            curr->m_anchor = static_cast<UIAnchor>(i);
+                        }
+                        else
+                        {
+                            Oasis::Console::Error("Invalid UI Anchor: %i, setting to BOTTOM_LEFT", i);
+                            curr->m_anchor = UIAnchor::BOTTOM_LEFT;
+                        }
                     } break;
                     // x offset
                     case 4: {
@@ -79,7 +102,7 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                             }
                             else
                             {
-                                // TODO: Error logging
+                                Oasis::Console::Error("Could not find UI element: '%s' - appending to root, make sure the parent is defined before the child!", token.c_str());
                                 // attach to root for now
                                 root->m_children.push_back(curr);
                             }
@@ -91,7 +114,16 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                     } break;
                     // Type
                     case 7: {
-                        curr->m_UIType = static_cast<UIType>(std::stoi(token));
+                        int i = std::stoi(token);
+                        if (i < static_cast<int>(UIType::COUNT))
+                        {
+                            curr->m_UIType = static_cast<UIType>(i);
+                        }
+                        else
+                        {
+                            Oasis::Console::Error("Invalid UI type: %i, setting to NONE", i);
+                            curr->m_UIType = UIType::NONE;
+                        }
                     } break;
                     // Depending on the type, we will have to handle individually
                     // This is very bad code - will probably need a different solution in the future
@@ -130,6 +162,11 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                 };
                 counter++;
             }
+
+            if (delete_at_end)
+            {
+                delete curr;
+            }
         }
     }
     return UISerializer::Data{addedElements};
@@ -150,7 +187,7 @@ void UISerializer::DeserializeUIBackgroundLine(const std::string& line, int inde
             DeserializeColour(line, curr->m_border);
         } break;
         default: {
-            // Error logging, should have ended here
+            Oasis::Console::Error("Unexpected token while deserializing UI Background: %s", line.c_str());
         } break;
     }
 }
@@ -171,7 +208,7 @@ void UISerializer::DeserializeUITextLine(const std::string& line, int index, Ref
             curr->m_font = static_cast<UIFont>(std::stoi(line));
         } break;
         default: {
-            // TODO: Error logging, should have ended here
+            Oasis::Console::Error("Unexpected token while deserializing UI Text: %s", line.c_str());
         } break;
     }
 }
@@ -186,7 +223,7 @@ void UISerializer::DeserializeUITextureLine(const std::string& line, int index, 
             curr->m_path = text;
         } break;
         default: {
-            // TODO: Error logging, should have ended here
+            Oasis::Console::Error("Unexpected token while deserializing UI Texture: %s", line.c_str());
         } break;
     }
 }
@@ -207,7 +244,7 @@ void UISerializer::DeserializeUIDynamicTextLine(const std::string& line, int ind
             curr->m_font = static_cast<UIFont>(std::stoi(line));
         } break;
         default: {
-            // TODO: Error logging, should have ended here
+            Oasis::Console::Error("Unexpected token while deserializing UI Dynamic Text: %s", line.c_str());
         } break;
     }
 }

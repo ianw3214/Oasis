@@ -38,7 +38,7 @@ void Oasis::Console::SetCommand(const std::string& command, std::function<void()
     s_commands[command] = func;
 }
 
-void Oasis::Console::AddLog(const char* fmt, ...)
+void Oasis::Console::Log(const char* fmt, ...)
 {
     // FIXME-OPT
     char buf[1024];
@@ -60,7 +60,8 @@ void Oasis::Console::Error(const char* fmt, ...)
     vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
     buf[IM_ARRAYSIZE(buf)-1] = 0;
     va_end(args);
-    s_items.push_back(Strdup(strcat(error, buf)));
+    strcat_s(error, 1024, buf);
+    s_items.push_back(Strdup(error));
 }
 
 void Oasis::Console::Draw()
@@ -132,7 +133,7 @@ void Oasis::Console::ClearLog()
 
 void Oasis::Console::ExecCommand(const char* command)
 {
-    AddLog("# %s\n", command);
+    Log("# %s\n", command);
 
     auto it = s_commands.find(command);
     if (it != s_commands.end())
@@ -141,7 +142,7 @@ void Oasis::Console::ExecCommand(const char* command)
     }
     else
     {
-        AddLog("Unknown command: '%s'\n", command);
+        Log("Unknown command: '%s'\n", command);
     }
 }
 
@@ -174,7 +175,7 @@ int Oasis::Console::TextEditCallback(ImGuiInputTextCallbackData* data)
             if (candidates.Size == 0)
             {
                 // No match
-                AddLog("No match for \"%.*s\"!\n", (int)(word_end-word_start), word_start);
+                Log("No match for \"%.*s\"!\n", (int)(word_end-word_start), word_start);
             }
             else if (candidates.Size == 1)
             {
@@ -209,9 +210,9 @@ int Oasis::Console::TextEditCallback(ImGuiInputTextCallbackData* data)
                 }
 
                 // List matches
-                AddLog("Possible matches:\n");
+                Log("Possible matches:\n");
                 for (int i = 0; i < candidates.Size; i++)
-                    AddLog("- %s\n", candidates[i]);
+                    Log("- %s\n", candidates[i]);
             }
 
             break;
