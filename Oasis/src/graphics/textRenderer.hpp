@@ -10,6 +10,7 @@
 #include "opengl/glwrappers.hpp"
 
 #include "util/colour.hpp"
+#include "util/pointer.hpp"
 
 namespace Oasis
 {
@@ -50,7 +51,7 @@ namespace Oasis
         static void LoadFont(const std::string& name, const std::string& path, int fontSize = 16);
         static const Font& GetFont(const std::string& name);
 
-        static void DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour);
+        static void DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour, Ref<Character> ch = nullptr);
         static int DrawString(const std::string& font, const std::string& str, float x, float y, const Colour& colour);
     private:
 

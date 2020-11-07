@@ -3,6 +3,7 @@
 #include "util/colour.hpp"
 
 #include <vector>
+#include <string>
 
 #include "uiFont.hpp"
 

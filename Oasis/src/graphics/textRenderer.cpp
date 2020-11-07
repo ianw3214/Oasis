@@ -37,7 +37,11 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
     }
     else
     {
-        // TODO: Probably need to free existing font
+        for (auto it : s_fonts[name].m_map)
+        {
+            delete it.second.m_texture;
+        }
+        s_fonts[name].m_map.clear();
     }
 
     // Disable byte alignment restriction
@@ -76,20 +80,23 @@ const Font& TextRenderer::GetFont(const std::string& name)
     return font->second;
 }
 
-void TextRenderer::DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour)
+void TextRenderer::DrawCharacter(const std::string& font, GLchar character, float x, float y, const Colour& colour, Ref<Character> ch)
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
-    Character ch = s_fonts[font].m_map[character];
+    if (!ch)
+    {
+        OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
+        ch = &s_fonts[font].m_map[character];
+    }
 
-    GLfloat xpos = x + ch.m_bearingX;
+    GLfloat xpos = x + ch->m_bearingX;
     // TODO: Want to be able to specify text alignment
-    GLfloat ypos = y + ch.m_bearingY;
+    GLfloat ypos = y + ch->m_bearingY;
 
-    GLfloat w = static_cast<float>(ch.m_width);
-    GLfloat h = static_cast<float>(ch.m_height);
+    GLfloat w = static_cast<float>(ch->m_width);
+    GLfloat h = static_cast<float>(ch->m_height);
     // Update VBO for each character
     GLfloat vertices[6][4] = {
         { xpos,     ypos - h,   0.0, 1.0 },            
@@ -107,7 +114,7 @@ void TextRenderer::DrawCharacter(const std::string& font, GLchar character, floa
     layout.pushFloat(4);
     vao.addBuffer(vbo, layout);
 
-    ch.m_texture->bind();
+    ch->m_texture->bind();
     s_shader->bind();
     s_shader->setUniform3f("textColour", colour.r, colour.g, colour.b);
     vao.bind();
@@ -121,10 +128,9 @@ int TextRenderer::DrawString(const std::string& font, const std::string& str, fl
     for (char c : str)
     {
         OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
-        // TODO: Optimization - can just pass in the found character instead of having to search again in DrawCharacter
-        DrawCharacter(font, c, x, y, colour);
-		// bit shift by 6 to get value in pixels
         Character ch = s_fonts[font].m_map[c];
+        DrawCharacter(font, c, x, y, colour, &ch);
+		// bit shift by 6 to get value in pixels
         x += ch.m_advance >> 6;
         length += ch.m_advance >> 6;
     }

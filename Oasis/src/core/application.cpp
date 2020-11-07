@@ -75,6 +75,9 @@ Application::Application(const Configuration& config)
     Console::SetCommand("exit", [&](){
         m_running = false;
     });
+
+    // Initialize the starting state
+    StateManager::CurrentState()->Init();
 }
 
 Application::~Application()
@@ -114,8 +117,6 @@ void Application::Run()
     m_delta = 1000000.0 / 24.0;
     ImGuiWrapper::AddWindowFunction(std::bind(DisplayApplicationInfo, &m_delta));
 
-    // TODO: Move this somewhere else
-    StateManager::CurrentState()->Init();
     m_running = true;
     while(m_running)
     {

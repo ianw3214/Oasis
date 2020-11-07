@@ -40,12 +40,6 @@ void Renderer::Clear(Colour colour)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-// TODO: Move this somewhere else
-template<typename T>
-T lerp(const T& start, const T& end, float percentage) {
-	return start + static_cast<T>(static_cast<float>(end - start) * percentage);
-}
-
 void Renderer::DrawLine(float x1, float y1, float x2, float y2, const Colour& colour)
 {
     float positions[4] = { x1, y1, x2, y2 };
