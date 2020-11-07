@@ -21,23 +21,28 @@ Shader * spriteShader;
 
 void Renderer::Init()
 {
-    basicShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_fragment.glsl");
-	basicShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
-    basicShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
-
-	textureShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_texture.glsl");
-	textureShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
-    textureShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
-
-	spriteShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/sprite_fragment.glsl");
-	spriteShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
-    spriteShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
+    SetWindowSize(WindowService::WindowWidth(), WindowService::WindowHeight());
 }
 
 void Renderer::Clear(Colour colour)
 {
     glClearColor(colour.r, colour.g, colour.b, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Renderer::SetWindowSize(int width, int height)
+{
+	basicShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_fragment.glsl");
+	basicShader->setUniform1f("u_screenWidth", static_cast<float>(width));
+    basicShader->setUniform1f("u_screenHeight", static_cast<float>(height));
+
+	textureShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_texture.glsl");
+	textureShader->setUniform1f("u_screenWidth", static_cast<float>(width));
+    textureShader->setUniform1f("u_screenHeight", static_cast<float>(height));
+
+	spriteShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/sprite_fragment.glsl");
+	spriteShader->setUniform1f("u_screenWidth", static_cast<float>(width));
+    spriteShader->setUniform1f("u_screenHeight", static_cast<float>(height));
 }
 
 void Renderer::DrawLine(float x1, float y1, float x2, float y2, const Colour& colour)

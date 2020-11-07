@@ -35,6 +35,7 @@ bool SandboxLayer::HandleEvent(const Oasis::Event& event)
 
 void SandboxLayer::Update()
 {
+
     Ref<Oasis::Texture> test = Oasis::ResourceManager::GetResource<Oasis::Texture>("res/animate.png");
 
     float linestrip[6] = {300.f, 0.f, 100.f, 100.f, 100.f, 200.f};

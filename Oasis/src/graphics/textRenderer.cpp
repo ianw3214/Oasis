@@ -24,6 +24,12 @@ void TextRenderer::Shutdown()
     FT_Done_FreeType(s_ft);
 }
 
+void TextRenderer::ResetWindowDimensions()
+{
+    s_shader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
+    s_shader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
+}
+
 void TextRenderer::LoadFont(const std::string& name, const std::string& path, int fontSize)
 {
     FT_Face face;

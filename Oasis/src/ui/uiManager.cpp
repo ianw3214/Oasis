@@ -192,6 +192,9 @@ void UIManager::Update()
         }
         return;
     };
+    // Update window width/height of the root
+    s_root.m_width = Oasis::WindowService::WindowWidth();
+    s_root.m_height = Oasis::WindowService::WindowHeight();
     update_ui(&s_root, 0, 0, Oasis::WindowService::WindowWidth(), Oasis::WindowService::WindowHeight());
 }
 

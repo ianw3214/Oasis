@@ -21,5 +21,10 @@ namespace Oasis
         static float GetDeltaF();
     private:
         static Application * s_application;
+
+        // Functions that only certain classes should have access to
+        // TODO: Is this the best way of handling this?
+        friend class InputManager;
+        static void SetWindowDimensions(int width, int height);
     };
 }

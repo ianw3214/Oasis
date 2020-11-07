@@ -16,6 +16,9 @@ using namespace Oasis;
 
 #include "core/windowService.hpp"
 
+#include "graphics/renderer.hpp"
+#include "graphics/textRenderer.hpp"
+
 std::function<void(Event&)> InputManager::s_eventCallback;
 bool InputManager::s_mouseDown;
 
@@ -88,6 +91,23 @@ void InputManager::Update()
         {
             TextInputEvent textEvent(e.text.text);
             s_eventCallback(textEvent);
+        }
+
+        // TODO: Pass these on to the actual application as well
+        if (e.type == SDL_WINDOWEVENT)
+        {
+            if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                Oasis::Renderer::SetWindowSize(e.window.data1, e.window.data2);
+                Oasis::WindowService::SetWindowDimensions(e.window.data1, e.window.data2);
+                Oasis::TextRenderer::ResetWindowDimensions();
+            }
+            if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+            {
+                Oasis::Renderer::SetWindowSize(e.window.data1, e.window.data2);
+                Oasis::WindowService::SetWindowDimensions(e.window.data1, e.window.data2);
+                Oasis::TextRenderer::ResetWindowDimensions();
+            }
         }
     }
 }

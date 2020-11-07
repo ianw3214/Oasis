@@ -47,6 +47,7 @@ namespace Oasis
     public:
         static void Init();
         static void Shutdown();
+        static void ResetWindowDimensions();
 
         static void LoadFont(const std::string& name, const std::string& path, int fontSize = 16);
         static const Font& GetFont(const std::string& name);

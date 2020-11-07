@@ -34,3 +34,9 @@ float WindowService::GetDeltaF()
 {
     return static_cast<float>(s_application->m_delta) / 1000.0f;
 }
+
+void WindowService::SetWindowDimensions(int width, int height)
+{
+    s_application->m_width = width;
+    s_application->m_height = height;
+}

@@ -38,7 +38,7 @@ Follow the [setup instructions here](setup.md).
 - [x] Console
 - [x] Sprite colour tinting
 - [x] Make origin consistent (decide on where it is and make sure code matches it)
-- [ ] Handle resize events from SDL
+- [x] Handle resize events from SDL (still needs to be better)
 - [ ] UI System
   - [x] Dynamic text
   - [x] UI serializer

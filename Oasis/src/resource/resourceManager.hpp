@@ -33,7 +33,11 @@ namespace Oasis
     template<class T>
     Ref<T> ResourceManager::LoadResource(const std::string& path)
     {
-        GetInstance()->m_resources[path] = T::Load(path);
+        // Check if resource has already been loaded
+        if (GetInstance()->m_resources.find(path) == GetInstance()->m_resources.end())
+        {
+            GetInstance()->m_resources[path] = T::Load(path);
+        }
         return dynamic_cast<T*>(GetInstance()->m_resources[path]);
     }
 
