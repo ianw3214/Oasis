@@ -1,5 +1,5 @@
 target_sources(Oasis PRIVATE uiCommon.hpp)
 target_sources(Oasis PRIVATE uiFont.hpp)
 
-target_sources(Oasis PRIVATE uiManager.hpp uiBoundVariables.hpp uiSerializer.hpp)
-target_sources(Oasis PRIVATE uiManager.cpp uiBoundVariables.cpp uiSerializer.cpp)
+target_sources(Oasis PRIVATE uiManager.hpp uiBoundVariables.hpp uiSerializer.hpp uiEventManager.hpp)
+target_sources(Oasis PRIVATE uiManager.cpp uiBoundVariables.cpp uiSerializer.cpp uiEventManager.cpp)

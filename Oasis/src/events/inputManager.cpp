@@ -74,7 +74,7 @@ void InputManager::Update()
 
         if (e.type == SDL_MOUSEMOTION && !io.WantCaptureMouse)
         {
-            MouseMovedEvent mouseEvent(e.motion.x, e.motion.y, e.motion.xrel, e.motion.yrel);
+            MouseMovedEvent mouseEvent(e.motion.x, Oasis::WindowService::WindowHeight() - e.motion.y, e.motion.xrel, -e.motion.yrel);
             s_eventCallback(mouseEvent);
         }
 

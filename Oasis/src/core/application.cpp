@@ -90,6 +90,10 @@ void Application::OnEvent(const Event& event)
     {
         m_running = false;
     }
+    if (UIManager::HandleEvent(event))
+    {
+        return;
+    }
     StateManager::CurrentState()->OnEvent(event);
 }
 

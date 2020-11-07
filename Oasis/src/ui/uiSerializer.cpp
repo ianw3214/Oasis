@@ -186,6 +186,10 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                         {
                             DeserializeUIDynamicTextLine(token, type_index, curr);
                         }
+                        if (curr->m_UIType == UIType::BUTTON)
+                        {
+                            DeserializeUIButtonLine(token, type_index, curr);
+                        }
                     } break;
                 };
                 counter++;
@@ -249,6 +253,7 @@ void UISerializer::DeserializeUITextureLine(const std::string& line, int index, 
             char * text = new char[256];
             strcpy_s(text, 256, line.c_str());
             curr->m_path = text;
+            curr->m_cachedSprite = nullptr;
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Texture: %s", line.c_str());
@@ -273,6 +278,33 @@ void UISerializer::DeserializeUIDynamicTextLine(const std::string& line, int ind
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Dynamic Text: %s", line.c_str());
+        } break;
+    }
+}
+
+void UISerializer::DeserializeUIButtonLine(const std::string& line, int index, Ref<UIElement> curr)
+{
+    switch(index)
+    {
+        case 0: {
+            char * text = new char[512];
+            strcpy_s(text, 512, line.c_str());
+            curr->m_path = text;
+            curr->m_cachedButtonSprite = nullptr;
+        } break;
+        case 1: {
+            char * text = new char[512];
+            strcpy_s(text, 512, line.c_str());
+            curr->m_hoverPath = text;
+            curr->m_cachedHoverSprite = nullptr;
+        } break;
+        case 2: {
+            char * text = new char[512];
+            strcpy_s(text, 512, line.c_str());
+            curr->m_clickEvent = text;
+        } break;
+        default: {
+            Oasis::Console::Error("Unexpected token while deserializing UI Button: %s", line.c_str());
         } break;
     }
 }

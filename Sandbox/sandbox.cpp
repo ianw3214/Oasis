@@ -13,6 +13,10 @@ void SandboxLayer::Init()
     Oasis::TextRenderer::LoadFont("testfont2", "res/Munro.ttf", 64);
 
     Oasis::Console::Error("TEST ERROR");
+
+    UIManager::AddUIEventCallback("test_event", [](){
+        Oasis::Console::Log("TEST UI EVENT!!!");
+    });
 }
 
 void SandboxLayer::Close() 
@@ -53,6 +57,8 @@ void SandboxLayer::Update()
     sprite.SetSourcePos(30.f, 30.f);
     sprite.SetSourceDimensions(60.f, 60.f);
     Oasis::Renderer::DrawSprite(&sprite);
+
+    Oasis::Renderer::DrawLine(0.f, 330.f, 1280.f, 330.f, Oasis::Colours::BLACK);
 
     static int i = 0;
     i++;

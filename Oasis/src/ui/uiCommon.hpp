@@ -18,6 +18,7 @@ enum class UIType
     TEXT,
     TEXTURE,
     TEXT_DYNAMIC,
+    BUTTON,
     COUNT
 };
 
@@ -67,6 +68,17 @@ struct UIElement
             char * m_formatString;
             Oasis::Colour m_colour;
             UIFont m_font;
+        };
+        // Button
+        struct {
+            char * m_path;
+            char * m_hoverPath;
+            char * m_clickEvent;
+            // Cached textures
+            Oasis::Sprite * m_cachedButtonSprite;
+            Oasis::Sprite * m_cachedHoverSprite;
+            // Internal state for the engine to keep track of
+            bool m_hovering;
         };
     };
 

@@ -44,6 +44,7 @@ Follow the [setup instructions here](setup.md).
   - [x] UI serializer
     - [x] Automatically deserialize UI files in a certain folder
   - [ ] UI editor
+  - [x] Buttons & UI Event system
 
 ## Optimizations
 

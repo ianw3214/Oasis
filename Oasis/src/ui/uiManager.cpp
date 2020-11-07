@@ -10,12 +10,14 @@
 #include "graphics/textRenderer.hpp"
 #include "graphics/sprite.hpp"
 #include "core/console.hpp"
+#include "events/mouseEvent.hpp"
 
 // The root is the entire window
 UIElement UIManager::s_root;
 std::unordered_map<std::string, Ref<UIElement>> UIManager::s_UIElements;
 UISerializer* UIManager::s_serializer;
 UIBoundVariables * UIManager::s_boundVariables;
+UIEventManager * UIManager::s_eventManager;
 
 void UIManager::Init()
 {
@@ -34,12 +36,14 @@ void UIManager::Init()
 
     s_serializer = new UISerializer();
     s_boundVariables = new UIBoundVariables();
+    s_eventManager = new UIEventManager();
 
     DeserializeUI();
 }
 
 void UIManager::Shutdown()
 {
+    delete s_eventManager;
     delete s_boundVariables;
     delete s_serializer;
 }
@@ -121,9 +125,6 @@ void UIManager::Update()
                 curr->m_cachedSprite->SetPos((float)x, (float)y);
                 Oasis::Renderer::DrawSprite(curr->m_cachedSprite);
             } break;
-            default: {
-                OASIS_TRAP(false && "UI Type should be assigned(Can be set to NONE)");
-            } break;
             case UIType::TEXT_DYNAMIC: {
                 // TODO: Optimizable with caching
                 // Will need to keep track of which variables have become dirty
@@ -157,6 +158,32 @@ void UIManager::Update()
                 }
                 const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), resolvedString, (float) x, (float) y, curr->m_colour);
             } break;
+            case UIType::BUTTON: {
+                // Cache the sprites so we don't have to recreate them
+                if (!curr->m_cachedButtonSprite)
+                {
+                    curr->m_cachedButtonSprite = new Oasis::Sprite(curr->m_path);
+                }
+                if (!curr->m_cachedHoverSprite)
+                {
+                    curr->m_cachedHoverSprite = new Oasis::Sprite(curr->m_hoverPath);
+                }
+                curr->m_cachedButtonSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
+                curr->m_cachedButtonSprite->SetPos((float)x, (float)y);
+                curr->m_cachedHoverSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
+                curr->m_cachedHoverSprite->SetPos((float)x, (float)y);
+                if (curr->m_hovering)
+                {
+                    Oasis::Renderer::DrawSprite(curr->m_cachedHoverSprite);
+                }
+                else
+                {
+                    Oasis::Renderer::DrawSprite(curr->m_cachedButtonSprite);
+                }
+            } break;
+            default: {
+                OASIS_TRAP(false && "UI Type should be assigned(Can be set to NONE)");
+            } break;
         }
         // Recurse over children
         for (auto child : curr->m_children)
@@ -166,6 +193,99 @@ void UIManager::Update()
         return;
     };
     update_ui(&s_root, 0, 0, Oasis::WindowService::WindowWidth(), Oasis::WindowService::WindowHeight());
+}
+
+bool UIManager::HandleEvent(const Oasis::Event& event)
+{
+    if (event.GetType() == Oasis::EventType::MOUSE_MOVE)
+    {
+        const Oasis::MouseMovedEvent& move = dynamic_cast<const Oasis::MouseMovedEvent&>(event);
+        const int m_x = move.GetX();
+        const int m_y = move.GetY();
+
+        // TODO: A lot of shared code w/ update_ui, maybe can refactor it out somewhere
+        typedef std::function<void(Ref<UIElement>, int, int, int, int)> f;
+        f update_button = [&](Ref<UIElement> curr, int parent_x, int parent_y, int parent_w, int parent_h) {
+            OASIS_TRAP(parent_w >= 0 && parent_h >= 0);
+            if (!curr->m_show)
+            {
+                curr->m_hovering = false;
+                return;
+            }
+            const unsigned int w = curr->m_width;
+            const unsigned int h = curr->m_height;
+            // Calculate the x/y of our current UI Element
+            int x = 0;
+            int y = 0;
+            switch(curr->m_anchor)
+            {
+                case UIAnchor::TOP_LEFT: {
+                    x = parent_x, y = parent_y + parent_h;
+                } break;
+                case UIAnchor::TOP_RIGHT: {
+                    x = parent_x + parent_w, y = parent_y + parent_h;
+                } break;
+                case UIAnchor::BOTTOM_LEFT: {
+                    x = parent_x, y = parent_y;
+                } break;
+                case UIAnchor::BOTTOM_RIGHT: {
+                    x = parent_x + parent_w, y = parent_y;
+                } break;
+                case UIAnchor::CENTER: {
+                    x = parent_x + parent_w / 2;
+                    y = parent_y + parent_h / 2;
+                } break;
+                default: {
+                    OASIS_TRAP(false && "UI Anchor should be assigned");
+                } break;
+            };
+            x += curr->m_xOffset;
+            y += curr->m_yOffset;
+            if (m_x > x && m_x < x + (int)w && m_y > y && m_y < y + (int)h)
+            {
+                curr->m_hovering = true;
+            }
+            else
+            {
+                curr->m_hovering = false;
+            }
+            
+            for (auto child : curr->m_children)
+            {
+                update_button(child, x, y, w, h);
+            }
+            return;
+        };
+        // Check collisions and update if we are hovering on the button
+        update_button(&s_root, 0, 0, Oasis::WindowService::WindowWidth(), Oasis::WindowService::WindowHeight());
+        return false;
+    }
+    if (event.GetType() == Oasis::EventType::MOUSE_PRESS)
+    {
+        typedef std::function<bool(Ref<UIElement>)> f;
+        f click_button = [&](Ref<UIElement> curr) {
+            if (!curr->m_show)
+            {
+                return false;
+            }
+            if (curr->m_UIType == UIType::BUTTON && curr->m_hovering)
+            {
+                s_eventManager->OnEvent(curr->m_clickEvent);
+                return true;
+            }
+            for (auto child : curr->m_children)
+            {
+                bool result = click_button(child);
+                if (result) return true;
+            }
+            return false;
+        };
+
+        // Assume the hovering info is recent and accurate enough
+        bool result = click_button(&s_root);
+        return result;
+    }
+    return false;
 }
 
 Ref<UIElement> UIManager::GetUIElement(const std::string& name)
@@ -230,6 +350,10 @@ void UIManager::SetBoundVariableStr(const std::string& name, const std::string& 
     s_boundVariables->SetVariableStr(name, val);
 }
 
+void UIManager::AddUIEventCallback(const std::string& event_key, std::function<void()> callback)
+{
+    s_eventManager->AddListener(event_key, callback);
+}
 
 void UIManager::DeserializeUI()
 {
