@@ -10,6 +10,7 @@
 // Forward declarations
 namespace Oasis {
     class Sprite;
+    class AnimatedSprite;
 }
 
 enum class UIType
@@ -20,6 +21,7 @@ enum class UIType
     TEXTURE,
     TEXT_DYNAMIC,
     BUTTON,
+    ANIMATED_TEXTURE,
     COUNT
 };
 
@@ -80,6 +82,16 @@ struct UIElement
             Oasis::Sprite * m_cachedHoverSprite;
             // Internal state for the engine to keep track of
             bool m_hovering;
+        };
+        // Animated Texture
+        struct {
+            char * m_path;
+            int m_frameWidth;
+            int m_frameHeight;
+            int m_animFrames;
+            int m_fps;
+            // Cached texture
+            Oasis::AnimatedSprite * m_cachedAnimatedSprite;
         };
     };
 

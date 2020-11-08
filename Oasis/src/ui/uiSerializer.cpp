@@ -190,6 +190,10 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                         {
                             DeserializeUIButtonLine(token, type_index, curr);
                         }
+                        if (curr->m_UIType == UIType::ANIMATED_TEXTURE)
+                        {
+                            DeserializeUIAnimatedTextureLine(token, type_index, curr);
+                        }
                     } break;
                 };
                 counter++;
@@ -305,6 +309,34 @@ void UISerializer::DeserializeUIButtonLine(const std::string& line, int index, R
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Button: %s", line.c_str());
+        } break;
+    }
+}
+
+void UISerializer::DeserializeUIAnimatedTextureLine(const std::string& line, int index, Ref<UIElement> curr)
+{
+    switch(index)
+    {
+        case 0: {
+            char * text = new char[512];
+            strcpy_s(text, 512, line.c_str());
+            curr->m_path = text;
+            curr->m_cachedAnimatedSprite = nullptr;
+        } break;
+        case 1: {
+            curr->m_frameWidth = std::stoi(line);
+        } break;
+        case 2: {
+            curr->m_frameHeight = std::stoi(line);
+        } break;
+        case 3: {
+            curr->m_animFrames = std::stoi(line);
+        } break;
+        case 4: {
+            curr->m_fps = std::stoi(line);
+        } break;
+        default: {
+            Oasis::Console::Error("Unexpected token while deserializing UI Animated Texture: %s", line.c_str());
         } break;
     }
 }

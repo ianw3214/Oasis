@@ -9,6 +9,7 @@
 #include "graphics/renderer.hpp"
 #include "graphics/textRenderer.hpp"
 #include "graphics/sprite.hpp"
+#include "graphics/animatedSprite.hpp"
 #include "core/console.hpp"
 #include "events/mouseEvent.hpp"
 
@@ -181,6 +182,20 @@ void UIManager::Update()
                     Oasis::Renderer::DrawSprite(curr->m_cachedButtonSprite);
                 }
             } break;
+            case UIType::ANIMATED_TEXTURE: {
+                // Cache the sprite so we don't have to constantly recreate it
+                if (!curr->m_cachedAnimatedSprite)
+                {
+                    OASIS_TRAP(curr->m_animFrames > 0 && "Must have at least one animation frame");
+                    curr->m_cachedAnimatedSprite = new Oasis::AnimatedSprite(curr->m_path, (float)curr->m_frameWidth, (float)curr->m_frameHeight);
+                    curr->m_cachedAnimatedSprite->AddAnimation("default", 0, curr->m_animFrames - 1);
+                    curr->m_cachedAnimatedSprite->SetFPS(curr->m_fps);
+                    curr->m_cachedAnimatedSprite->PlayAnimation("default");
+                }
+                curr->m_cachedAnimatedSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
+                curr->m_cachedAnimatedSprite->SetPos((float)x, (float)y);
+                Oasis::Renderer::DrawAnimatedSprite(curr->m_cachedAnimatedSprite);
+            } break;
             default: {
                 OASIS_TRAP(false && "UI Type should be assigned(Can be set to NONE)");
             } break;
@@ -244,13 +259,16 @@ bool UIManager::HandleEvent(const Oasis::Event& event)
             };
             x += curr->m_xOffset;
             y += curr->m_yOffset;
-            if (m_x > x && m_x < x + (int)w && m_y > y && m_y < y + (int)h)
+            if (curr->m_UIType== UIType::BUTTON)
             {
-                curr->m_hovering = true;
-            }
-            else
-            {
-                curr->m_hovering = false;
+                if (m_x > x && m_x < x + (int)w && m_y > y && m_y < y + (int)h)
+                {
+                    curr->m_hovering = true;
+                }
+                else
+                {
+                    curr->m_hovering = false;
+                }
             }
             
             for (auto child : curr->m_children)
