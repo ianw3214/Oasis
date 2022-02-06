@@ -46,6 +46,14 @@ Follow the [setup instructions here](setup.md).
   - [ ] UI editor
   - [x] Buttons & UI Event system
 
+### Organization
+
+- [ ] Remove sandbox game from repository
+  - [ ] Update CMakelists so projects can have minimal CMakelists
+  - [ ] Setup sample game repository
+- [ ] Plan editor architecture
+  - [ ] Plan data driving game data
+
 ## Optimizations
 
 - [ ] Draw entire string as one texture
