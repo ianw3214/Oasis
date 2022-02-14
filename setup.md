@@ -18,10 +18,10 @@ Hook up user wide integration via the following command:
 
 Then, install the necessary libraries using the following commands:
 
-> .\vcpkg install sdl2  
-> .\vcpkg install sdl2-mixer  
-> .\vcpkg install glew  
-> .\vcpkg install freetype  
+> .\vcpkg install sdl2:x64-windows  
+> .\vcpkg install openal-soft:x64-windows
+> .\vcpkg install glew:x64-windows  
+> .\vcpkg install freetype:x64-windows
 > .\vcpkg install imgui
 
 ### Mac
@@ -49,5 +49,6 @@ Alternatively, you can use the included script files to generate the cmake build
 
 The project should be all set up now. On windows, simply open the .vcxproj file to open the project in Visual Studio.
 
-**IMPORTANT NOTE**: In order to run the game from within the build folder, you need to copy the res folder from the root folder to the build folder.
-This step is done automatically if the previous *setup.bat* script was used to generate the build.
+**NOTE**: In order to run the game from within the build folder, you need to copy the res folder from the root folder to the build folder.
+
+**NOTE**: On windows, you may need to manually set the project subsystem to *WINDOWS* instead of *CONSOLE*, otherwise the compiler will give you an error about main being unresolved.
