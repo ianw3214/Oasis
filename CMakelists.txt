@@ -1,34 +1,9 @@
 cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-project(Oasis)
-
-set(Engine_VERSION_MAJOR 2)
-set(Engine_VERSION_MINOR 0)
-
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
-# add_library(Oasis STATIC)
-add_library(Oasis SHARED)
-add_executable(Sandbox)
-
-target_link_libraries(Oasis Opengl32.lib)
-
-target_link_libraries(Sandbox Oasis)
-target_include_directories(Sandbox PRIVATE Oasis/src)
-
-set_property(TARGET Oasis PROPERTY CXX_STANDARD 17)
-set_property(TARGET Sandbox PROPERTY CXX_STANDARD 17)
-
-target_compile_definitions(Oasis PRIVATE BUILD_DLL)
-# PLATFORM DEFINITIONS AND SETTINGS
-if (WIN32)
-target_compile_definitions(Oasis PRIVATE PLATFORM_WINDOWS)
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
-target_compile_definitions(Sandbox PRIVATE PLATFORM_WINDOWS)
-endif()
-
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Sandbox)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/Oasis/cmake/")
+include(OasisProject)
+OasisProject(Sandbox)
 
 add_subdirectory(Oasis)
 add_subdirectory(Sandbox)
