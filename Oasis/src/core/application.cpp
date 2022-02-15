@@ -27,6 +27,8 @@ using namespace Oasis;
 
 #include "ui/uiManager.hpp"
 
+#include <ryml.hpp>
+
 Application::Application(const Configuration& config)
     : m_width(config.m_width)
     , m_height(config.m_height)
@@ -78,6 +80,11 @@ Application::Application(const Configuration& config)
 
     // Initialize the starting state
     StateManager::CurrentState()->Init();
+
+    // rapid YAML testing code
+    // TODO: Remove this
+    char yml_buf[] = "{foo: 1, bar: [2, 3], john: doe}";
+    ryml::Tree tree = ryml::parse_in_place(ryml::substr(yml_buf));
 }
 
 Application::~Application()

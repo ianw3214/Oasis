@@ -7,7 +7,11 @@ function(OasisProject projectName)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
     add_library(Oasis SHARED)
+    if (WIN32)
+    add_executable(${projectName} WIN32)
+    else()
     add_executable(${projectName})
+    endif()
 
     target_link_libraries(Oasis Opengl32.lib)
 
@@ -22,11 +26,12 @@ function(OasisProject projectName)
     # PLATFORM DEFINITIONS AND SETTINGS
     if (WIN32)
     target_compile_definitions(Oasis PRIVATE PLATFORM_WINDOWS)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
     target_compile_definitions(${projectName} PRIVATE PLATFORM_WINDOWS)
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${projectName})
     endif()
 
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${projectName})
+    add_subdirectory(${OASIS_PATH})
 
-    # add_subdirectory(Oasis)
+    add_subdirectory(${OASIS_PATH}/vendor/rapidyaml)
+    target_link_libraries(Oasis ryml::ryml)
 endfunction(OasisProject)
