@@ -9,16 +9,15 @@
 namespace Oasis
 {
     class Event;
-    class IState;
 
     ////////////////////////////////////////////////////////
     struct Configuration
     {
         int m_width;
         int m_height;
-        const char * m_name;
+        const char* m_name;
 
-        std::function<IState*()> m_initState;
+        const char* m_startingScene;
     };
     Configuration GetConfiguration();
 

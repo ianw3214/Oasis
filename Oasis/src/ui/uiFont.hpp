@@ -24,8 +24,8 @@ inline std::string GetUIFont(UIFont font)
 }
 inline std::string GetUIFontPath(UIFont font)
 {
-    if (font == UIFont::DEFAULT) return "res/fonts/ProggyClean.ttf";
-    if (font == UIFont::SMALL) return "res/fonts/ProggyClean.ttf";
+    if (font == UIFont::DEFAULT) return "oasis/res/Anonymous_Pro.ttf";
+    if (font == UIFont::SMALL) return "oasis/res/Anonymous_Pro.ttf";
     if (font == UIFont::NONE) return "";
     return "";
 }

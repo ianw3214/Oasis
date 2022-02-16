@@ -1,3 +1,4 @@
+/*
 #include "sandbox.hpp"
 
 #include "oasis.h"
@@ -81,3 +82,4 @@ void SandboxLayer::Update()
     Oasis::Renderer::DrawAnimatedSprite(&sprite2);
 
 }
+*/

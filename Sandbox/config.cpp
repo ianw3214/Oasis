@@ -9,12 +9,6 @@ Oasis::Configuration Oasis::GetConfiguration()
     config.m_width = 1280;
     config.m_height = 720;
     config.m_name = "sandbox";
-    
-    // Return the initial state as a callback so it doesn't get instantiated before engine inits
-    config.m_initState = []() -> IState* 
-    {
-        return new Sandbox();
-    };
-
+    config.m_startingScene = "test.yaml";
     return config;
 }

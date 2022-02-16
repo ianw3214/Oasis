@@ -1,15 +1,15 @@
 target_sources(Oasis PRIVATE entry.hpp)
 
-target_sources(Oasis PRIVATE state.hpp)
-
 target_sources(Oasis PRIVATE 
     application.hpp
-    stateManager.hpp
+    sceneManager.hpp
     windowService.hpp
-    console.hpp)
+    console.hpp
+    scene.hpp)
 
 target_sources(Oasis PRIVATE 
     application.cpp
-    stateManager.cpp
+    sceneManager.cpp
     windowService.cpp
-    console.cpp)
+    console.cpp
+    scene.cpp)

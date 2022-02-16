@@ -1,3 +1,0 @@
-target_sources(Oasis PRIVATE gameState.hpp)
-
-target_sources(Oasis PRIVATE gameState.cpp)

@@ -378,6 +378,7 @@ void UIManager::AddUIEventCallback(const std::string& event_key, std::function<v
 
 void UIManager::DeserializeUI()
 {
+    /*
     for (const auto & entry : std::filesystem::directory_iterator(UIManager::Path()))
     {
         if (entry.path().extension() != ".ui")
@@ -408,4 +409,5 @@ void UIManager::DeserializeUI()
             }
         }
     }
+    */
 }

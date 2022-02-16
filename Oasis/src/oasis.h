@@ -5,8 +5,7 @@
 #include "util/colour.hpp"
 
 #include "core/application.hpp"
-#include "core/state.hpp"
-#include "core/stateManager.hpp"
+#include "core/sceneManager.hpp"
 #include "core/windowService.hpp"
 #include "core/console.hpp"
 
@@ -26,8 +25,6 @@
 
 #include "audio/audio.hpp"
 #include "audio/source.hpp"
-
-#include "states/gameState.hpp"
 
 #include "ui/uiFont.hpp"
 #include "ui/uiCommon.hpp"

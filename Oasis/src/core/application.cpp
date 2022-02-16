@@ -11,9 +11,9 @@ using namespace Oasis;
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "core/windowService.hpp"
-#include "core/state.hpp"
-#include "core/stateManager.hpp"
+#include "core/sceneManager.hpp"
 #include "core/console.hpp"
+#include "core/scene.hpp"
 
 #include "resource/resourceManager.hpp"
 
@@ -61,7 +61,7 @@ Application::Application(const Configuration& config)
     ImGuiWrapper::Init();
 
     ResourceManager::Init();
-    StateManager::Init(config.m_initState());
+    SceneManager::Init(Scene::loadFromFile(config.m_startingScene));
     Renderer::Init();
     TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
@@ -78,8 +78,8 @@ Application::Application(const Configuration& config)
         m_running = false;
     });
 
-    // Initialize the starting state
-    StateManager::CurrentState()->Init();
+    // Initialize the starting scene
+    SceneManager::CurrentScene()->Init();
 
     // rapid YAML testing code
     // TODO: Remove this
@@ -104,7 +104,7 @@ void Application::OnEvent(const Event& event)
     {
         return;
     }
-    StateManager::CurrentState()->OnEvent(event);
+    SceneManager::CurrentScene()->OnEvent(event);
 }
 
 void DisplayApplicationInfo(double * microseconds)
@@ -132,7 +132,7 @@ void Application::Run()
         ////////////////////////////////////////////////////////////////
         Renderer::Clear({1.f, 0.f, 1.f});
         InputManager::Update();
-        StateManager::CurrentState()->Update();
+        SceneManager::CurrentScene()->Update();
         UIManager::Update();
 
         ImGuiWrapper::Update(static_cast<float>(m_delta / 1000.0));
