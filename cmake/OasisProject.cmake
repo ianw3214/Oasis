@@ -27,6 +27,7 @@ function(OasisProject projectName)
     if (WIN32)
     target_compile_definitions(Oasis PRIVATE PLATFORM_WINDOWS)
     target_compile_definitions(${projectName} PRIVATE PLATFORM_WINDOWS)
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${projectName})
     set_property(TARGET ${projectName} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
     endif()
 
