@@ -1,10 +1,4 @@
-cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+add_subdirectory(src)
 
-set(OASIS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Oasis)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/Oasis/cmake/")
-include(OasisProject)
-
-OasisProject(Sandbox)
-
-add_subdirectory(Sandbox)
+target_include_directories(Oasis PRIVATE src)
+target_include_directories(Oasis PRIVATE vendor)
