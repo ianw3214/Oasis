@@ -35,6 +35,29 @@ Run the following commands to get SDL, GLEW, and FreeType setup on your local ma
 > brew install freetype  
 > brew install imgui  
 
+## Creating the project
+
+Sample game using the Oasis engine can be found [here](https://github.com/ianw3214/game).
+
+Import the Oasis game engine as a submodule to the root directory of the project to get started.
+
+> git submodule add git@github.com:ianw3214/Oasis.git
+
+Then, create a CMakelists.txt with the following format:
+
+```cmake
+cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+set(OASIS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Oasis)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/Oasis/cmake/")
+include(OasisProject)
+
+OasisProject(Sandbox)
+
+# add cmake sources here...
+```
+
 ## Running cmake
 
 For this project, it is recommended to use an **out of source** build so that the build files don't interfere with the source files.  
@@ -48,7 +71,3 @@ Alternatively, you can use the included script files to generate the cmake build
 ## Working with the project
 
 The project should be all set up now. On windows, simply open the .vcxproj file to open the project in Visual Studio.
-
-**NOTE**: In order to run the game from within the build folder, you need to copy the res folder from the root folder to the build folder.
-
-**NOTE**: On windows, you may need to manually set the project subsystem to *WINDOWS* instead of *CONSOLE*, otherwise the compiler will give you an error about main being unresolved.
