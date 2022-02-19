@@ -6,7 +6,7 @@ namespace Oasis
     class SceneManager
     {
     public:
-        static void Init(Scene* scene);
+        static void Init(const std::string& file);
 
         static Scene* CurrentScene() { return mCurrentScene; }
         static void ChangeScene(Scene* newScene);

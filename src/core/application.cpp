@@ -61,7 +61,7 @@ Application::Application(const Configuration& config)
     ImGuiWrapper::Init();
 
     ResourceManager::Init();
-    SceneManager::Init(Scene::loadFromFile(config.m_startingScene));
+    SceneManager::Init("res/config.yaml");
     Renderer::Init();
     TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
@@ -80,11 +80,6 @@ Application::Application(const Configuration& config)
 
     // Initialize the starting scene
     SceneManager::CurrentScene()->Init();
-
-    // rapid YAML testing code
-    // TODO: Remove this
-    char yml_buf[] = "{foo: 1, bar: [2, 3], john: doe}";
-    ryml::Tree tree = ryml::parse_in_place(ryml::substr(yml_buf));
 }
 
 Application::~Application()
