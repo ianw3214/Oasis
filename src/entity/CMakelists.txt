@@ -1,0 +1,5 @@
+target_sources(Oasis PRIVATE 
+    entity.hpp)
+
+target_sources(Oasis PRIVATE 
+    entity.cpp)

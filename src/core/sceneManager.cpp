@@ -6,7 +6,9 @@ using namespace Oasis;
 
 // TODO: Actual file manager
 #include <fstream>
-#include <stringstream>
+#include <sstream>
+#include <ryml_std.hpp>
+#include <ryml.hpp>
 
 Scene* SceneManager::mCurrentScene;
 
@@ -17,7 +19,7 @@ void SceneManager::Init(const std::string& file)
     std::stringstream buffer;
     buffer << config.rdbuf();
     std::string fileData = buffer.str();
-    ryml::Tree tree = ryml::parse_in_place(ryml::substr(fileData));
+    ryml::Tree tree = ryml::parse_in_arena(ryml::to_csubstr(fileData));
 
     // Parse relevant config data
     int width = 500;
@@ -32,12 +34,12 @@ void SceneManager::Init(const std::string& file)
 
     std::string name;
     if (tree["name"].is_keyval()) {
-        name = tree["name"].val();
+        tree["name"] >> name;
     }
 
     std::string sceneFile;
     if (tree["starting_scene"].is_keyval()) {
-        sceneFile = tree["starting_scene"].val();
+        tree["starting_scene"] >> sceneFile;
     }
 
     Scene* scene = Scene::loadFromFile(sceneFile);
