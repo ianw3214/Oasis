@@ -1,7 +1,5 @@
 target_sources(Oasis PRIVATE 
-    entity.hpp)
+    component.hpp)
 
 target_sources(Oasis PRIVATE 
-    entity.cpp)
-
-add_subdirectory(components)
+    component.cpp)
