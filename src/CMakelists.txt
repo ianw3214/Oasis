@@ -6,5 +6,6 @@ add_subdirectory(util)
 add_subdirectory(resource)
 add_subdirectory(ui)
 add_subdirectory(entity)
+add_subdirectory(systems)
 
 add_subdirectory(imgui)

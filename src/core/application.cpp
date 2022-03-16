@@ -14,6 +14,7 @@ using namespace Oasis;
 #include "core/sceneManager.hpp"
 #include "core/console.hpp"
 #include "core/scene.hpp"
+#include "systems/systemManager.hpp"
 
 #include "resource/resourceManager.hpp"
 
@@ -62,6 +63,7 @@ Application::Application(const Configuration& config)
 
     ResourceManager::Init();
     SceneManager::Init("res/config.yaml");
+    SystemManager::Init();
     Renderer::Init();
     TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
@@ -128,6 +130,7 @@ void Application::Run()
         Renderer::Clear({1.f, 0.f, 1.f});
         InputManager::Update();
         SceneManager::CurrentScene()->Update();
+        SystemManager::Update(SceneManager::CurrentScene());
         UIManager::Update();
 
         ImGuiWrapper::Update(static_cast<float>(m_delta / 1000.0));

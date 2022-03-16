@@ -24,6 +24,7 @@ void Scene::OnEvent(const Event& event)
 
 void Scene::Update()
 {
+    
 }
 
 void Scene::AddEntity(Entity* entity) 

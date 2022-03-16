@@ -19,6 +19,7 @@ namespace Oasis
         void Update();
 
         void AddEntity(Entity* entity);
+        std::vector<Entity*>& getEntitiesMutable() { return mEntities; }
     private:
         std::vector<Entity*> mEntities;
 

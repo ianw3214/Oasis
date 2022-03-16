@@ -1,0 +1,7 @@
+target_sources(Oasis PRIVATE 
+    systemManager.hpp
+    system.hpp)
+
+target_sources(Oasis PRIVATE 
+    systemManager.cpp
+    system.cpp)
