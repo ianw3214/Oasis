@@ -8,12 +8,15 @@
 
 namespace Oasis 
 {
+    class Entity;
     class Component;
     class ComponentManager
     {
     public:
-        typedef std::function<Component*(const ryml::NodeRef)> LoadFunc;
-        static Component* loadFromYAML(const std::string& name, const ryml::NodeRef tree);
+        static void InitCoreComponents();
+
+        typedef std::function<Component*(const ryml::NodeRef, Entity* owner)> LoadFunc;
+        static Component* loadFromYAML(const std::string& name, const ryml::NodeRef tree, Entity* owner);
         static bool registerComponent(const std::string& name, LoadFunc func);
     private:
         static std::unordered_map<std::string, LoadFunc> mComponentMap;
@@ -22,10 +25,11 @@ namespace Oasis
     class Component 
     {
     public:
-        static Component* loadFromYAML(const ryml::NodeRef tree);
+        static Component* loadFromYAML(const ryml::NodeRef tree, Entity* owner);
     public:
-        Component(const std::string& name);
+        Component(Entity* owner);
+        virtual ~Component() {}
     private:
-        std::string mName;
+        Entity* mOwner;
     };
 }

@@ -1,26 +1,37 @@
 #include "component.hpp"
 using namespace Oasis;
 
+#include "core/renderComponent.hpp"
+
 std::unordered_map<std::string, ComponentManager::LoadFunc> ComponentManager::mComponentMap;
 
-Component* ComponentManager::loadFromYAML(const std::string& name, const ryml::NodeRef tree) {
-    return nullptr;
+void ComponentManager::InitCoreComponents() {
+    registerComponent("test", Component::loadFromYAML);
+    registerComponent("render", RenderComponent::loadFromYAML);
+}
+
+Component* ComponentManager::loadFromYAML(const std::string& name, const ryml::NodeRef tree, Entity* owner) {
+    auto funcIt = mComponentMap.find(name);
+    if (funcIt == mComponentMap.end()) {
+        return nullptr;
+    }
+    return (funcIt->second)(tree, owner);
 }
 
 bool ComponentManager::registerComponent(const std::string& name, LoadFunc func) {
+    if (mComponentMap.find(name) != mComponentMap.end()) {
+        return false;
+    }
+    mComponentMap[name] = func;
     return true;
 }
 
-Component::Component(const std::string& name) 
-    : mName(name)
+Component::Component(Entity* owner) 
+    : mOwner(owner)
 {
 
 }
 
-Component* Component::loadFromYAML(const ryml::NodeRef tree) {
-    std::string name;
-    if (tree["name"].is_keyval()) {
-        tree["name"] >> name;
-    }
-    return new Component(name);
+Component* Component::loadFromYAML(const ryml::NodeRef tree, Entity* owner) {
+    return new Component(owner);
 }

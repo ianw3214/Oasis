@@ -23,7 +23,7 @@ Entity* Entity::loadFromYAML(const ryml::NodeRef tree) {
         for (ryml::NodeRef node : tree["components"]) {
             std::string componentName;
             c4::from_chars(node.key(), &componentName);
-            Component * component = ComponentManager::loadFromYAML(componentName, node);
+            Component * component = ComponentManager::loadFromYAML(componentName, node, result);
             result->addComponent(component);
         }
     }

@@ -5,3 +5,5 @@ target_sources(Oasis PRIVATE
 target_sources(Oasis PRIVATE 
     systemManager.cpp
     system.cpp)
+
+add_subdirectory(core)

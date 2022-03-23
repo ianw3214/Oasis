@@ -26,6 +26,8 @@ using namespace Oasis;
 
 #include "audio/audio.hpp"
 
+#include "entity/components/component.hpp"
+
 #include "ui/uiManager.hpp"
 
 #include <ryml.hpp>
@@ -60,6 +62,9 @@ Application::Application(const Configuration& config)
     // Initialize subsystems
     WindowService::Init(this);
     ImGuiWrapper::Init();
+
+    // Gameplay systems
+    ComponentManager::InitCoreComponents();
 
     ResourceManager::Init();
     SceneManager::Init("res/config.yaml");

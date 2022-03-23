@@ -1,7 +1,5 @@
 target_sources(Oasis PRIVATE 
-    component.hpp)
+    renderSystem.hpp)
 
 target_sources(Oasis PRIVATE 
-    component.cpp)
-
-add_subdirectory(core)
+    renderSystem.cpp)
