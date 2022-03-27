@@ -32,15 +32,15 @@ void Renderer::Clear(Colour colour)
 
 void Renderer::SetWindowSize(int width, int height)
 {
-	basicShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_fragment.glsl");
+	basicShader = new Shader("Oasis/res/shaders/basic_vertex.glsl", "Oasis/res/shaders/basic_fragment.glsl");
 	basicShader->setUniform1f("u_screenWidth", static_cast<float>(width));
     basicShader->setUniform1f("u_screenHeight", static_cast<float>(height));
 
-	textureShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_texture.glsl");
+	textureShader = new Shader("Oasis/res/shaders/basic_vertex.glsl", "Oasis/res/shaders/basic_texture.glsl");
 	textureShader->setUniform1f("u_screenWidth", static_cast<float>(width));
     textureShader->setUniform1f("u_screenHeight", static_cast<float>(height));
 
-	spriteShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/sprite_fragment.glsl");
+	spriteShader = new Shader("Oasis/res/shaders/basic_vertex.glsl", "Oasis/res/shaders/sprite_fragment.glsl");
 	spriteShader->setUniform1f("u_screenWidth", static_cast<float>(width));
     spriteShader->setUniform1f("u_screenHeight", static_cast<float>(height));
 }

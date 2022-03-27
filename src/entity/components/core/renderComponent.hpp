@@ -14,6 +14,7 @@ public:
     RenderComponent(Oasis::Entity* owner);
 
     void setPath(const std::string& path) { mPath = path; }
+    Oasis::Sprite* getSprite() const { return mSprite; }
 private:
     std::string mPath;
     Oasis::Sprite* mSprite;

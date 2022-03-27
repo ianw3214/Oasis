@@ -1,6 +1,6 @@
 #pragma once
 
-#include "systems/core.hpp"
+#include "systems/system.hpp"
 
 class RenderSystem : public Oasis::System {
 public:

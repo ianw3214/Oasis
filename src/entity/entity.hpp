@@ -15,6 +15,17 @@ namespace Oasis
     public:
         Entity(const std::string& name);
         bool addComponent(Component* component);
+
+        // This is very bad
+        // TODO: Find a better way to do this
+        template<typename T>
+        T * getComponent() {
+            for (Component* component : mComponents) {
+                T* cast = dynamic_cast<T*>(component);
+                if (cast) return cast;
+            }
+            return nullptr;
+        }
     private:
         std::string mName;
         // TODO: Better place to store this
