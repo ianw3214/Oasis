@@ -15,7 +15,14 @@ public:
 
     void setPath(const std::string& path) { mPath = path; }
     Oasis::Sprite* getSprite() const { return mSprite; }
+
+    float getX() const { return mX; }
+    float getY() const { return mY; }
+    void setPos(float x, float y) { mX = x; mY = y; }
 private:
     std::string mPath;
+
+    float mX;
+    float mY;
     Oasis::Sprite* mSprite;
 };

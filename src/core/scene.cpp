@@ -37,7 +37,8 @@ Scene* Scene::loadFromYAMLtext(const std::string& text) {
 
     ryml::Tree tree = ryml::parse_in_arena(ryml::to_csubstr(text));
     for (ryml::NodeRef node : tree["entities"]) {
-        Entity* entity = Entity::loadFromYAML(node);
+        Entity* entity = new Entity();
+        entity->loadFromYAML(node);
         scene->AddEntity(entity);
     }
     return scene;

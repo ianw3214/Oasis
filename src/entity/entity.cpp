@@ -2,8 +2,8 @@
 #include "components/component.hpp"
 using namespace Oasis;
 
-Entity::Entity(const std::string& name) 
-    : mName(name)
+Entity::Entity() 
+    : mName()
 {
 
 }
@@ -14,18 +14,18 @@ bool Entity::addComponent(Component* component) {
 }
 
 Entity* Entity::loadFromYAML(const ryml::NodeRef tree) {
-    std::string name;
-    if (tree["name"].is_keyval()) {
-        tree["name"] >> name;
+    // TODO: Input sanitation
+    if (tree.has_child("name") && tree["name"].is_keyval()) {
+        tree["name"] >> mName;
     }
-    Entity * result = new Entity(name);
+
     if (tree["components"].is_map()) {
-        for (ryml::NodeRef node : tree["components"]) {
+        for (const ryml::NodeRef& node : tree["components"]) {
             std::string componentName;
             c4::from_chars(node.key(), &componentName);
-            Component * component = ComponentManager::loadFromYAML(componentName, node, result);
-            result->addComponent(component);
+            Component * component = ComponentManager::loadFromYAML(componentName, node, this);
+            addComponent(component);
         }
     }
-    return result;
+    return this;
 }

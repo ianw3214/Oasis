@@ -11,9 +11,9 @@ namespace Oasis
     class Entity 
     {
     public:
-        static Entity* loadFromYAML(const ryml::NodeRef tree);
+        Entity* loadFromYAML(const ryml::NodeRef tree);
     public:
-        Entity(const std::string& name);
+        Entity();
         bool addComponent(Component* component);
 
         // This is very bad
@@ -28,6 +28,7 @@ namespace Oasis
         }
     private:
         std::string mName;
+
         // TODO: Better place to store this
         std::vector<Component*> mComponents;
     };

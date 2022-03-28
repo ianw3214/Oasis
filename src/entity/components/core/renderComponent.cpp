@@ -13,6 +13,11 @@ Oasis::Component* RenderComponent::loadFromYAML(const ryml::NodeRef tree, Oasis:
     return result;
 }
 
-RenderComponent::RenderComponent(Oasis::Entity* owner) : Component(owner) {
+RenderComponent::RenderComponent(Oasis::Entity* owner) 
+    : Component(owner) 
+    , mX(0.f) 
+    , mY(0.f)
+    , mSprite(nullptr)
+{
     
 }
