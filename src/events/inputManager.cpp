@@ -20,12 +20,11 @@ using namespace Oasis;
 #include "graphics/textRenderer.hpp"
 
 std::function<void(Event&)> InputManager::s_eventCallback;
-bool InputManager::s_mouseDown;
+bool InputManager::s_mouseDown[static_cast<int>(MouseButton::COUNT)];
 
 void InputManager::Init(std::function<void(Event&)> callback)
 {
     s_eventCallback = callback;
-    s_mouseDown = false;
 }
 
 void InputManager::Update()
@@ -63,16 +62,38 @@ void InputManager::Update()
         // TODO: SPECIFY BETWEEN DIFFERENT MOUSE BUTTONS
         if (e.type == SDL_MOUSEBUTTONDOWN && !io.WantCaptureMouse)
         {
-            MousePressedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y);
+            MouseButton button;
+            switch(e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    button = MouseButton::LEFT;
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    button = MouseButton::RIGHT;
+                    break;
+                default:
+                    button = MouseButton::LEFT;
+            }
+            MousePressedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y, button);
             s_eventCallback(mouseEvent);
-            s_mouseDown = true;
+            s_mouseDown[static_cast<int>(button)] = true;
         }
 
         if (e.type == SDL_MOUSEBUTTONUP && !io.WantCaptureMouse)
         {
-            MouseReleasedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y);
+            MouseButton button;
+            switch(e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    button = MouseButton::LEFT;
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    button = MouseButton::RIGHT;
+                    break;
+                default:
+                    button = MouseButton::LEFT;
+            }
+            MouseReleasedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y, button);
             s_eventCallback(mouseEvent);
-            s_mouseDown = false;
+            s_mouseDown[static_cast<int>(button)] = false;
         }
 
         if (e.type == SDL_MOUSEMOTION && !io.WantCaptureMouse)
@@ -110,4 +131,8 @@ void InputManager::Update()
             }
         }
     }
+}
+
+bool InputManager::MouseHeld(MouseButton button) {
+    return s_mouseDown[static_cast<int>(button)];
 }

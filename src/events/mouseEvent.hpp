@@ -3,18 +3,28 @@
 
 namespace Oasis
 {
+    enum class MouseButton : int {
+        LEFT = 0,
+        RIGHT,
+
+        COUNT
+    };
+
     /////////////////////////////////////////////////////////////////
     class MousePressedEvent : public Event
     {
     public:
         EVENT_CLASS_TYPE(MOUSE_PRESS);
 
-        MousePressedEvent(int x, int y) : m_x(x), m_y(y) {}
-        int GetX() const { return m_x; }
-        int GetY() const { return m_y; }
+        MousePressedEvent(int x, int y, MouseButton button) 
+            : mX(x), mY(y), mButton(button) {}
+        int GetX() const { return mX; }
+        int GetY() const { return mY; }
+        MouseButton GetButton() const { return mButton; }
     private:
-        int m_x;
-        int m_y;
+        int mX;
+        int mY;
+        MouseButton mButton;
     };
 
     /////////////////////////////////////////////////////////////////
@@ -23,12 +33,15 @@ namespace Oasis
     public:
         EVENT_CLASS_TYPE(MOUSE_RELEASE);
 
-        MouseReleasedEvent(int x, int y) : m_x(x), m_y(y) {}
-        int GetX() const { return m_x; }
-        int GetY() const { return m_y; }
+        MouseReleasedEvent(int x, int y, MouseButton button) 
+            : mX(x), mY(y), mButton(button) {}
+        int GetX() const { return mX; }
+        int GetY() const { return mY; }
+        MouseButton GetButton() const { return mButton; }
     private:
-        int m_x;
-        int m_y;
+        int mX;
+        int mY;
+        MouseButton mButton;
     };
 
     /////////////////////////////////////////////////////////////////
@@ -38,20 +51,20 @@ namespace Oasis
         EVENT_CLASS_TYPE(MOUSE_MOVE);
 
         MouseMovedEvent(int x, int y, int xOffset, int yOffset) 
-            : m_x(x)
-            , m_y(y)
-            , m_xOffset(xOffset)
-            , m_yOffset(yOffset) 
+            : mX(x)
+            , mY(y)
+            , mXOffset(xOffset)
+            , mYOffset(yOffset) 
         {}
-        int GetX() const { return m_x; }
-        int GetY() const { return m_y; }
-        int GetXOffset() const { return m_xOffset; }
-        int GetYOffset() const { return m_yOffset; }
+        int GetX() const { return mX; }
+        int GetY() const { return mY; }
+        int GetXOffset() const { return mXOffset; }
+        int GetYOffset() const { return mYOffset; }
     private:
-        int m_x;
-        int m_y;
-        int m_xOffset;
-        int m_yOffset;
+        int mX;
+        int mY;
+        int mXOffset;
+        int mYOffset;
     };
 
     class MouseScrolledEvent : public Event

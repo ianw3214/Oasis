@@ -2,6 +2,8 @@
 
 #include <functional>
 
+#include "mouseEvent.hpp"
+
 namespace Oasis
 {
     class Event;
@@ -13,11 +15,11 @@ namespace Oasis
         static void Update();
 
         // Some inputs make more sense as state
-        static bool MouseHeld() { return s_mouseDown; }
+        static bool MouseHeld(MouseButton button);
     private:
+        // TODO: consider removing callback and storing state instead
         static std::function<void(Event&)> s_eventCallback;
 
-        // TODO: Differentiate between mouse buttons
-        static bool s_mouseDown;
+        static bool s_mouseDown[MouseButton::COUNT];
     };
 }
