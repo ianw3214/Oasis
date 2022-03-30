@@ -1,5 +1,7 @@
 target_sources(Oasis PRIVATE 
-    fileSystem.hpp)
+    fileSystem.hpp
+    yamlParser.hpp)
 
 target_sources(Oasis PRIVATE 
-    fileSystem.cpp)
+    fileSystem.cpp
+    yamlParser.cpp)
