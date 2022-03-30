@@ -13,12 +13,12 @@ enum class BoundVariableType
 
 struct BoundVariable
 {
-    BoundVariableType m_type;
+    BoundVariableType mType;
     // Use a union to store all the different types there are
     union {
-        int m_int;
-        unsigned int m_uint;
-        char* m_str;
+        int mInt;
+        unsigned int mUint;
+        char* mStr;
     };
 };
 
@@ -40,19 +40,19 @@ public:
 
     std::string GetVariableAsString(const std::string& var_name);
 private:
-    std::unordered_map<std::string, BoundVariable> m_variables;
+    std::unordered_map<std::string, BoundVariable> mVariables;
 
     // TODO: Only create by default when setting variable, not when getting
     inline BoundVariable& GetVariable(const std::string& var_name)
     {
-        auto it = m_variables.find(var_name);
-        if (it == m_variables.end())
+        auto it = mVariables.find(var_name);
+        if (it == mVariables.end())
         {
-            m_variables[var_name] = BoundVariable{};
+            mVariables[var_name] = BoundVariable{};
             // Initialize to 0
-            m_variables[var_name].m_type = BoundVariableType::INT;
-            m_variables[var_name].m_int = 0;
+            mVariables[var_name].mType = BoundVariableType::INT;
+            mVariables[var_name].mInt = 0;
         }
-        return m_variables[var_name];
+        return mVariables[var_name];
     }
 };

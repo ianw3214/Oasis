@@ -1,0 +1,5 @@
+target_sources(Oasis PRIVATE 
+    fileSystem.hpp)
+
+target_sources(Oasis PRIVATE 
+    fileSystem.cpp)

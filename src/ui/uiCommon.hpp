@@ -37,64 +37,64 @@ enum class UIAnchor
 
 struct UIElement
 {
-    unsigned int m_width, m_height;
-    UIAnchor m_anchor;
-    int m_xOffset, m_yOffset;
+    unsigned int mWidth, mHeight;
+    UIAnchor mAnchor;
+    int mXOffset, mYOffset;
     // Each UIElement has ownership of it's children
-    std::vector<UIElement*> m_children;
+    std::vector<UIElement*> mChildren;
 
     // Handles the actual updating of the UI element
-    UIType m_UIType;
+    UIType mUIType;
     // Handles the data needed for the UI
     union
     {
         // Background drawing info
         struct {
-            unsigned int m_borderWidth;
-            Oasis::Colour m_background;
-            Oasis::Colour m_border;
+            unsigned int mBorderWidth;
+            Oasis::Colour mBackground;
+            Oasis::Colour mBorder;
         };
         // Text drawing info
         struct {
-            char * m_text;  // Need to remember to delete m_text, was allocated by serializer
-            Oasis::Colour m_colour;
-            UIFont m_font;
+            char * mText;  // Need to remember to delete mText, was allocated by serializer
+            Oasis::Colour mColour;
+            UIFont mFont;
         };
         // Texture
         struct {
-            char * m_path;
+            char * mPath;
             // Cached texture
-            Oasis::Sprite * m_cachedSprite;
+            Oasis::Sprite * mCachedSprite;
         };
         // Dynamic text drawing info
         struct {
-            char * m_formatString;
-            Oasis::Colour m_colour;
-            UIFont m_font;
+            char * mFormatString;
+            Oasis::Colour mColour;
+            UIFont mFont;
         };
         // Button
         struct {
-            char * m_path;
-            char * m_hoverPath;
-            char * m_clickEvent;
+            char * mPath;
+            char * mHoverPath;
+            char * mClickEvent;
             // Cached textures
-            Oasis::Sprite * m_cachedButtonSprite;
-            Oasis::Sprite * m_cachedHoverSprite;
+            Oasis::Sprite * mCachedButtonSprite;
+            Oasis::Sprite * mCachedHoverSprite;
             // Internal state for the engine to keep track of
-            bool m_hovering;
+            bool mHovering;
         };
         // Animated Texture
         struct {
-            char * m_path;
-            int m_frameWidth;
-            int m_frameHeight;
-            int m_animFrames;
-            int m_fps;
+            char * mPath;
+            int mFrameWidth;
+            int mFrameHeight;
+            int mAnimFrames;
+            int mFps;
             // Cached texture
-            Oasis::AnimatedSprite * m_cachedAnimatedSprite;
+            Oasis::AnimatedSprite * mCachedAnimatedSprite;
         };
     };
 
     // Internal data for the manager to keep track of whether the UI element should be shown or not
-    bool m_show;
+    bool mShow;
 };

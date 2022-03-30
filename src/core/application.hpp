@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
+// TODO: Don't use this stupid Oasis namespace lol
 namespace Oasis
 {
     class Event;
@@ -13,11 +14,11 @@ namespace Oasis
     ////////////////////////////////////////////////////////
     struct Configuration
     {
-        int m_width;
-        int m_height;
-        const char* m_name;
+        int mWidth;
+        int mHeight;
+        const char* mName;
 
-        const char* m_startingScene;
+        const char* mStartingScene;
     };
     Configuration GetConfiguration();
 
@@ -32,14 +33,14 @@ namespace Oasis
         void Run();
 
     private:
-        bool m_running;
-        double m_delta;
+        bool mRunning;
+        double mDelta;
 
-        int m_width;
-        int m_height;
+        int mWidth;
+        int mHeight;
 
-        SDL_Window * m_window;
-        SDL_GLContext m_context;
+        SDL_Window * mWindow;
+        SDL_GLContext mContext;
     private:
         friend class WindowService;
     };

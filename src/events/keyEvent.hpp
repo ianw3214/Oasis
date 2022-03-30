@@ -9,10 +9,10 @@ namespace Oasis
     public:
         EVENT_CLASS_TYPE(KEY_PRESSED);
 
-        KeyPressedEvent(int keyCode) : m_keyCode(keyCode) {}
-        int GetKey() const { return m_keyCode; }
+        KeyPressedEvent(int keyCode) : mKeyCode(keyCode) {}
+        int GetKey() const { return mKeyCode; }
     private:
-        int m_keyCode;
+        int mKeyCode;
     };
 
     ///////////////////////////////////////////////////////////////
@@ -21,9 +21,9 @@ namespace Oasis
     public:
         EVENT_CLASS_TYPE(KEY_RELEASED);
 
-        KeyReleasedEvent(int keyCode) : m_keyCode(keyCode) {}
-        int GetKey() const { return m_keyCode; }
+        KeyReleasedEvent(int keyCode) : mKeyCode(keyCode) {}
+        int GetKey() const { return mKeyCode; }
     private:
-        int m_keyCode;
+        int mKeyCode;
     };
 }

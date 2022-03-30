@@ -61,7 +61,7 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
 
             // The UI Element we are building
             UIElement * curr = new UIElement();
-            curr->m_show = true;
+            curr->mShow = true;
             // If something went wrong and we didn't add it, remove at the end
             bool delete_at_end = false;
 
@@ -92,32 +92,32 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                     } break;
                     // width
                     case 1: {
-                        curr->m_width = std::stoi(token);
+                        curr->mWidth = std::stoi(token);
                     } break;
                     // height
                     case 2: {
-                        curr->m_height = std::stoi(token);
+                        curr->mHeight = std::stoi(token);
                     } break;
                     // anchor (JUST USE NUMBERS TO REPRESENT)
                     case 3: {
                         int i = std::stoi(token);
                         if (i < static_cast<int>(UIAnchor::COUNT))
                         {
-                            curr->m_anchor = static_cast<UIAnchor>(i);
+                            curr->mAnchor = static_cast<UIAnchor>(i);
                         }
                         else
                         {
                             Oasis::Console::Error("Invalid UI Anchor: %i, setting to BOTTOM_LEFT", i);
-                            curr->m_anchor = UIAnchor::BOTTOM_LEFT;
+                            curr->mAnchor = UIAnchor::BOTTOM_LEFT;
                         }
                     } break;
                     // x offset
                     case 4: {
-                        curr->m_xOffset = std::stoi(token);
+                        curr->mXOffset = std::stoi(token);
                     } break;
                     // y offset
                     case 5: {
-                        curr->m_yOffset = std::stoi(token);
+                        curr->mYOffset = std::stoi(token);
                     } break;
                     // parent
                     case 6: {
@@ -126,18 +126,18 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                             auto it = addedElements.find(token);
                             if (it != addedElements.end())
                             {
-                                it->second->m_children.push_back(curr);
+                                it->second->mChildren.push_back(curr);
                             }
                             else
                             {
                                 Oasis::Console::Error("Could not find UI element: '%s' - appending to root, make sure the parent is defined before the child!", token.c_str());
                                 // attach to root for now
-                                root->m_children.push_back(curr);
+                                root->mChildren.push_back(curr);
                             }
                         }
                         else
                         {
-                            root->m_children.push_back(curr);
+                            root->mChildren.push_back(curr);
                         }
                     } break;
                     // Type
@@ -145,12 +145,12 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                         int i = std::stoi(token);
                         if (i < static_cast<int>(UIType::COUNT))
                         {
-                            curr->m_UIType = static_cast<UIType>(i);
+                            curr->mUIType = static_cast<UIType>(i);
                         }
                         else
                         {
                             Oasis::Console::Error("Invalid UI type: %i, setting to NONE", i);
-                            curr->m_UIType = UIType::NONE;
+                            curr->mUIType = UIType::NONE;
                         }
                     } break;
                     // Depending on the type, we will have to handle individually
@@ -170,27 +170,27 @@ UISerializer::Data UISerializer::Deserialize(const std::string& path, Ref<UIElem
                     case 20:
                     {
                         int type_index = counter - 8;
-                        if (curr->m_UIType == UIType::BACKGROUND)
+                        if (curr->mUIType == UIType::BACKGROUND)
                         {
                             DeserializeUIBackgroundLine(token, type_index, curr);
                         }
-                        if (curr->m_UIType == UIType::TEXT)
+                        if (curr->mUIType == UIType::TEXT)
                         {
                             DeserializeUITextLine(token, type_index, curr);
                         }
-                        if (curr->m_UIType == UIType::TEXTURE)
+                        if (curr->mUIType == UIType::TEXTURE)
                         {
                             DeserializeUITextureLine(token, type_index, curr);
                         }
-                        if (curr->m_UIType == UIType::TEXT_DYNAMIC)
+                        if (curr->mUIType == UIType::TEXT_DYNAMIC)
                         {
                             DeserializeUIDynamicTextLine(token, type_index, curr);
                         }
-                        if (curr->m_UIType == UIType::BUTTON)
+                        if (curr->mUIType == UIType::BUTTON)
                         {
                             DeserializeUIButtonLine(token, type_index, curr);
                         }
-                        if (curr->m_UIType == UIType::ANIMATED_TEXTURE)
+                        if (curr->mUIType == UIType::ANIMATED_TEXTURE)
                         {
                             DeserializeUIAnimatedTextureLine(token, type_index, curr);
                         }
@@ -214,13 +214,13 @@ void UISerializer::DeserializeUIBackgroundLine(const std::string& line, int inde
     {
 
         case 0: {
-            curr->m_borderWidth = std::stoi(line);
+            curr->mBorderWidth = std::stoi(line);
         } break;
         case 1: {
-            DeserializeColour(line, curr->m_background);
+            DeserializeColour(line, curr->mBackground);
         } break;
         case 2: {
-            DeserializeColour(line, curr->m_border);
+            DeserializeColour(line, curr->mBorder);
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Background: %s", line.c_str());
@@ -235,13 +235,13 @@ void UISerializer::DeserializeUITextLine(const std::string& line, int index, Ref
         case 0: {
             char * text = new char[256];
             strcpy_s(text, 256, line.c_str());
-            curr->m_text = text;
+            curr->mText = text;
         } break;
         case 1: {
-            DeserializeColour(line, curr->m_colour);
+            DeserializeColour(line, curr->mColour);
         } break;
         case 2: {
-            curr->m_font = static_cast<UIFont>(std::stoi(line));
+            curr->mFont = static_cast<UIFont>(std::stoi(line));
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Text: %s", line.c_str());
@@ -256,8 +256,8 @@ void UISerializer::DeserializeUITextureLine(const std::string& line, int index, 
         case 0: {
             char * text = new char[256];
             strcpy_s(text, 256, line.c_str());
-            curr->m_path = text;
-            curr->m_cachedSprite = nullptr;
+            curr->mPath = text;
+            curr->mCachedSprite = nullptr;
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Texture: %s", line.c_str());
@@ -272,13 +272,13 @@ void UISerializer::DeserializeUIDynamicTextLine(const std::string& line, int ind
         case 0: {
             char * text = new char[512];
             strcpy_s(text, 512, line.c_str());
-            curr->m_formatString = text;
+            curr->mFormatString = text;
         } break;
         case 1: {
-            DeserializeColour(line, curr->m_colour);
+            DeserializeColour(line, curr->mColour);
         } break;
         case 2: {
-            curr->m_font = static_cast<UIFont>(std::stoi(line));
+            curr->mFont = static_cast<UIFont>(std::stoi(line));
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Dynamic Text: %s", line.c_str());
@@ -293,19 +293,19 @@ void UISerializer::DeserializeUIButtonLine(const std::string& line, int index, R
         case 0: {
             char * text = new char[512];
             strcpy_s(text, 512, line.c_str());
-            curr->m_path = text;
-            curr->m_cachedButtonSprite = nullptr;
+            curr->mPath = text;
+            curr->mCachedButtonSprite = nullptr;
         } break;
         case 1: {
             char * text = new char[512];
             strcpy_s(text, 512, line.c_str());
-            curr->m_hoverPath = text;
-            curr->m_cachedHoverSprite = nullptr;
+            curr->mHoverPath = text;
+            curr->mCachedHoverSprite = nullptr;
         } break;
         case 2: {
             char * text = new char[512];
             strcpy_s(text, 512, line.c_str());
-            curr->m_clickEvent = text;
+            curr->mClickEvent = text;
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Button: %s", line.c_str());
@@ -320,20 +320,20 @@ void UISerializer::DeserializeUIAnimatedTextureLine(const std::string& line, int
         case 0: {
             char * text = new char[512];
             strcpy_s(text, 512, line.c_str());
-            curr->m_path = text;
-            curr->m_cachedAnimatedSprite = nullptr;
+            curr->mPath = text;
+            curr->mCachedAnimatedSprite = nullptr;
         } break;
         case 1: {
-            curr->m_frameWidth = std::stoi(line);
+            curr->mFrameWidth = std::stoi(line);
         } break;
         case 2: {
-            curr->m_frameHeight = std::stoi(line);
+            curr->mFrameHeight = std::stoi(line);
         } break;
         case 3: {
-            curr->m_animFrames = std::stoi(line);
+            curr->mAnimFrames = std::stoi(line);
         } break;
         case 4: {
-            curr->m_fps = std::stoi(line);
+            curr->mFps = std::stoi(line);
         } break;
         default: {
             Oasis::Console::Error("Unexpected token while deserializing UI Animated Texture: %s", line.c_str());

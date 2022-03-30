@@ -43,11 +43,11 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
     }
     else
     {
-        for (auto it : s_fonts[name].m_map)
+        for (auto it : s_fonts[name].mMap)
         {
-            delete it.second.m_texture;
+            delete it.second.mTexture;
         }
-        s_fonts[name].m_map.clear();
+        s_fonts[name].mMap.clear();
     }
 
     // Disable byte alignment restriction
@@ -70,11 +70,11 @@ void TextRenderer::LoadFont(const std::string& name, const std::string& path, in
             face->glyph->bitmap_top,
             static_cast<GLuint>(face->glyph->advance.x)
         };
-        s_fonts[name].m_map.insert(std::pair<GLchar, Character>(c, character));
+        s_fonts[name].mMap.insert(std::pair<GLchar, Character>(c, character));
     }
 
     // Store some additional info as well
-    s_fonts[name].m_size = fontSize;
+    s_fonts[name].mSize = fontSize;
 
     FT_Done_Face(face);
 }
@@ -94,15 +94,15 @@ void TextRenderer::DrawCharacter(const std::string& font, GLchar character, floa
     if (!ch)
     {
         OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
-        ch = &s_fonts[font].m_map[character];
+        ch = &s_fonts[font].mMap[character];
     }
 
-    GLfloat xpos = x + ch->m_bearingX;
+    GLfloat xpos = x + ch->mBearingX;
     // TODO: Want to be able to specify text alignment
-    GLfloat ypos = y + ch->m_bearingY;
+    GLfloat ypos = y + ch->mBearingY;
 
-    GLfloat w = static_cast<float>(ch->m_width);
-    GLfloat h = static_cast<float>(ch->m_height);
+    GLfloat w = static_cast<float>(ch->mWidth);
+    GLfloat h = static_cast<float>(ch->mHeight);
     // Update VBO for each character
     GLfloat vertices[6][4] = {
         { xpos,     ypos - h,   0.0, 1.0 },            
@@ -120,7 +120,7 @@ void TextRenderer::DrawCharacter(const std::string& font, GLchar character, floa
     layout.pushFloat(4);
     vao.addBuffer(vbo, layout);
 
-    ch->m_texture->bind();
+    ch->mTexture->bind();
     s_shader->bind();
     s_shader->setUniform3f("textColour", colour.r, colour.g, colour.b);
     vao.bind();
@@ -134,11 +134,11 @@ int TextRenderer::DrawString(const std::string& font, const std::string& str, fl
     for (char c : str)
     {
         OASIS_TRAP(s_fonts.find(font) != s_fonts.end())
-        Character ch = s_fonts[font].m_map[c];
+        Character ch = s_fonts[font].mMap[c];
         DrawCharacter(font, c, x, y, colour, &ch);
 		// bit shift by 6 to get value in pixels
-        x += ch.m_advance >> 6;
-        length += ch.m_advance >> 6;
+        x += ch.mAdvance >> 6;
+        length += ch.mAdvance >> 6;
     }
     return length;
 }

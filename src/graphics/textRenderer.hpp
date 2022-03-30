@@ -17,24 +17,24 @@ namespace Oasis
     //////////////////////////////////////////////////////////////////////////
     struct Character
     {
-        Texture * m_texture;
-        int m_width;
-        int m_height;
+        Texture * mTexture;
+        int mWidth;
+        int mHeight;
         // Offset from baseline to top left of glyph
-        int m_bearingX;
-        int m_bearingY;
+        int mBearingX;
+        int mBearingY;
         // Offset from baseline to 
         // Offset to advance to the next glyph
-        GLuint m_advance;
+        GLuint mAdvance;
     };
 
     //////////////////////////////////////////////////////////////////////////
     struct Font
     {
         typedef std::unordered_map<GLchar, Character> CharMap;
-        CharMap m_map;
+        CharMap mMap;
         // Store some additional info about the font
-        unsigned int m_size;
+        unsigned int mSize;
     };
 
 

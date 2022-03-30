@@ -7,34 +7,34 @@ using namespace Oasis;
 #include "graphics/opengl/texture.hpp"
 
 Sprite::Sprite()
-    : m_x(0.f)
-    , m_y(0.f)
-    , m_width(0.f)
-    , m_height(0.f)
-    , m_srcX(0.f)
-    , m_srcY(0.f)
-    , m_srcWidth(0.f)
-    , m_srcHeight(0.f)
-    , m_tint(Oasis::Colours::WHITE)
-    , m_tintAlpha(0.f)
-    , m_texturePath("")
+    : mX(0.f)
+    , mY(0.f)
+    , mWidth(0.f)
+    , mHeight(0.f)
+    , mSrcX(0.f)
+    , mSrcY(0.f)
+    , mSrcWidth(0.f)
+    , mSrcHeight(0.f)
+    , mTint(Oasis::Colours::WHITE)
+    , mTintAlpha(0.f)
+    , mTexturePath("")
 {
 
 }
 
 Sprite::Sprite(const std::string& path)
-    : m_x(0.f)
-    , m_y(0.f)
-    , m_srcX(0.f)
-    , m_srcY(0.f)
-    , m_tint(Oasis::Colours::WHITE)
-    , m_tintAlpha(0.f)
-    , m_texturePath(path)
+    : mX(0.f)
+    , mY(0.f)
+    , mSrcX(0.f)
+    , mSrcY(0.f)
+    , mTint(Oasis::Colours::WHITE)
+    , mTintAlpha(0.f)
+    , mTexturePath(path)
 {
     Ref<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
     OASIS_TRAP(texture);
-    m_width = m_srcWidth = static_cast<float>(texture->getWidth());
-    m_height = m_srcHeight = static_cast<float>(texture->getHeight());
+    mWidth = mSrcWidth = static_cast<float>(texture->getWidth());
+    mHeight = mSrcHeight = static_cast<float>(texture->getHeight());
 }
 
 Sprite::~Sprite()
@@ -45,35 +45,35 @@ Sprite::~Sprite()
 
 void Sprite::SetPos(float x, float y)
 {
-    m_x = x;
-    m_y = y;
+    mX = x;
+    mY = y;
 }
 
 void Sprite::SetDimensions(float w, float h)
 {
-    m_width = w;
-    m_height = h;
+    mWidth = w;
+    mHeight = h;
 }
 
 void Sprite::SetSourcePos(float x, float y)
 {
-    m_srcX = x;
-    m_srcY = y;
+    mSrcX = x;
+    mSrcY = y;
 }
 
 void Sprite::SetSourceDimensions(float w, float h)
 {
-    m_srcWidth = w;
-    m_srcHeight = h;
+    mSrcWidth = w;
+    mSrcHeight = h;
 }
 
 void Sprite::SetTexturePath(const std::string& path)
 {
-    m_texturePath = path;
+    mTexturePath = path;
 }
 
 void Sprite::SetTint(const Oasis::Colour& colour, float alpha)
 {
-    m_tint = colour;
-    m_tintAlpha = alpha;
+    mTint = colour;
+    mTintAlpha = alpha;
 }

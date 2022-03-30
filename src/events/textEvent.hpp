@@ -8,9 +8,9 @@ namespace Oasis
     public:
         EVENT_CLASS_TYPE(TEXT_INPUT);
 
-        TextInputEvent(char * text) : m_text(text) {}
-        char * GetText() const { return m_text; }
+        TextInputEvent(char * text) : mText(text) {}
+        char * GetText() const { return mText; }
     private:
-        char * m_text;
+        char * mText;
     };
 }

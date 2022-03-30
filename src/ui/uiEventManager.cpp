@@ -9,8 +9,8 @@ UIEventManager::UIEventManager()
 
 void UIEventManager::OnEvent(const std::string& event_key)
 {
-    auto it = m_callbacks.find(event_key);
-    if (it != m_callbacks.end())
+    auto it = mCallbacks.find(event_key);
+    if (it != mCallbacks.end())
     {
         for (auto callback : it->second)
         {
@@ -21,9 +21,9 @@ void UIEventManager::OnEvent(const std::string& event_key)
 
 void UIEventManager::AddListener(const std::string& event_key, std::function<void()> callback)
 {
-    if (m_callbacks.find(event_key) == m_callbacks.end())
+    if (mCallbacks.find(event_key) == mCallbacks.end())
     {
-        m_callbacks[event_key] = std::vector<std::function<void()>>();
+        mCallbacks[event_key] = std::vector<std::function<void()>>();
     }
-    m_callbacks[event_key].push_back(callback);
+    mCallbacks[event_key].push_back(callback);
 }

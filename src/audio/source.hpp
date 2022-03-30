@@ -13,6 +13,6 @@ namespace Oasis
 
         void Play(AudioResource * resource);
     private:
-        ALuint m_source;
+        ALuint mSource;
     };
 }

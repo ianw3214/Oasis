@@ -33,20 +33,20 @@ using namespace Oasis;
 #include <ryml.hpp>
 
 Application::Application(const Configuration& config)
-    : m_width(config.m_width)
-    , m_height(config.m_height)
+    : mWidth(config.mWidth)
+    , mHeight(config.mHeight)
 {
-    m_window = SDL_CreateWindow(
-        config.m_name,
+    mWindow = SDL_CreateWindow(
+        config.mName,
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        config.m_width,
-        config.m_height,
+        config.mWidth,
+        config.mHeight,
         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
-    OASIS_TRAP(m_window);
-    m_context = SDL_GL_CreateContext(m_window);
-    OASIS_TRAP(m_context);
+    OASIS_TRAP(mWindow);
+    mContext = SDL_GL_CreateContext(mWindow);
+    OASIS_TRAP(mContext);
 
     // Enable vsync
 	SDL_GL_SetSwapInterval(1);
@@ -82,7 +82,7 @@ Application::Application(const Configuration& config)
 
     // Console commands
     Console::SetCommand("exit", [&](){
-        m_running = false;
+        mRunning = false;
     });
 
     // Initialize the starting scene
@@ -93,14 +93,14 @@ Application::~Application()
 {
     UIManager::Shutdown();
     
-    SDL_DestroyWindow(m_window);
+    SDL_DestroyWindow(mWindow);
 }
 
 void Application::OnEvent(const Event& event)
 {
     if (event.GetType() == Oasis::EventType::WINDOW_CLOSE)
     {
-        m_running = false;
+        mRunning = false;
     }
     if (UIManager::HandleEvent(event))
     {
@@ -123,11 +123,11 @@ void DisplayApplicationInfo(double * microseconds)
 void Application::Run()
 {
     // Initialize the duration to 24 fps
-    m_delta = 1000000.0 / 24.0;
-    ImGuiWrapper::AddWindowFunction(std::bind(DisplayApplicationInfo, &m_delta));
+    mDelta = 1000000.0 / 24.0;
+    ImGuiWrapper::AddWindowFunction(std::bind(DisplayApplicationInfo, &mDelta));
 
-    m_running = true;
-    while(m_running)
+    mRunning = true;
+    while(mRunning)
     {
         auto updateStart = std::chrono::system_clock::now();
 
@@ -138,11 +138,11 @@ void Application::Run()
         SystemManager::Update(SceneManager::CurrentScene());
         UIManager::Update();
 
-        ImGuiWrapper::Update(static_cast<float>(m_delta / 1000.0));
+        ImGuiWrapper::Update(static_cast<float>(mDelta / 1000.0));
 
-        SDL_GL_SwapWindow(m_window);
+        SDL_GL_SwapWindow(mWindow);
         ////////////////////////////////////////////////////////////////
 
-        m_delta = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - updateStart).count());
+        mDelta = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - updateStart).count());
     }
 }

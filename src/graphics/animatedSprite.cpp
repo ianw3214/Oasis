@@ -7,28 +7,28 @@ using namespace Oasis;
 
 AnimatedSprite::AnimatedSprite()
     : Sprite()
-    , m_millisecondsPerFrame(kDefaultMsPerFrame)
-    , m_lastUpdate(std::chrono::system_clock::now())
-    , m_frameIndex(0)
-    , m_currAnimation("")
+    , mMillisecondsPerFrame(kDefaultMsPerFrame)
+    , mLastUpdate(std::chrono::system_clock::now())
+    , mFrameIndex(0)
+    , mCurrAnimation("")
 {
 
 }
 
 AnimatedSprite::AnimatedSprite(const std::string& path, float frame_w, float frame_h)
     : Sprite(path)
-    , m_millisecondsPerFrame(kDefaultMsPerFrame)
-    , m_lastUpdate(std::chrono::system_clock::now())
-    , m_frameIndex(0)
-    , m_currAnimation("")
+    , mMillisecondsPerFrame(kDefaultMsPerFrame)
+    , mLastUpdate(std::chrono::system_clock::now())
+    , mFrameIndex(0)
+    , mCurrAnimation("")
 {
     SetSourceDimensions(frame_w, frame_h);
 
     // Calculate number of sprites in sprite sheet based on texture size and input frame
     Ref<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
     OASIS_TRAP(texture);
-    m_numFramesH = texture->getWidth() / static_cast<int>(frame_w);
-    m_numFramesV = texture->getHeight() / static_cast<int>(frame_h);
+    mNumFramesH = texture->getWidth() / static_cast<int>(frame_w);
+    mNumFramesV = texture->getHeight() / static_cast<int>(frame_h);
 }
 
 AnimatedSprite::~AnimatedSprite()
@@ -38,38 +38,37 @@ AnimatedSprite::~AnimatedSprite()
 
 void AnimatedSprite::SetFPS(int fps)
 {
-    m_millisecondsPerFrame = 1000 / fps;
+    mMillisecondsPerFrame = 1000 / fps;
 }
 
 void AnimatedSprite::AddAnimation(const std::string& name, unsigned int start, unsigned int end)
 {
-    m_frames[name] = std::make_pair(start, end);
+    mFrames[name] = std::make_pair(start, end);
 }
 
 void AnimatedSprite::UpdateFrame()
 {
     // Only update the frame if the timer is up
-    // TODO: Use a timer instead of counting ticks
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - m_lastUpdate);
-    if (duration.count() >= m_millisecondsPerFrame)
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - mLastUpdate);
+    if (duration.count() >= mMillisecondsPerFrame)
     {
-        m_lastUpdate = std::chrono::system_clock::now();
-        m_frameIndex++;
-        if (m_frameIndex > m_frames[m_currAnimation].second)
+        mLastUpdate = std::chrono::system_clock::now();
+        mFrameIndex++;
+        if (mFrameIndex > mFrames[mCurrAnimation].second)
         {
-            if (!m_animations.empty())
+            if (!mAnimations.empty())
             {
-                m_animations.front().loops--;
-                if (m_animations.front().loops == 0)
+                mAnimations.front().loops--;
+                if (mAnimations.front().loops == 0)
                 {
-                    m_animations.pop();
+                    mAnimations.pop();
                 }
-                if (!m_animations.empty())
+                if (!mAnimations.empty())
                 {
-                    m_currAnimation = m_animations.front().animation;
+                    mCurrAnimation = mAnimations.front().animation;
                 }
             }
-            m_frameIndex = m_frames[m_currAnimation].first;
+            mFrameIndex = mFrames[mCurrAnimation].first;
         }
         UpdateSourcePosFromFrame();
     }
@@ -78,29 +77,29 @@ void AnimatedSprite::UpdateFrame()
 
 void AnimatedSprite::PlayAnimation(const std::string& name, unsigned int loops)
 {
-    OASIS_TRAP(m_frames.find(name) != m_frames.end());
+    OASIS_TRAP(mFrames.find(name) != mFrames.end());
 
-    while(!m_animations.empty()) m_animations.pop();
+    while(!mAnimations.empty()) mAnimations.pop();
     QueueAnimation(name, loops);
 
     // Actually play the animation by setting it to the right frame
-    m_currAnimation = name;
-    m_frameIndex = m_frames[m_currAnimation].first;
+    mCurrAnimation = name;
+    mFrameIndex = mFrames[mCurrAnimation].first;
     UpdateSourcePosFromFrame();
 
-    m_lastUpdate = std::chrono::system_clock::now();
+    mLastUpdate = std::chrono::system_clock::now();
 }
 
 void AnimatedSprite::QueueAnimation(const std::string& name, unsigned int loops)
 {
-    m_animations.push(AnimationState{ name, loops });
+    mAnimations.push(AnimationState{ name, loops });
 }
 
 
 void AnimatedSprite::UpdateSourcePosFromFrame()
 {
-    int x = m_frameIndex % m_numFramesH;
-    int y = m_frameIndex / m_numFramesH;
+    int x = mFrameIndex % mNumFramesH;
+    int y = mFrameIndex / mNumFramesH;
 
     SetSourcePos(
         static_cast<float>(x) * GetSourceWidth(),

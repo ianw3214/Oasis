@@ -72,11 +72,11 @@ namespace Oasis
     public:
         EVENT_CLASS_TYPE(MOUSE_SCROLL)
 
-        MouseScrolledEvent(int h, int v) : m_horizontalScroll(h), m_verticalScroll(v) {}
-        int GetHorizontalScroll() const { return m_horizontalScroll; }
-        int GetVerticalScroll() const { return m_verticalScroll; }
+        MouseScrolledEvent(int h, int v) : mHorizontalScroll(h), mVerticalScroll(v) {}
+        int GetHorizontalScroll() const { return mHorizontalScroll; }
+        int GetVerticalScroll() const { return mVerticalScroll; }
     private:
-        int m_horizontalScroll;
-        int m_verticalScroll;
+        int mHorizontalScroll;
+        int mVerticalScroll;
     };
 }

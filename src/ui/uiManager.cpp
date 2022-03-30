@@ -27,13 +27,13 @@ void UIManager::Init()
     Oasis::TextRenderer::LoadFont(GetUIFont(UIFont::SMALL), GetUIFontPath(UIFont::SMALL), GetUIFontSize(UIFont::SMALL));
 
     // Only some of these matter for the calculation but we set all of them anyways
-    s_root.m_show = true;
-    s_root.m_anchor = UIAnchor::BOTTOM_LEFT;
-    s_root.m_width = Oasis::WindowService::WindowWidth();
-    s_root.m_height = Oasis::WindowService::WindowHeight();
-    s_root.m_xOffset = 0;
-    s_root.m_yOffset = 0;
-    s_root.m_UIType = UIType::NONE;
+    s_root.mShow = true;
+    s_root.mAnchor = UIAnchor::BOTTOM_LEFT;
+    s_root.mWidth = Oasis::WindowService::WindowWidth();
+    s_root.mHeight = Oasis::WindowService::WindowHeight();
+    s_root.mXOffset = 0;
+    s_root.mYOffset = 0;
+    s_root.mUIType = UIType::NONE;
 
     s_serializer = new UISerializer();
     s_boundVariables = new UIBoundVariables();
@@ -54,16 +54,16 @@ void UIManager::Update()
     typedef std::function<void(Ref<UIElement>, int, int, int, int)> f;
     f update_ui = [&](Ref<UIElement> curr, int parent_x, int parent_y, int parent_w, int parent_h) {
         OASIS_TRAP(parent_w >= 0 && parent_h >= 0);
-        if (!curr->m_show)
+        if (!curr->mShow)
         {
             return;
         }
-        const unsigned int w = curr->m_width;
-        const unsigned int h = curr->m_height;
+        const unsigned int w = curr->mWidth;
+        const unsigned int h = curr->mHeight;
         // Calculate the x/y of our current UI Element
         int x = 0;
         int y = 0;
-        switch(curr->m_anchor)
+        switch(curr->mAnchor)
         {
             case UIAnchor::TOP_LEFT: {
                 x = parent_x, y = parent_y + parent_h;
@@ -85,19 +85,19 @@ void UIManager::Update()
                 OASIS_TRAP(false && "UI Anchor should be assigned");
             } break;
         };
-        x += curr->m_xOffset;
-        y += curr->m_yOffset;
-        switch(curr->m_UIType)
+        x += curr->mXOffset;
+        y += curr->mYOffset;
+        switch(curr->mUIType)
         {
             case UIType::NONE: {
                 // Do nothing...
             } break;
             case UIType::BACKGROUND: {
                 // Draw the background
-                Oasis::Renderer::DrawQuad((float) x, (float) y, (float) curr->m_width, (float) curr->m_height, curr->m_background);
+                Oasis::Renderer::DrawQuad((float) x, (float) y, (float) curr->mWidth, (float) curr->mHeight, curr->mBackground);
                 // Draw the border as a line strip
-                float * border = new float[curr->m_borderWidth * 5 * 2];
-                for (unsigned int i = 0; i < curr->m_borderWidth; ++i)
+                float * border = new float[curr->mBorderWidth * 5 * 2];
+                for (unsigned int i = 0; i < curr->mBorderWidth; ++i)
                 {
                     unsigned int start = i * 5 * 2;
                     border[start++] = x + static_cast<float>(i);
@@ -111,29 +111,29 @@ void UIManager::Update()
                     border[start++] = x + static_cast<float>(i);
                     border[start++] = y + static_cast<float>(i);
                 }
-                Oasis::Renderer::DrawLineStrip(border, curr->m_borderWidth * 5, curr->m_border);
+                Oasis::Renderer::DrawLineStrip(border, curr->mBorderWidth * 5, curr->mBorder);
             } break;
             case UIType::TEXT: {
-                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), std::string(curr->m_text), (float) x, (float) y, curr->m_colour);
+                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->mFont), std::string(curr->mText), (float) x, (float) y, curr->mColour);
             } break;
             case UIType::TEXTURE: {
                 // Cache the sprite so we don't have to constantly recreate it
-                if (!curr->m_cachedSprite)
+                if (!curr->mCachedSprite)
                 {
-                    curr->m_cachedSprite = new Oasis::Sprite(curr->m_path);
+                    curr->mCachedSprite = new Oasis::Sprite(curr->mPath);
                 }
-                curr->m_cachedSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
-                curr->m_cachedSprite->SetPos((float)x, (float)y);
-                Oasis::Renderer::DrawSprite(curr->m_cachedSprite);
+                curr->mCachedSprite->SetDimensions((float)curr->mWidth, (float)curr->mHeight);
+                curr->mCachedSprite->SetPos((float)x, (float)y);
+                Oasis::Renderer::DrawSprite(curr->mCachedSprite);
             } break;
             case UIType::TEXT_DYNAMIC: {
                 // TODO: Optimizable with caching
                 // Will need to keep track of which variables have become dirty
                 // First resolve the format string to see what bound variables we need to set
-                OASIS_TRAP(curr->m_formatString);
-                std::string originalString(curr->m_formatString);
-                std::string resolvedString(curr->m_formatString);
-                char * token = curr->m_formatString;
+                OASIS_TRAP(curr->mFormatString);
+                std::string originalString(curr->mFormatString);
+                std::string resolvedString(curr->mFormatString);
+                char * token = curr->mFormatString;
                 unsigned int varStartIndex = 0;
                 unsigned int counter = 0;
                 bool varStarted = false;
@@ -157,59 +157,59 @@ void UIManager::Update()
                     token++;
                     counter++;
                 }
-                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->m_font), resolvedString, (float) x, (float) y, curr->m_colour);
+                const int length = Oasis::TextRenderer::DrawString(GetUIFont(curr->mFont), resolvedString, (float) x, (float) y, curr->mColour);
             } break;
             case UIType::BUTTON: {
                 // Cache the sprites so we don't have to recreate them
-                if (!curr->m_cachedButtonSprite)
+                if (!curr->mCachedButtonSprite)
                 {
-                    curr->m_cachedButtonSprite = new Oasis::Sprite(curr->m_path);
+                    curr->mCachedButtonSprite = new Oasis::Sprite(curr->mPath);
                 }
-                if (!curr->m_cachedHoverSprite)
+                if (!curr->mCachedHoverSprite)
                 {
-                    curr->m_cachedHoverSprite = new Oasis::Sprite(curr->m_hoverPath);
+                    curr->mCachedHoverSprite = new Oasis::Sprite(curr->mHoverPath);
                 }
-                curr->m_cachedButtonSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
-                curr->m_cachedButtonSprite->SetPos((float)x, (float)y);
-                curr->m_cachedHoverSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
-                curr->m_cachedHoverSprite->SetPos((float)x, (float)y);
-                if (curr->m_hovering)
+                curr->mCachedButtonSprite->SetDimensions((float)curr->mWidth, (float)curr->mHeight);
+                curr->mCachedButtonSprite->SetPos((float)x, (float)y);
+                curr->mCachedHoverSprite->SetDimensions((float)curr->mWidth, (float)curr->mHeight);
+                curr->mCachedHoverSprite->SetPos((float)x, (float)y);
+                if (curr->mHovering)
                 {
-                    Oasis::Renderer::DrawSprite(curr->m_cachedHoverSprite);
+                    Oasis::Renderer::DrawSprite(curr->mCachedHoverSprite);
                 }
                 else
                 {
-                    Oasis::Renderer::DrawSprite(curr->m_cachedButtonSprite);
+                    Oasis::Renderer::DrawSprite(curr->mCachedButtonSprite);
                 }
             } break;
             case UIType::ANIMATED_TEXTURE: {
                 // Cache the sprite so we don't have to constantly recreate it
-                if (!curr->m_cachedAnimatedSprite)
+                if (!curr->mCachedAnimatedSprite)
                 {
-                    OASIS_TRAP(curr->m_animFrames > 0 && "Must have at least one animation frame");
-                    curr->m_cachedAnimatedSprite = new Oasis::AnimatedSprite(curr->m_path, (float)curr->m_frameWidth, (float)curr->m_frameHeight);
-                    curr->m_cachedAnimatedSprite->AddAnimation("default", 0, curr->m_animFrames - 1);
-                    curr->m_cachedAnimatedSprite->SetFPS(curr->m_fps);
-                    curr->m_cachedAnimatedSprite->PlayAnimation("default");
+                    OASIS_TRAP(curr->mAnimFrames > 0 && "Must have at least one animation frame");
+                    curr->mCachedAnimatedSprite = new Oasis::AnimatedSprite(curr->mPath, (float)curr->mFrameWidth, (float)curr->mFrameHeight);
+                    curr->mCachedAnimatedSprite->AddAnimation("default", 0, curr->mAnimFrames - 1);
+                    curr->mCachedAnimatedSprite->SetFPS(curr->mFps);
+                    curr->mCachedAnimatedSprite->PlayAnimation("default");
                 }
-                curr->m_cachedAnimatedSprite->SetDimensions((float)curr->m_width, (float)curr->m_height);
-                curr->m_cachedAnimatedSprite->SetPos((float)x, (float)y);
-                Oasis::Renderer::DrawAnimatedSprite(curr->m_cachedAnimatedSprite);
+                curr->mCachedAnimatedSprite->SetDimensions((float)curr->mWidth, (float)curr->mHeight);
+                curr->mCachedAnimatedSprite->SetPos((float)x, (float)y);
+                Oasis::Renderer::DrawAnimatedSprite(curr->mCachedAnimatedSprite);
             } break;
             default: {
                 OASIS_TRAP(false && "UI Type should be assigned(Can be set to NONE)");
             } break;
         }
         // Recurse over children
-        for (auto child : curr->m_children)
+        for (auto child : curr->mChildren)
         {
             update_ui(child, x, y, w, h);
         }
         return;
     };
     // Update window width/height of the root
-    s_root.m_width = Oasis::WindowService::WindowWidth();
-    s_root.m_height = Oasis::WindowService::WindowHeight();
+    s_root.mWidth = Oasis::WindowService::WindowWidth();
+    s_root.mHeight = Oasis::WindowService::WindowHeight();
     update_ui(&s_root, 0, 0, Oasis::WindowService::WindowWidth(), Oasis::WindowService::WindowHeight());
 }
 
@@ -218,24 +218,24 @@ bool UIManager::HandleEvent(const Oasis::Event& event)
     if (event.GetType() == Oasis::EventType::MOUSE_MOVE)
     {
         const Oasis::MouseMovedEvent& move = dynamic_cast<const Oasis::MouseMovedEvent&>(event);
-        const int m_x = move.GetX();
-        const int m_y = move.GetY();
+        const int mX = move.GetX();
+        const int mY = move.GetY();
 
         // TODO: A lot of shared code w/ update_ui, maybe can refactor it out somewhere
         typedef std::function<void(Ref<UIElement>, int, int, int, int)> f;
         f update_button = [&](Ref<UIElement> curr, int parent_x, int parent_y, int parent_w, int parent_h) {
             OASIS_TRAP(parent_w >= 0 && parent_h >= 0);
-            if (!curr->m_show)
+            if (!curr->mShow)
             {
-                curr->m_hovering = false;
+                curr->mHovering = false;
                 return;
             }
-            const unsigned int w = curr->m_width;
-            const unsigned int h = curr->m_height;
+            const unsigned int w = curr->mWidth;
+            const unsigned int h = curr->mHeight;
             // Calculate the x/y of our current UI Element
             int x = 0;
             int y = 0;
-            switch(curr->m_anchor)
+            switch(curr->mAnchor)
             {
                 case UIAnchor::TOP_LEFT: {
                     x = parent_x, y = parent_y + parent_h;
@@ -257,21 +257,21 @@ bool UIManager::HandleEvent(const Oasis::Event& event)
                     OASIS_TRAP(false && "UI Anchor should be assigned");
                 } break;
             };
-            x += curr->m_xOffset;
-            y += curr->m_yOffset;
-            if (curr->m_UIType== UIType::BUTTON)
+            x += curr->mXOffset;
+            y += curr->mYOffset;
+            if (curr->mUIType== UIType::BUTTON)
             {
-                if (m_x > x && m_x < x + (int)w && m_y > y && m_y < y + (int)h)
+                if (mX > x && mX < x + (int)w && mY > y && mY < y + (int)h)
                 {
-                    curr->m_hovering = true;
+                    curr->mHovering = true;
                 }
                 else
                 {
-                    curr->m_hovering = false;
+                    curr->mHovering = false;
                 }
             }
             
-            for (auto child : curr->m_children)
+            for (auto child : curr->mChildren)
             {
                 update_button(child, x, y, w, h);
             }
@@ -285,16 +285,16 @@ bool UIManager::HandleEvent(const Oasis::Event& event)
     {
         typedef std::function<bool(Ref<UIElement>)> f;
         f click_button = [&](Ref<UIElement> curr) {
-            if (!curr->m_show)
+            if (!curr->mShow)
             {
                 return false;
             }
-            if (curr->m_UIType == UIType::BUTTON && curr->m_hovering)
+            if (curr->mUIType == UIType::BUTTON && curr->mHovering)
             {
-                s_eventManager->OnEvent(curr->m_clickEvent);
+                s_eventManager->OnEvent(curr->mClickEvent);
                 return true;
             }
-            for (auto child : curr->m_children)
+            for (auto child : curr->mChildren)
             {
                 bool result = click_button(child);
                 if (result) return true;
@@ -323,7 +323,7 @@ void UIManager::ShowWindow(const std::string& name)
 {
     if (auto element = GetUIElement(name))
     {
-        element->m_show = true;   
+        element->mShow = true;   
     }
     else
     {
@@ -336,7 +336,7 @@ void UIManager::HideWindow(const std::string& name)
 {
     if (auto element = GetUIElement(name))
     {
-        element->m_show = false;   
+        element->mShow = false;   
     }
     else
     {
@@ -348,7 +348,7 @@ void UIManager::ToggleWindow(const std::string& name)
 {
     if (auto element = GetUIElement(name))
     {
-        element->m_show = !element->m_show;   
+        element->mShow = !element->mShow;   
     }
     else
     {
@@ -386,7 +386,7 @@ void UIManager::DeserializeUI()
             continue;
         }
         auto data = s_serializer->Deserialize(entry.path().string(), &s_root);
-        for (const auto it : data.m_UIElements)
+        for (const auto it : data.mUIElements)
         {
             if (s_UIElements.find(it.first) == s_UIElements.end())
             {
@@ -397,11 +397,11 @@ void UIManager::DeserializeUI()
                 // We have 2 UI elements with the same name somewhere, BAD
                 Oasis::Console::Error("UI Element with name %s already defined, deleting duplicate...", it.first.c_str());
                 // Remove from the root and delete it
-                for (auto root_it = s_root.m_children.begin(); root_it != s_root.m_children.end(); root_it++)
+                for (auto root_it = s_root.mChildren.begin(); root_it != s_root.mChildren.end(); root_it++)
                 {
                     if (*root_it == it.second)
                     {
-                        s_root.m_children.erase(root_it);
+                        s_root.mChildren.erase(root_it);
                         break;
                     }
                 }

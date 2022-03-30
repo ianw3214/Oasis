@@ -19,9 +19,9 @@ namespace Oasis
         AudioResource(const std::string& path);
         ~AudioResource();
 
-        ALuint GetBuffer() const { return m_buffer; }
+        ALuint GetBuffer() const { return mBuffer; }
     private:
-        ALuint m_buffer;
+        ALuint mBuffer;
     };
 
     //////////////////////////////////////////////////////////////////

@@ -59,7 +59,6 @@ void InputManager::Update()
             s_eventCallback(keyEvent);
         }
 
-        // TODO: SPECIFY BETWEEN DIFFERENT MOUSE BUTTONS
         if (e.type == SDL_MOUSEBUTTONDOWN && !io.WantCaptureMouse)
         {
             MouseButton button;

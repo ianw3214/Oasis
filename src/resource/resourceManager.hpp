@@ -24,7 +24,7 @@ namespace Oasis
         static void UnloadResource(const std::string& path);
     private:
         static ResourceManager * GetInstance();
-        std::unordered_map<std::string, Resource*> m_resources;
+        std::unordered_map<std::string, Resource*> mResources;
     };
 }
 
@@ -34,20 +34,20 @@ namespace Oasis
     Ref<T> ResourceManager::LoadResource(const std::string& path)
     {
         // Check if resource has already been loaded
-        if (GetInstance()->m_resources.find(path) == GetInstance()->m_resources.end())
+        if (GetInstance()->mResources.find(path) == GetInstance()->mResources.end())
         {
-            GetInstance()->m_resources[path] = T::Load(path);
+            GetInstance()->mResources[path] = T::Load(path);
         }
-        return dynamic_cast<T*>(GetInstance()->m_resources[path]);
+        return dynamic_cast<T*>(GetInstance()->mResources[path]);
     }
 
     template<class T>
     Ref<T> ResourceManager::GetResource(const std::string& path)
     {
-        if (GetInstance()->m_resources.find(path) == GetInstance()->m_resources.end())
+        if (GetInstance()->mResources.find(path) == GetInstance()->mResources.end())
         {
             LoadResource<T>(path);
         }
-        return dynamic_cast<T*>(GetInstance()->m_resources[path]);
+        return dynamic_cast<T*>(GetInstance()->mResources[path]);
     }
 }

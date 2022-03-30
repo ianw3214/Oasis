@@ -17,7 +17,7 @@ public:
     // Return in a struct in case there is ever any more data we need to retrieve
     struct Data{
         typedef std::unordered_map<std::string, Ref<UIElement>> UINameMap;
-        UINameMap m_UIElements;
+        UINameMap mUIElements;
     };
     // All UI elements of a file must be part of the same group, so only need the root here
     Data Deserialize(const std::string& path, Ref<UIElement> root);

@@ -35,8 +35,8 @@ AudioResource::AudioResource(const std::string& path)
         format = wav_spec.format == AUDIO_S8 || wav_spec.format == AUDIO_U8 ? AL_FORMAT_MONO8 : AL_FORMAT_MONO16;
 	}
 
-    alGenBuffers(1, &m_buffer);
-    alBufferData(m_buffer, format, wav_buffer, wav_length, wav_spec.freq);
+    alGenBuffers(1, &mBuffer);
+    alBufferData(mBuffer, format, wav_buffer, wav_length, wav_spec.freq);
 
     SDL_FreeWAV(wav_buffer);
 
@@ -46,7 +46,7 @@ AudioResource::AudioResource(const std::string& path)
 
 AudioResource::~AudioResource()
 {
-    alDeleteBuffers(1, &m_buffer);
+    alDeleteBuffers(1, &mBuffer);
 }
 
 void AudioEngine::Init()
