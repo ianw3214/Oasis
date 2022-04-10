@@ -2,6 +2,8 @@
 
 #include <functional>
 
+#include <vector>
+
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
@@ -10,6 +12,7 @@
 namespace Oasis
 {
     class Event;
+    class System;
 
     ////////////////////////////////////////////////////////
     struct Configuration
@@ -19,6 +22,9 @@ namespace Oasis
         const char* mName;
 
         const char* mStartingScene;
+
+        // TODO: There has got to be a better way of doing this
+        std::vector<System*> mSystems;
     };
     Configuration GetConfiguration();
 

@@ -68,7 +68,7 @@ Application::Application(const Configuration& config)
 
     ResourceManager::Init();
     SceneManager::Init("res/config.yaml");
-    SystemManager::Init();
+    SystemManager::Init(config);
     Renderer::Init();
     TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));

@@ -5,12 +5,14 @@
 
 namespace Oasis
 {
+    struct Configuration;
+
     class System;
     class Scene;
     class SystemManager
     {
     public:
-        static void Init();
+        static void Init(const Configuration& config);
         static void RegisterSystem(System* system) {
             mSystems.push_back(system);
         }
