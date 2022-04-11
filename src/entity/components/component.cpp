@@ -6,7 +6,6 @@ using namespace Oasis;
 std::unordered_map<std::string, ComponentManager::LoadFunc> ComponentManager::mComponentMap;
 
 void ComponentManager::InitCoreComponents() {
-    registerComponent("test", Component::loadFromYAML);
     registerComponent("render", RenderComponent::loadFromYAML);
 }
 

@@ -65,6 +65,7 @@ Application::Application(const Configuration& config)
 
     // Gameplay systems
     ComponentManager::InitCoreComponents();
+    config.mInitExternalComponents();
 
     ResourceManager::Init();
     SceneManager::Init("res/config.yaml");

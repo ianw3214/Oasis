@@ -32,4 +32,5 @@
 
 #include "imgui/imguiWrapper.hpp"
 
+#include "entity/components/component.hpp"
 #include "systems/system.hpp"

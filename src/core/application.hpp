@@ -13,6 +13,7 @@ namespace Oasis
 {
     class Event;
     class System;
+    class Component;
 
     ////////////////////////////////////////////////////////
     struct Configuration
@@ -25,6 +26,7 @@ namespace Oasis
 
         // TODO: There has got to be a better way of doing this
         std::vector<System*> mSystems;
+        std::function<void()> mInitExternalComponents;
     };
     Configuration GetConfiguration();
 
