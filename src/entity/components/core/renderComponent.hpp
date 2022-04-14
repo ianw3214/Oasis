@@ -6,6 +6,7 @@ namespace Oasis {
     class Entity;
     class Sprite;
 };
+
 class RenderComponent : public Oasis::Component
 {
 public:

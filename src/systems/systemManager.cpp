@@ -6,13 +6,10 @@ using namespace Oasis;
 #include "core/sceneManager.hpp"
 #include "core/scene.hpp"
 
-#include "core/renderSystem.hpp"
-
 std::vector<System*> SystemManager::mSystems;
 
 void SystemManager::Init(const Configuration& config) {
     SystemManager::RegisterSystem(new DummySystem());
-    SystemManager::RegisterSystem(new RenderSystem());
 
     for (System* system : config.mSystems) {
         SystemManager::RegisterSystem(system);

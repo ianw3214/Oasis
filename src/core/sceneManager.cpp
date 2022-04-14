@@ -42,10 +42,13 @@ void SceneManager::Init(const std::string& file)
         tree["starting_scene"] >> sceneFile;
     }
 
-    Scene* scene = Scene::loadFromFile(sceneFile);
+    Scene* scene = new Scene();
     // TODO: Proper error handling instead of trap
     OASIS_TRAP(scene);
     mCurrentScene = scene;
+
+    bool loadStatus = scene->loadFromFile(sceneFile);
+    OASIS_TRAP(loadStatus);
 }
 
 void SceneManager::ChangeScene(Scene* newScene)
@@ -55,4 +58,8 @@ void SceneManager::ChangeScene(Scene* newScene)
     delete mCurrentScene;
     mCurrentScene = newScene;
     mCurrentScene->Init();
+}
+
+SceneObject* SceneManager::InsertSceneObject(Oasis::Sprite* sprite, int layer) {
+    return mCurrentScene->InsertSceneObject(sprite, layer);
 }

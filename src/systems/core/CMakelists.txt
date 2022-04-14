@@ -1,5 +1,0 @@
-target_sources(Oasis PRIVATE 
-    renderSystem.hpp)
-
-target_sources(Oasis PRIVATE 
-    renderSystem.cpp)

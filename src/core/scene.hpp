@@ -8,6 +8,13 @@
 
 namespace Oasis
 {
+    class Sprite;
+    struct SceneObject {
+        Oasis::Sprite * mSprite;
+        int mLayer;
+        SceneObject(Oasis::Sprite* sprite, int layer) : mSprite(sprite), mLayer(layer) {}
+    };
+
     class Entity;
     class Scene
     {
@@ -20,11 +27,15 @@ namespace Oasis
 
         void AddEntity(Entity* entity);
         std::vector<Entity*>& getEntitiesMutable() { return mEntities; }
+    
+        // Rendering related
+        SceneObject* InsertSceneObject(Oasis::Sprite* sprite, int layer);
     private:
         std::vector<Entity*> mEntities;
+        std::vector<SceneObject*> mSceneObjects;
 
     public:
-        static Scene* loadFromYAMLtext(const std::string& text);
-        static Scene* loadFromFile(const std::string& fileName);
+        bool loadFromYAMLtext(const std::string& text);
+        bool loadFromFile(const std::string& fileName);
     };
 }

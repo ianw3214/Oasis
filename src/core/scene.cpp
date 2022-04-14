@@ -2,12 +2,15 @@
 using namespace Oasis;
 
 #include "entity/entity.hpp"
+#include "graphics/renderer.hpp"
 
 // TODO: Actual file manager
 #include <fstream>
 #include <sstream>
 #include <ryml_std.hpp>
 #include <ryml.hpp>
+
+#include <algorithm>
 
 void Scene::Init() 
 {
@@ -24,7 +27,13 @@ void Scene::OnEvent(const Event& event)
 
 void Scene::Update()
 {
-    
+    std::sort(mSceneObjects.begin(), mSceneObjects.end(), [](SceneObject* a, SceneObject* b) {
+        return a->mLayer < b->mLayer;
+    });
+
+    for (SceneObject* sceneObject : mSceneObjects) {
+        Oasis::Renderer::DrawSprite(sceneObject->mSprite);
+    }
 }
 
 void Scene::AddEntity(Entity* entity) 
@@ -32,19 +41,22 @@ void Scene::AddEntity(Entity* entity)
     mEntities.push_back(entity);
 }
 
-Scene* Scene::loadFromYAMLtext(const std::string& text) {
-    Scene* scene = new Scene();
+SceneObject* Scene::InsertSceneObject(Oasis::Sprite* sprite, int layer) {
+    mSceneObjects.push_back(new SceneObject(sprite, layer));
+    return mSceneObjects[mSceneObjects.size() - 1];
+}
 
+bool Scene::loadFromYAMLtext(const std::string& text) {
     ryml::Tree tree = ryml::parse_in_arena(ryml::to_csubstr(text));
     for (ryml::NodeRef node : tree["entities"]) {
         Entity* entity = new Entity();
         entity->loadFromYAML(node);
-        scene->AddEntity(entity);
+        AddEntity(entity);
     }
-    return scene;
+    return true;
 }
 
-Scene* Scene::loadFromFile(const std::string& fileName) {
+bool Scene::loadFromFile(const std::string& fileName) {
     // Load scene file
     // TODO: Handle file not found
     std::ifstream config(fileName);
