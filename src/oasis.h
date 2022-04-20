@@ -4,6 +4,7 @@
 #include "util/pointer.hpp"
 #include "util/colour.hpp"
 
+#include "core/scene.hpp"
 #include "core/application.hpp"
 #include "core/sceneManager.hpp"
 #include "core/windowService.hpp"

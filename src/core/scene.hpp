@@ -10,8 +10,10 @@ namespace Oasis
 {
     class Sprite;
     struct SceneObject {
-        Oasis::Sprite * mSprite;
-        int mLayer;
+        int x = 0;
+        int y = 0;
+        Oasis::Sprite * mSprite = nullptr;
+        int mLayer = 0;
         SceneObject(Oasis::Sprite* sprite, int layer) : mSprite(sprite), mLayer(layer) {}
     };
 

@@ -20,7 +20,10 @@ using namespace Oasis;
 #include "graphics/textRenderer.hpp"
 
 std::function<void(Event&)> InputManager::s_eventCallback;
-bool InputManager::s_mouseDown[static_cast<int>(MouseButton::COUNT)];
+bool InputManager::sMouseClicked[static_cast<int>(MouseButton::COUNT)];
+bool InputManager::sMouseHeld[static_cast<int>(MouseButton::COUNT)];
+int InputManager::sMouseX = 0;
+int InputManager::sMouseY = 0;
 
 void InputManager::Init(std::function<void(Event&)> callback)
 {
@@ -29,6 +32,11 @@ void InputManager::Init(std::function<void(Event&)> callback)
 
 void InputManager::Update()
 {
+    // TODO: is memset faster?
+    for (int i = 0; i < static_cast<int>(MouseButton::COUNT); ++i) {
+        sMouseClicked[i] = false;
+    }
+
     SDL_Event e;
     while (SDL_PollEvent(&e))
     {
@@ -74,7 +82,10 @@ void InputManager::Update()
             }
             MousePressedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y, button);
             s_eventCallback(mouseEvent);
-            s_mouseDown[static_cast<int>(button)] = true;
+            sMouseHeld[static_cast<int>(button)] = true;
+            if (!MouseHeld(button)) {
+                sMouseClicked[static_cast<int>(button)] = true;
+            }
         }
 
         if (e.type == SDL_MOUSEBUTTONUP && !io.WantCaptureMouse)
@@ -92,7 +103,7 @@ void InputManager::Update()
             }
             MouseReleasedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y, button);
             s_eventCallback(mouseEvent);
-            s_mouseDown[static_cast<int>(button)] = false;
+            sMouseHeld[static_cast<int>(button)] = false;
         }
 
         if (e.type == SDL_MOUSEMOTION && !io.WantCaptureMouse)
@@ -130,8 +141,14 @@ void InputManager::Update()
             }
         }
     }
+
+    SDL_GetMouseState(&sMouseX, &sMouseY);
+}
+
+bool InputManager::MouseClicked(MouseButton button) {
+    return sMouseClicked[static_cast<int>(button)];
 }
 
 bool InputManager::MouseHeld(MouseButton button) {
-    return s_mouseDown[static_cast<int>(button)];
+    return sMouseHeld[static_cast<int>(button)];
 }

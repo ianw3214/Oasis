@@ -3,6 +3,7 @@ using namespace Oasis;
 
 #include "entity/entity.hpp"
 #include "graphics/renderer.hpp"
+#include "graphics/sprite.hpp"
 
 // TODO: Actual file manager
 #include <fstream>
@@ -32,6 +33,7 @@ void Scene::Update()
     });
 
     for (SceneObject* sceneObject : mSceneObjects) {
+        sceneObject->mSprite->SetPos((float)sceneObject->x, (float)sceneObject->y);
         Oasis::Renderer::DrawSprite(sceneObject->mSprite);
     }
 }
