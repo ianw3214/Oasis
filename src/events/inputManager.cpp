@@ -24,6 +24,8 @@ bool InputManager::sMouseClicked[static_cast<int>(MouseButton::COUNT)];
 bool InputManager::sMouseHeld[static_cast<int>(MouseButton::COUNT)];
 int InputManager::sMouseX = 0;
 int InputManager::sMouseY = 0;
+int InputManager::sMouseDeltaX = 0;
+int InputManager::sMouseDeltaY = 0;
 
 void InputManager::Init(std::function<void(Event&)> callback)
 {
@@ -36,6 +38,8 @@ void InputManager::Update()
     for (int i = 0; i < static_cast<int>(MouseButton::COUNT); ++i) {
         sMouseClicked[i] = false;
     }
+    sMouseDeltaX = 0;
+    sMouseDeltaY = 0;
 
     SDL_Event e;
     while (SDL_PollEvent(&e))
@@ -82,10 +86,10 @@ void InputManager::Update()
             }
             MousePressedEvent mouseEvent(e.button.x, Oasis::WindowService::WindowHeight() - e.button.y, button);
             s_eventCallback(mouseEvent);
-            sMouseHeld[static_cast<int>(button)] = true;
             if (!MouseHeld(button)) {
                 sMouseClicked[static_cast<int>(button)] = true;
             }
+            sMouseHeld[static_cast<int>(button)] = true;
         }
 
         if (e.type == SDL_MOUSEBUTTONUP && !io.WantCaptureMouse)
@@ -110,6 +114,8 @@ void InputManager::Update()
         {
             MouseMovedEvent mouseEvent(e.motion.x, Oasis::WindowService::WindowHeight() - e.motion.y, e.motion.xrel, -e.motion.yrel);
             s_eventCallback(mouseEvent);
+            sMouseDeltaX = e.motion.xrel;
+            sMouseDeltaY = -e.motion.yrel;
         }
 
         if (e.type == SDL_MOUSEWHEEL && !io.WantCaptureMouse)
@@ -143,6 +149,7 @@ void InputManager::Update()
     }
 
     SDL_GetMouseState(&sMouseX, &sMouseY);
+    sMouseY = Oasis::WindowService::WindowHeight() - sMouseY;
 }
 
 bool InputManager::MouseClicked(MouseButton button) {
@@ -151,4 +158,19 @@ bool InputManager::MouseClicked(MouseButton button) {
 
 bool InputManager::MouseHeld(MouseButton button) {
     return sMouseHeld[static_cast<int>(button)];
+}
+
+int InputManager::MouseX() {
+    return sMouseX;
+}
+
+int InputManager::MouseY() {
+    return sMouseY;
+}
+
+int InputManager::MouseDeltaX() {
+    return sMouseDeltaX;
+}
+int InputManager::MouseDeltaY() {
+    return sMouseDeltaY;
 }

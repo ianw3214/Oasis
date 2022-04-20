@@ -12,6 +12,8 @@
 
 #include "resource/resourceManager.hpp"
 
+#include "entity/entity.hpp"
+
 #include "graphics/renderer.hpp"
 #include "graphics/textRenderer.hpp"
 #include "graphics/sprite.hpp"
